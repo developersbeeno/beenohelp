@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import { Search, ArrowLeft, Rocket, LayoutList, Users, TrendingUp, Zap, Link2 } from "lucide-react";
 import { articles, categories, homeCards, type Article } from "@/lib/articles";
 import { Markdown } from "@/components/Markdown";
+import { useLocale } from "@/lib/i18n/locale-context";
+import { useStrings } from "@/lib/i18n/strings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +40,8 @@ function CardIcon({ name }: { name: string }) {
 }
 
 function HomePage() {
+  const { locale } = useLocale();
+  const s = useStrings(locale);
   const [query, setQuery] = useState("");
   const [openArticle, setOpenArticle] = useState<Article | null>(null);
 
@@ -46,11 +50,11 @@ function HomePage() {
     const q = query.toLowerCase();
     return articles.filter(
       (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.content.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q),
+        a.title[locale].toLowerCase().includes(q) ||
+        a.content[locale].toLowerCase().includes(q) ||
+        a.description[locale].toLowerCase().includes(q),
     );
-  }, [query]);
+  }, [query, locale]);
 
   const openBySlug = (slug: string) => {
     if (slug === "__api") return;
@@ -68,17 +72,15 @@ function HomePage() {
       <section className="hero-pattern border-b border-border bg-gradient-to-b from-accent/40 to-background">
         <div className="mx-auto max-w-4xl px-4 py-16 sm:py-20 text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
-            Como podemos ajudar?
+            {s.home.heroTitle}
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Explore a documentação do Beeno CRM ou converse com nosso assistente de IA
-          </p>
+          <p className="mt-4 text-lg text-muted-foreground">{s.home.heroSubtitle}</p>
           <div className="mt-8 relative max-w-2xl mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar artigos, endpoints, integrações..."
+              placeholder={s.home.searchPlaceholder}
               className="w-full h-14 pl-12 pr-4 rounded-xl border border-border bg-card text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
             />
           </div>
@@ -88,9 +90,7 @@ function HomePage() {
       {/* Search results */}
       {filtered !== null && (
         <section className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
-          <p className="text-sm text-muted-foreground mb-4">
-            {filtered.length} resultado{filtered.length !== 1 ? "s" : ""} para "{query}"
-          </p>
+          <p className="text-sm text-muted-foreground mb-4">{s.home.resultsFor(filtered.length, query)}</p>
           <div className="grid gap-3">
             {filtered.map((a) => (
               <button
@@ -99,10 +99,10 @@ function HomePage() {
                 className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary/40 hover:shadow-sm transition"
               >
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <span>{a.categoryLabel}</span>
+                  <span>{a.categoryLabel[locale]}</span>
                 </div>
-                <h3 className="font-semibold">{a.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{a.description}</p>
+                <h3 className="font-semibold">{a.title[locale]}</h3>
+                <p className="text-sm text-muted-foreground mt-1">{a.description[locale]}</p>
               </button>
             ))}
           </div>
@@ -118,7 +118,7 @@ function HomePage() {
               {categories.map((cat) => (
                 <div key={cat.key}>
                   <h4 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    {cat.label}
+                    {cat.label[locale]}
                   </h4>
                   <ul className="space-y-1">
                     {cat.items.map((it) => (
@@ -131,7 +131,7 @@ function HomePage() {
                               : "text-foreground/70 hover:text-foreground hover:bg-muted"
                           }`}
                         >
-                          {it.title}
+                          {it.title[locale]}
                         </button>
                       </li>
                     ))}
@@ -140,7 +140,7 @@ function HomePage() {
               ))}
               <div>
                 <h4 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                  Referência
+                  {s.home.reference}
                 </h4>
                 <a
                   href="https://api.beeno.ai/"
@@ -162,24 +162,24 @@ function HomePage() {
                   onClick={() => setOpenArticle(null)}
                   className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4"
                 >
-                  <ArrowLeft className="h-4 w-4" /> Voltar
+                  <ArrowLeft className="h-4 w-4" /> {s.home.back}
                 </button>
                 <nav className="text-xs text-muted-foreground mb-3">
-                  Início <span className="mx-1">›</span> {openArticle.categoryLabel}{" "}
+                  {s.nav.home} <span className="mx-1">›</span> {openArticle.categoryLabel[locale]}{" "}
                   <span className="mx-1">›</span>{" "}
-                  <span className="text-foreground">{openArticle.title}</span>
+                  <span className="text-foreground">{openArticle.title[locale]}</span>
                 </nav>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="inline-flex items-center rounded-full bg-accent text-accent-foreground px-2.5 py-0.5 text-xs font-medium">
-                    {openArticle.categoryLabel}
+                    {openArticle.categoryLabel[locale]}
                   </span>
                 </div>
-                <h1 className="text-3xl font-bold mb-6">{openArticle.title}</h1>
-                <Markdown>{openArticle.content}</Markdown>
+                <h1 className="text-3xl font-bold mb-6">{openArticle.title[locale]}</h1>
+                <Markdown>{openArticle.content[locale]}</Markdown>
               </article>
             ) : (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Explore por tópico</h2>
+                <h2 className="text-2xl font-bold mb-6">{s.home.exploreByTopic}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {homeCards.map((c) => {
                     const inner = (
@@ -187,13 +187,13 @@ function HomePage() {
                         <div className="mb-3 h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                           <CardIcon name={c.icon} />
                         </div>
-                        <h3 className="font-semibold mb-1">{c.title}</h3>
-                        <p className="text-sm text-muted-foreground">{c.description}</p>
+                        <h3 className="font-semibold mb-1">{c.title[locale]}</h3>
+                        <p className="text-sm text-muted-foreground">{c.description[locale]}</p>
                       </div>
                     );
                     return (
                       <button
-                        key={c.title}
+                        key={c.slug}
                         onClick={() => openBySlug(c.slug)}
                         className="text-left"
                       >

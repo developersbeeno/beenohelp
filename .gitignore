@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.output/
+.vinxi/
+.vercel/
+*.log
+.env
+.env.local

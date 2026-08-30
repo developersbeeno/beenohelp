@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Bot, Send } from "lucide-react";
 import { Markdown } from "@/components/Markdown";
+import { useLocale } from "@/lib/i18n/locale-context";
+import { useStrings } from "@/lib/i18n/strings";
 
 export const Route = createFileRoute("/assistant")({
   head: () => ({
@@ -18,21 +20,11 @@ export const Route = createFileRoute("/assistant")({
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const QUICK = [
-  "Como criar um contato?",
-  "Como funciona a distribuição de leads?",
-  "Como configurar fluxos de automação?",
-  "Como criar um filtro de busca?",
-];
-
-const WELCOME: Msg = {
-  role: "assistant",
-  content:
-    "Olá! Eu sou o **Beeno**. Posso te ajudar com dúvidas sobre o CRM, integrações e automações. Como posso ajudar?",
-};
-
 function AssistantPage() {
-  const [messages, setMessages] = useState<Msg[]>([WELCOME]);
+  const { locale } = useLocale();
+  const s = useStrings(locale);
+  const welcome: Msg = { role: "assistant", content: s.chat.welcomeAssistant };
+  const [messages, setMessages] = useState<Msg[]>([welcome]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +38,11 @@ function AssistantPage() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    setMessages((prev) => (prev.length === 1 ? [welcome] : prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   const send = async (text: string) => {
     const q = text.trim();
@@ -61,25 +58,26 @@ function AssistantPage() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           messages: next
-            .filter((m) => m !== WELCOME || next.indexOf(m) > 0)
+            .filter((m) => m !== welcome || next.indexOf(m) > 0)
             .map((m) => ({ role: m.role, content: m.content })),
+          locale,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         const msg =
           res.status === 429
-            ? "Limite de requisições atingido. Tente novamente em alguns instantes."
+            ? s.chat.rateLimitError
             : res.status === 402
-              ? "Créditos de IA esgotados. Entre em contato com o administrador."
-              : data.error || "Erro ao consultar o assistente.";
+              ? s.chat.creditsError
+              : data.error || s.chat.genericError;
         setError(msg);
         setMessages((m) => [...m, { role: "assistant", content: ` ${msg}` }]);
       } else {
         setMessages((m) => [...m, { role: "assistant", content: data.text || "" }]);
       }
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Erro de rede";
+      const msg = e instanceof Error ? e.message : s.chat.networkError;
       setError(msg);
       setMessages((m) => [...m, { role: "assistant", content: ` ${msg}` }]);
     } finally {
@@ -97,9 +95,9 @@ function AssistantPage() {
             <Bot className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1">
-            <div className="font-semibold">Beeno</div>
+            <div className="font-semibold">{s.chat.brand}</div>
             <div className="text-xs text-muted-foreground flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-primary animate-pulse" /> Online
+              <span className="h-2 w-2 rounded-full bg-primary animate-pulse" /> {s.chat.online}
             </div>
           </div>
         </div>
@@ -142,7 +140,7 @@ function AssistantPage() {
         {/* Quick chips */}
         {messages.length <= 2 && (
           <div className="px-5 pb-3 flex flex-wrap gap-2">
-            {QUICK.map((q) => (
+            {s.chat.quick.map((q) => (
               <button
                 key={q}
                 onClick={() => send(q)}
@@ -174,7 +172,7 @@ function AssistantPage() {
               }
             }}
             rows={1}
-            placeholder="Escreva sua pergunta..."
+            placeholder={s.chat.placeholder}
             className="flex-1 resize-none px-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary max-h-32"
             disabled={loading}
           />
@@ -184,7 +182,7 @@ function AssistantPage() {
             className="inline-flex items-center justify-center h-11 px-4 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-95 transition disabled:opacity-50"
           >
             <Send className="h-4 w-4 sm:mr-1.5" />
-            <span className="hidden sm:inline">Enviar</span>
+            <span className="hidden sm:inline">{s.chat.send}</span>
           </button>
         </form>
       </div>

@@ -59,33 +59,39 @@
 }
 
 .dark {
-  --background: oklch(0.12 0.02 265);
-  --surface: oklch(0.15 0.02 265);
-  --foreground: oklch(0.92 0.01 260);
-  --card: oklch(0.16 0.02 265);
-  --card-foreground: oklch(0.92 0.01 260);
-  --popover: oklch(0.16 0.02 265);
-  --popover-foreground: oklch(0.92 0.01 260);
+  /* Matte-black neutral scale (same as Beeno Builder) — no blue cast. */
+  --background: #0a0a0a;
+  --surface: #121212;
+  --foreground: #ededed;
+  --card: #121212;
+  --card-foreground: #ededed;
+  --popover: #121212;
+  --popover-foreground: #ededed;
   --primary: oklch(0.77 0.18 155);
-  --primary-foreground: oklch(0.08 0.01 265);
-  --secondary: oklch(0.20 0.02 265);
-  --secondary-foreground: oklch(0.88 0.01 260);
-  --muted: oklch(0.20 0.02 265);
-  --muted-foreground: oklch(0.60 0.02 260);
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #e0e0e0;
+  --muted: #1a1a1a;
+  --muted-foreground: #9a9a9a;
   --accent: oklch(0.22 0.05 155);
   --accent-foreground: oklch(0.77 0.18 155);
   --destructive: oklch(0.65 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.26 0.02 265);
-  --input: oklch(0.26 0.02 265);
+  --destructive-foreground: #ffffff;
+  --border: #232323;
+  --input: #232323;
   --ring: oklch(0.77 0.18 155);
-  --code-bg: oklch(0.10 0.02 265);
+  --code-bg: #050505;
 }
 
 
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+  html {
+    /* Scales all rem-based sizing (text, spacing, icons) uniformly, like a
+       permanent browser zoom, to match the production site's larger scale. */
+    font-size: 130%;
   }
   html, body {
     font-family: var(--font-sans);

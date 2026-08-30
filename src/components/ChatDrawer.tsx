@@ -1,21 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X, Send, Mic, Square } from "lucide-react";
 import { Markdown } from "@/components/Markdown";
+import { useLocale } from "@/lib/i18n/locale-context";
+import { useStrings } from "@/lib/i18n/strings";
 
 type Msg = { role: "user" | "assistant"; content: string };
-
-const WELCOME: Msg = {
-  role: "assistant",
-  content:
-    "Olá! Eu sou o **Beeno**. Posso te ajudar com dúvidas sobre o CRM, integrações e automações. Como posso ajudar?\n\nSe precisar de suporte humano, clique em **Falar com suporte** no topo da página.",
-};
-
-const QUICK = [
-  "Como criar um contato?",
-  "Como funciona a distribuição de leads?",
-  "Como configurar uma automação?",
-  "Como criar um filtro de busca?",
-];
 
 export function ChatDrawer({
   externalOpen,
@@ -24,8 +13,11 @@ export function ChatDrawer({
   externalOpen?: boolean;
   onExternalOpenHandled?: () => void;
 }) {
+  const { locale } = useLocale();
+  const s = useStrings(locale);
+  const welcome: Msg = { role: "assistant", content: s.chat.welcomeDrawer };
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([WELCOME]);
+  const [messages, setMessages] = useState<Msg[]>([welcome]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -52,6 +44,11 @@ export function ChatDrawer({
   }, [externalOpen]);
 
   useEffect(() => {
+    setMessages((prev) => (prev.length === 1 ? [welcome] : prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
+
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -61,7 +58,7 @@ export function ChatDrawer({
     const q = text.trim();
     if ((!q && !audioBlob) || loading) return;
 
-    const userMsg: Msg = { role: "user", content: q || "🎤 Mensagem de voz" };
+    const userMsg: Msg = { role: "user", content: q || s.chat.voiceMessage };
     const next: Msg[] = [...messages, userMsg];
     setMessages(next);
     setInput("");
@@ -81,16 +78,18 @@ export function ChatDrawer({
           audio_base64: base64,
           audio_mime: audioBlob.type || "audio/webm",
           history: next
-            .filter((m) => m !== WELCOME)
+            .filter((m) => m !== welcome)
             .slice(0, -1)
             .map((m) => ({ role: m.role, content: m.content })),
+          locale,
         });
         headers["content-type"] = "application/json";
       } else {
         body = JSON.stringify({
           messages: next
-            .filter((m) => m !== WELCOME)
+            .filter((m) => m !== welcome)
             .map((m) => ({ role: m.role, content: m.content })),
+          locale,
         });
         headers["content-type"] = "application/json";
       }
@@ -99,12 +98,12 @@ export function ChatDrawer({
       const data = await res.json();
       const reply: Msg = {
         role: "assistant",
-        content: res.ok ? data.text || "" : data.error || "Erro ao consultar o assistente.",
+        content: res.ok ? data.text || "" : data.error || s.chat.genericError,
       };
       setMessages((m) => [...m, reply]);
       if (!open) setUnread((n) => n + 1);
     } catch {
-      setMessages((m) => [...m, { role: "assistant", content: "Erro de rede. Tente novamente." }]);
+      setMessages((m) => [...m, { role: "assistant", content: s.chat.networkError }]);
     } finally {
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 0);
@@ -135,8 +134,7 @@ export function ChatDrawer({
         ...m,
         {
           role: "assistant",
-          content:
-            "Não foi possível acessar o microfone. Por favor, verifique as permissões ou digite sua pergunta.",
+          content: s.chat.micError,
         },
       ]);
     }
@@ -175,16 +173,16 @@ export function ChatDrawer({
                 <span className="text-primary font-extrabold text-sm tracking-tight">b</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-sm">Beeno</div>
+                <div className="font-semibold text-sm">{s.chat.brand}</div>
                 <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                  Online — assistente de ajuda
+                  {s.chat.onlineHelp}
                 </div>
               </div>
               <button
                 onClick={() => setOpen(false)}
                 className="p-1.5 rounded-md hover:bg-muted transition text-muted-foreground hover:text-foreground"
-                aria-label="Fechar chat"
+                aria-label={s.chat.close}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -232,7 +230,7 @@ export function ChatDrawer({
             {/* Quick chips */}
             {messages.length <= 1 && (
               <div className="px-4 pb-2 flex flex-wrap gap-1.5">
-                {QUICK.map((q) => (
+                {s.chat.quick.map((q) => (
                   <button
                     key={q}
                     onClick={() => send(q)}
@@ -253,11 +251,11 @@ export function ChatDrawer({
                   <span className="text-sm font-mono text-red-600 dark:text-red-400 flex-1">
                     {fmtSecs(recordingSecs)}
                   </span>
-                  <span className="text-xs text-red-500 dark:text-red-400">Gravando...</span>
+                  <span className="text-xs text-red-500 dark:text-red-400">{s.chat.recording}</span>
                   <button
                     onClick={stopRecording}
                     className="h-9 w-9 rounded-xl bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition shrink-0"
-                    aria-label="Parar gravação"
+                    aria-label={s.chat.stopRecording}
                   >
                     <Square className="h-3.5 w-3.5 fill-current" />
                   </button>
@@ -275,7 +273,7 @@ export function ChatDrawer({
                       }
                     }}
                     rows={1}
-                    placeholder="Escreva sua pergunta..."
+                    placeholder={s.chat.placeholder}
                     disabled={loading}
                     style={{ resize: "none" }}
                     className="flex-1 px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary max-h-28 transition overflow-auto"
@@ -284,7 +282,7 @@ export function ChatDrawer({
                     onClick={startRecording}
                     disabled={loading}
                     className="h-10 w-10 rounded-xl border border-border bg-background text-muted-foreground flex items-center justify-center hover:bg-muted hover:text-foreground transition disabled:opacity-50 shrink-0"
-                    aria-label="Gravar áudio"
+                    aria-label={s.chat.recordAudio}
                   >
                     <Mic className="h-4 w-4" />
                   </button>
@@ -292,7 +290,7 @@ export function ChatDrawer({
                     onClick={() => send(input)}
                     disabled={loading || !input.trim()}
                     className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:brightness-95 transition disabled:opacity-50 shrink-0"
-                    aria-label="Enviar"
+                    aria-label={s.chat.send}
                   >
                     <Send className="h-4 w-4" />
                   </button>
@@ -308,7 +306,7 @@ export function ChatDrawer({
         onClick={() => setOpen((v) => !v)}
         className={`fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:brightness-95 transition-all duration-200 flex items-center justify-center
           ${open ? "scale-0 opacity-0 pointer-events-none" : "scale-100 opacity-100"}`}
-        aria-label="Abrir assistente Beeno"
+        aria-label={s.chat.openAssistant}
       >
         <MessageCircle className="h-6 w-6" />
         {unread > 0 && (

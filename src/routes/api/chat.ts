@@ -10,7 +10,34 @@ type ChatBody = {
   audio_base64?: string;
   audio_mime?: string;
   history?: ChatMsg[];
+  // Selected UI language, forwarded to the assistant workflow
+  locale?: "pt" | "en" | "es";
 };
+
+const ERROR_STRINGS = {
+  pt: {
+    assistant: (status: number) => `Erro no assistente (${status})`,
+    emptyReply: "Resposta vazia",
+    requiredMessages: "Mensagens obrigatórias",
+    unknown: "Erro desconhecido",
+  },
+  en: {
+    assistant: (status: number) => `Assistant error (${status})`,
+    emptyReply: "Empty response",
+    requiredMessages: "Messages are required",
+    unknown: "Unknown error",
+  },
+  es: {
+    assistant: (status: number) => `Error del asistente (${status})`,
+    emptyReply: "Respuesta vacía",
+    requiredMessages: "Los mensajes son obligatorios",
+    unknown: "Error desconocido",
+  },
+} as const;
+
+function errorStringsFor(locale: ChatBody["locale"]) {
+  return ERROR_STRINGS[locale ?? "pt"] ?? ERROR_STRINGS.pt;
+}
 
 export const Route = createFileRoute("/api/chat")({
   server: {
@@ -18,6 +45,7 @@ export const Route = createFileRoute("/api/chat")({
       POST: async ({ request }) => {
         try {
           const body = (await request.json()) as ChatBody;
+          const t = errorStringsFor(body.locale);
 
           const isAudio = typeof body.audio_base64 === "string" && body.audio_base64.length > 0;
 
@@ -31,17 +59,18 @@ export const Route = createFileRoute("/api/chat")({
                 audio_mime: body.audio_mime || "audio/webm",
                 history: (body.history || []).map((m) => ({ role: m.role, content: m.content })),
                 conversation_id: body.conversation_id || "default",
+                locale: body.locale || "pt",
               }),
             });
 
             if (!res.ok) {
-              return new Response(JSON.stringify({ error: `Erro no assistente (${res.status})` }), { status: 502 });
+              return new Response(JSON.stringify({ error: t.assistant(res.status) }), { status: 502 });
             }
 
             const data = (await res.json()) as { reply?: string; text?: string; error?: string };
             const text = data.reply || data.text || "";
             if (!text) {
-              return new Response(JSON.stringify({ error: data.error || "Resposta vazia" }), { status: 502 });
+              return new Response(JSON.stringify({ error: data.error || t.emptyReply }), { status: 502 });
             }
             return new Response(JSON.stringify({ text }), { headers: { "content-type": "application/json" } });
 
@@ -49,7 +78,7 @@ export const Route = createFileRoute("/api/chat")({
             // Text path
             const messages = Array.isArray(body.messages) ? body.messages : [];
             if (messages.length === 0) {
-              return new Response(JSON.stringify({ error: "Mensagens obrigatórias" }), { status: 400 });
+              return new Response(JSON.stringify({ error: t.requiredMessages }), { status: 400 });
             }
 
             const lastUser = [...messages].reverse().find((m) => m.role === "user");
@@ -62,23 +91,24 @@ export const Route = createFileRoute("/api/chat")({
                 message: lastUser?.content || "",
                 history: history.map((m) => ({ role: m.role, content: m.content })),
                 conversation_id: body.conversation_id || "default",
+                locale: body.locale || "pt",
               }),
             });
 
             if (!res.ok) {
-              return new Response(JSON.stringify({ error: `Erro no assistente (${res.status})` }), { status: 502 });
+              return new Response(JSON.stringify({ error: t.assistant(res.status) }), { status: 502 });
             }
 
             const data = (await res.json()) as { reply?: string; text?: string; error?: string };
             const text = data.reply || data.text || "";
             if (!text) {
-              return new Response(JSON.stringify({ error: data.error || "Resposta vazia" }), { status: 502 });
+              return new Response(JSON.stringify({ error: data.error || t.emptyReply }), { status: 502 });
             }
             return new Response(JSON.stringify({ text }), { headers: { "content-type": "application/json" } });
           }
 
         } catch (err) {
-          const msg = err instanceof Error ? err.message : "Erro desconhecido";
+          const msg = err instanceof Error ? err.message : ERROR_STRINGS.pt.unknown;
           return new Response(JSON.stringify({ error: msg }), { status: 500 });
         }
       },

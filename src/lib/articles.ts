@@ -1,1184 +1,468 @@
+export type Locale = "pt" | "en" | "es";
+
+export type LocalizedString = {
+  pt: string;
+  en: string;
+  es: string;
+};
+
 export type Article = {
   slug: string;
-  title: string;
-  description: string;
+  title: LocalizedString;
+  description: LocalizedString;
   category: string;
-  categoryLabel: string;
+  categoryLabel: LocalizedString;
   icon: string;
-  content: string;
+  content: LocalizedString;
 };
 
 export type Category = {
   key: string;
-  label: string;
-  items: { slug: string; title: string }[];
+  label: LocalizedString;
+  items: { slug: string; title: LocalizedString }[];
 };
 
 export const articles: Article[] = [
-  //  PRIMEIROS PASSOS
   {
     slug: "visao-geral",
-    title: "Visão geral do Beeno",
-    description: "O que é o Beeno CRM, sua estrutura e como começar.",
+    title: { pt: "Visão geral do Beeno", en: "Beeno Overview", es: "Visión general de Beeno" },
+    description: { pt: "O que é o Beeno CRM, sua estrutura e como começar.", en: "What Beeno CRM is, its structure, and how to get started.", es: "Qué es Beeno CRM, su estructura y cómo empezar." },
     category: "primeiros-passos",
-    categoryLabel: "Primeiros passos",
+    categoryLabel: { pt: "Primeiros passos", en: "Getting Started", es: "Primeros pasos" },
     icon: "inicio",
-    content: `## O que é o Beeno
-
-O **Beeno** é um CRM completo desenvolvido pela Skeps para gestão comercial, marketing e atendimento. Centraliza dados de clientes, automatiza processos e integra canais de comunicação em um único lugar.
-
-## Objetos principais
-
-| Objeto | Descrição |
-|--------|-----------|
-| **Contatos** | Leads e clientes, com histórico completo |
-| **Negócios** | Oportunidades de venda organizadas em pipelines |
-| **Empresas** | Organizações associadas a contatos |
-| **Pipelines** | Funis com etapas customizáveis |
-| **Propriedades** | Campos customizados por objeto |
-| **Tarefas** | Atividades e follow-ups do time |
-| **Segmentos** | Grupos filtrados de contatos |
-| **Automações** | Fluxos, chatbots e agentes de IA |`,
+    content: {
+      pt: "## O que é o Beeno\n\nO **Beeno** é um CRM completo desenvolvido pela Skeps para gestão comercial, marketing e atendimento. Centraliza dados de clientes, automatiza processos e integra canais de comunicação em um único lugar.\n\n## Objetos principais\n\n| Objeto | Descrição |\n|--------|-----------|\n| **Contatos** | Leads e clientes, com histórico completo |\n| **Negócios** | Oportunidades de venda organizadas em pipelines |\n| **Empresas** | Organizações associadas a contatos |\n| **Pipelines** | Funis com etapas customizáveis |\n| **Propriedades** | Campos customizados por objeto |\n| **Tarefas** | Atividades e follow-ups do time |\n| **Segmentos** | Grupos filtrados de contatos |\n| **Automações** | Fluxos, chatbots e agentes de IA |",
+      en: "## What Beeno Is\n\n**Beeno** is a complete CRM developed by Skeps for sales, marketing, and customer service management. It centralizes customer data, automates processes, and integrates communication channels in a single place.\n\n## Main Objects\n\n| Object | Description |\n|--------|-----------|\n| **Contacts** | Leads and customers, with complete history |\n| **Deals** | Sales opportunities organized in pipelines |\n| **Companies** | Organizations associated with contacts |\n| **Pipelines** | Funnels with customizable stages |\n| **Properties** | Custom fields per object |\n| **Tasks** | Team activities and follow-ups |\n| **Segments** | Filtered groups of contacts |\n| **Automations** | Flows, chatbots, and AI agents |",
+      es: "## Qué es Beeno\n\n**Beeno** es un CRM completo desarrollado por Skeps para la gestión comercial, de marketing y de atención al cliente. Centraliza los datos de los clientes, automatiza procesos e integra canales de comunicación en un solo lugar.\n\n## Objetos principales\n\n| Objeto | Descripción |\n|--------|-----------|\n| **Contactos** | Leads y clientes, con historial completo |\n| **Negocios** | Oportunidades de venta organizadas en pipelines |\n| **Empresas** | Organizaciones asociadas a contactos |\n| **Pipelines** | Embudos con etapas personalizables |\n| **Propiedades** | Campos personalizados por objeto |\n| **Tareas** | Actividades y seguimientos del equipo |\n| **Segmentos** | Grupos filtrados de contactos |\n| **Automatizaciones** | Flujos, chatbots y agentes de IA |",
+    },
   },
   {
     slug: "glossario",
-    title: "Glossário CRM",
-    description: "Principais termos e conceitos do Beeno CRM.",
+    title: { pt: "Glossário CRM", en: "CRM Glossary", es: "Glosario de CRM" },
+    description: { pt: "Principais termos e conceitos do Beeno CRM.", en: "Key terms and concepts in Beeno CRM.", es: "Principales términos y conceptos de Beeno CRM." },
     category: "primeiros-passos",
-    categoryLabel: "Primeiros passos",
+    categoryLabel: { pt: "Primeiros passos", en: "Getting Started", es: "Primeros pasos" },
     icon: "glossario",
-    content: `## Objetos
-
-Objetos são os tipos de registros no CRM: **Contatos**, **Negócios** e **Empresas**. Cada objeto possui propriedades que armazenam informações específicas.
-
-## Propriedades
-
-Campos que descrevem e armazenam informações sobre cada objeto. Podem ser padrão (nome, e-mail, telefone) ou **customizadas** (criadas pela sua equipe).
-
-## Segmentos
-
-Grupos específicos de contatos filtrados com base em critérios de propriedades. Úteis para campanhas e automações segmentadas.
-
-## Pipeline
-
-Representação visual das etapas do processo de vendas ou qualquer fluxo operacional. Acompanha o progresso de leads desde o primeiro contato até o fechamento.
-
-## Landing Page
-
-Página web criada para capturar leads com foco em uma única ação (CTA). No Beeno, pode ser criada nativamente e integrada ao CRM.
-
-## Lead Score (Pontuação)
-
-Sistema de pontuação que avalia o nível de interesse de um lead com base em suas ações (e-mails abertos, páginas visitadas, formulários preenchidos). Ajuda a priorizar os contatos mais quentes.
-
-## Fluxo de Automação
-
-Sequência automatizada de ações (envio de e-mails, criação de tarefas, movimentação de pipeline) disparadas por eventos ou condições específicas.`,
+    content: {
+      pt: "## Objetos\n\nObjetos são os tipos de registros no CRM: **Contatos**, **Negócios** e **Empresas**. Cada objeto possui propriedades que armazenam informações específicas.\n\n## Propriedades\n\nCampos que descrevem e armazenam informações sobre cada objeto. Podem ser padrão (nome, e-mail, telefone) ou **customizadas** (criadas pela sua equipe).\n\n## Segmentos\n\nGrupos específicos de contatos filtrados com base em critérios de propriedades. Úteis para campanhas e automações segmentadas.\n\n## Pipeline\n\nRepresentação visual das etapas do processo de vendas ou qualquer fluxo operacional. Acompanha o progresso de leads desde o primeiro contato até o fechamento.\n\n## Landing Page\n\nPágina web criada para capturar leads com foco em uma única ação (CTA). No Beeno, pode ser criada nativamente e integrada ao CRM.\n\n## Lead Score (Pontuação)\n\nSistema de pontuação que avalia o nível de interesse de um lead com base em suas ações (e-mails abertos, páginas visitadas, formulários preenchidos). Ajuda a priorizar os contatos mais quentes.\n\n## Fluxo de Automação\n\nSequência automatizada de ações (envio de e-mails, criação de tarefas, movimentação de pipeline) disparadas por eventos ou condições específicas.",
+      en: "## Objects\n\nObjects are the types of records in the CRM: **Contacts**, **Deals**, and **Companies**. Each object has properties that store specific information.\n\n## Properties\n\nFields that describe and store information about each object. They can be standard (name, email, phone) or **custom** (created by your team).\n\n## Segments\n\nSpecific groups of contacts filtered based on property criteria. Useful for targeted campaigns and automations.\n\n## Pipeline\n\nVisual representation of the stages in the sales process or any operational flow. Tracks lead progress from first contact through close.\n\n## Landing Page\n\nA web page created to capture leads with a focus on a single action (CTA). In Beeno, it can be created natively and integrated with the CRM.\n\n## Lead Score\n\nA scoring system that assesses a lead's level of interest based on their actions (emails opened, pages visited, forms submitted). Helps prioritize the hottest contacts.\n\n## Automation Flow\n\nAn automated sequence of actions (sending emails, creating tasks, moving deals through the pipeline) triggered by specific events or conditions.",
+      es: "## Objetos\n\nLos objetos son los tipos de registros en el CRM: **Contactos**, **Negocios** y **Empresas**. Cada objeto tiene propiedades que almacenan información específica.\n\n## Propiedades\n\nCampos que describen y almacenan información sobre cada objeto. Pueden ser estándar (nombre, correo electrónico, teléfono) o **personalizadas** (creadas por tu equipo).\n\n## Segmentos\n\nGrupos específicos de contactos filtrados según criterios de propiedades. Útiles para campañas y automatizaciones segmentadas.\n\n## Pipeline\n\nRepresentación visual de las etapas del proceso de ventas o de cualquier flujo operativo. Permite dar seguimiento al progreso de los leads desde el primer contacto hasta el cierre.\n\n## Landing Page\n\nPágina web creada para capturar leads con foco en una sola acción (CTA). En Beeno, se puede crear de forma nativa e integrarla al CRM.\n\n## Lead Score (Puntuación)\n\nSistema de puntuación que evalúa el nivel de interés de un lead según sus acciones (correos abiertos, páginas visitadas, formularios enviados). Ayuda a priorizar a los contactos más interesados.\n\n## Flujo de Automatización\n\nSecuencia automatizada de acciones (envío de correos, creación de tareas, movimiento en el pipeline) que se activan por eventos o condiciones específicas.",
+    },
   },
   {
     slug: "conta-e-configuracoes",
-    title: "Conta e configurações",
-    description: "Ajustes gerais, moedas, personalização e segurança da conta.",
+    title: { pt: "Conta e configurações", en: "Account and Settings", es: "Cuenta y configuración" },
+    description: { pt: "Ajustes gerais, moedas, personalização e segurança da conta.", en: "General settings, currencies, customization, and account security.", es: "Ajustes generales, monedas, personalización y seguridad de la cuenta." },
     category: "conta-configuracao",
-    categoryLabel: "Conta e Configuração",
+    categoryLabel: { pt: "Conta e Configuração", en: "Account and Settings", es: "Cuenta y Configuración" },
     icon: "config",
-    content: `## Configurações gerais
-
-Acesse **Configurações → Conta** no menu lateral para editar dados gerais da empresa: nome, site, segmento de atuação, idioma padrão e identidade visual usada nos e-mails.
-
-## Moedas (multimoeda)
-
-A aba **Moeda** centraliza a operação com múltiplas moedas no CRM. Nela você adiciona as moedas usadas nos campos de propriedade do tipo moeda, escolhe a **moeda padrão da conta** e define como as taxas de conversão são atualizadas.
-
-- Moedas suportadas: **USD**, **EUR**, **BRL** e **AED**
-- A lista mostra todas as moedas cadastradas, qual é a padrão e a taxa de conversão de cada uma em relação a ela
-
-### Criar uma nova moeda
-
-1. Acesse **Configurações → Conta → Moeda**
-2. Clique em **Criar moeda** e selecione o tipo (USD, EUR, BRL ou AED)
-3. Marque **Definir como moeda padrão da conta**, se for o caso
-
-Quando uma moeda é definida como padrão, todos os campos do tipo moeda passam a usá-la como referência em toda a plataforma, inclusive para o cálculo das taxas das demais moedas.
-
-### Sincronização automática de taxas
-
-Ative a sincronização para que o CRM atualize as taxas de câmbio uma vez ao dia, sempre com base na moeda padrão. O botão **Ver histórico** mostra o registro de todas as atualizações, útil para auditar altas e baixas na cotação ao longo do tempo.
-
-### Ajuste manual (taxa fixa)
-
-Clique diretamente no valor da taxa de conversão na tabela para travá-la manualmente. Isso é útil quando existe um câmbio acordado em contrato. Se a conversão automática estiver ativa e alguém fizer um ajuste manual, o CRM sinaliza a moeda na listagem como "ajustada manualmente". Para retomar a atualização automática, use **Mais ações → Reativar sincronização**.
-
-> **Dica**: use conversão automática para relatórios e pipelines internacionais que precisam de valores sempre atualizados; use taxa fixa quando houver um câmbio contratual acordado.
-
-## Domínios
-
-Para enviar e-mails com domínio próprio e publicar landing pages personalizadas, configure o apontamento DNS em **Marketing → Domínios**. Veja o passo a passo completo no artigo [Domínios](#).
-
-## Segurança
-
-- **2FA**: recomendamos ativar a autenticação de dois fatores para todos os administradores (veja em [Usuários e permissões](#))
-- **Chaves de integração**: gere e revogue em **Configurações → Integrações → Chaves de integração** (veja em [Webhooks e Integrações](#))
-- **Revisão periódica**: revogue chaves não utilizadas regularmente
-- **Logs de acesso**: acompanhe acessos suspeitos em Configurações → Segurança
-
-## Notificações
-
-Configure quais eventos geram notificações por e-mail ou dentro da plataforma em **Configurações → Notificações**.`,
+    content: {
+      pt: "## Configurações gerais\n\nAcesse **Configurações → Conta** no menu lateral para editar dados gerais da empresa: nome, site, segmento de atuação, idioma padrão e identidade visual usada nos e-mails.\n\n## Moedas (multimoeda)\n\nA aba **Moeda** centraliza a operação com múltiplas moedas no CRM. Nela você adiciona as moedas usadas nos campos de propriedade do tipo moeda, escolhe a **moeda padrão da conta** e define como as taxas de conversão são atualizadas.\n\n- Moedas suportadas: **USD**, **EUR**, **BRL** e **AED**\n- A lista mostra todas as moedas cadastradas, qual é a padrão e a taxa de conversão de cada uma em relação a ela\n\n### Criar uma nova moeda\n\n1. Acesse **Configurações → Conta → Moeda**\n2. Clique em **Criar moeda** e selecione o tipo (USD, EUR, BRL ou AED)\n3. Marque **Definir como moeda padrão da conta**, se for o caso\n\nQuando uma moeda é definida como padrão, todos os campos do tipo moeda passam a usá-la como referência em toda a plataforma, inclusive para o cálculo das taxas das demais moedas.\n\n### Sincronização automática de taxas\n\nAtive a sincronização para que o CRM atualize as taxas de câmbio uma vez ao dia, sempre com base na moeda padrão. O botão **Ver histórico** mostra o registro de todas as atualizações, útil para auditar altas e baixas na cotação ao longo do tempo.\n\n### Ajuste manual (taxa fixa)\n\nClique diretamente no valor da taxa de conversão na tabela para travá-la manualmente. Isso é útil quando existe um câmbio acordado em contrato. Se a conversão automática estiver ativa e alguém fizer um ajuste manual, o CRM sinaliza a moeda na listagem como \"ajustada manualmente\". Para retomar a atualização automática, use **Mais ações → Reativar sincronização**.\n\n> **Dica**: use conversão automática para relatórios e pipelines internacionais que precisam de valores sempre atualizados; use taxa fixa quando houver um câmbio contratual acordado.\n\n## Domínios\n\nPara enviar e-mails com domínio próprio e publicar landing pages personalizadas, configure o apontamento DNS em **Marketing → Domínios**. Veja o passo a passo completo no artigo [Domínios](#).\n\n## Segurança\n\n- **2FA**: recomendamos ativar a autenticação de dois fatores para todos os administradores (veja em [Usuários e permissões](#))\n- **Chaves de integração**: gere e revogue em **Configurações → Integrações → Chaves de integração** (veja em [Webhooks e Integrações](#))\n- **Revisão periódica**: revogue chaves não utilizadas regularmente\n- **Logs de acesso**: acompanhe acessos suspeitos em Configurações → Segurança\n\n## Notificações\n\nConfigure quais eventos geram notificações por e-mail ou dentro da plataforma em **Configurações → Notificações**.",
+      en: "## General Settings\n\nGo to **Settings → Account** in the side menu to edit general company details: name, website, industry, default language, and the visual identity used in emails.\n\n## Currencies (Multi-Currency)\n\nThe **Currency** tab centralizes multi-currency operations in the CRM. Here you add the currencies used in currency-type property fields, choose the **account's default currency**, and set how conversion rates are updated.\n\n- Supported currencies: **USD**, **EUR**, **BRL**, and **AED**\n- The list shows all registered currencies, which one is the default, and each one's conversion rate relative to it\n\n### Creating a New Currency\n\n1. Go to **Settings → Account → Currency**\n2. Click **Create currency** and select the type (USD, EUR, BRL, or AED)\n3. Check **Set as account default currency**, if applicable\n\nWhen a currency is set as the default, all currency-type fields use it as the reference across the entire platform, including for calculating the rates of the other currencies.\n\n### Automatic Rate Sync\n\nTurn on syncing so the CRM updates exchange rates once a day, always based on the default currency. The **View history** button shows a record of all updates, useful for auditing rate increases and decreases over time.\n\n### Manual Adjustment (Fixed Rate)\n\nClick directly on the conversion rate value in the table to lock it manually. This is useful when there's an exchange rate agreed upon in a contract. If automatic conversion is active and someone makes a manual adjustment, the CRM flags the currency in the list as \"manually adjusted.\" To resume automatic updates, use **More actions → Reactivate sync**.\n\n> **Tip**: use automatic conversion for reports and international pipelines that need values to always be up to date; use a fixed rate when there's an agreed contractual exchange rate.\n\n## Domains\n\nTo send emails from your own domain and publish custom landing pages, set up the DNS pointing in **Marketing → Domains**. See the full step-by-step guide in the [Domains](#) article.\n\n## Security\n\n- **2FA**: we recommend enabling two-factor authentication for all administrators (see [Users and Permissions](#))\n- **Integration keys**: generate and revoke them in **Settings → Integrations → Integration Keys** (see [Webhooks and Integrations](#))\n- **Periodic review**: revoke unused keys regularly\n- **Access logs**: monitor suspicious access in Settings → Security\n\n## Notifications\n\nConfigure which events generate email or in-platform notifications in **Settings → Notifications**.",
+      es: "## Configuración general\n\nIngresa a **Configuración → Cuenta** en el menú lateral para editar los datos generales de la empresa: nombre, sitio web, sector de actividad, idioma predeterminado e identidad visual usada en los correos electrónicos.\n\n## Monedas (multimoneda)\n\nLa pestaña **Moneda** centraliza la operación con múltiples monedas en el CRM. Ahí puedes agregar las monedas usadas en los campos de propiedad de tipo moneda, elegir la **moneda predeterminada de la cuenta** y definir cómo se actualizan las tasas de conversión.\n\n- Monedas admitidas: **USD**, **EUR**, **BRL** y **AED**\n- La lista muestra todas las monedas registradas, cuál es la predeterminada y la tasa de conversión de cada una respecto a ella\n\n### Crear una nueva moneda\n\n1. Ingresa a **Configuración → Cuenta → Moneda**\n2. Haz clic en **Crear moneda** y selecciona el tipo (USD, EUR, BRL o AED)\n3. Marca **Definir como moneda predeterminada de la cuenta**, si corresponde\n\nCuando una moneda se define como predeterminada, todos los campos de tipo moneda pasan a usarla como referencia en toda la plataforma, incluso para calcular las tasas de las demás monedas.\n\n### Sincronización automática de tasas\n\nActiva la sincronización para que el CRM actualice las tasas de cambio una vez al día, siempre con base en la moneda predeterminada. El botón **Ver historial** muestra el registro de todas las actualizaciones, útil para auditar subidas y bajadas en la cotización a lo largo del tiempo.\n\n### Ajuste manual (tasa fija)\n\nHaz clic directamente en el valor de la tasa de conversión en la tabla para fijarla manualmente. Esto es útil cuando existe un tipo de cambio acordado en un contrato. Si la conversión automática está activa y alguien hace un ajuste manual, el CRM marca la moneda en el listado como \"ajustada manualmente\". Para reanudar la actualización automática, usa **Más acciones → Reactivar sincronización**.\n\n> **Consejo**: usa la conversión automática para reportes y pipelines internacionales que necesitan valores siempre actualizados; usa una tasa fija cuando exista un tipo de cambio contractual acordado.\n\n## Dominios\n\nPara enviar correos con dominio propio y publicar landing pages personalizadas, configura el apuntamiento DNS en **Marketing → Dominios**. Consulta la guía completa paso a paso en el artículo [Dominios](#).\n\n## Seguridad\n\n- **2FA**: recomendamos activar la autenticación de dos factores para todos los administradores (consulta [Usuarios y permisos](#))\n- **Claves de integración**: genéralas y revócalas en **Configuración → Integraciones → Claves de integración** (consulta [Webhooks e integraciones](#))\n- **Revisión periódica**: revoca las claves no utilizadas con regularidad\n- **Registros de acceso**: monitorea accesos sospechosos en Configuración → Seguridad\n\n## Notificaciones\n\nConfigura qué eventos generan notificaciones por correo o dentro de la plataforma en **Configuración → Notificaciones**.",
+    },
   },
   {
     slug: "usuarios-permissoes",
-    title: "Usuários e permissões",
-    description: "Convide usuários, configure papéis, equipes e 2FA.",
+    title: { pt: "Usuários e permissões", en: "Users and Permissions", es: "Usuarios y permisos" },
+    description: { pt: "Convide usuários, configure papéis, equipes e 2FA.", en: "Invite users, configure roles, teams, and 2FA.", es: "Invita usuarios, configura roles, equipos y 2FA." },
     category: "conta-configuracao",
-    categoryLabel: "Conta e Configuração",
+    categoryLabel: { pt: "Conta e Configuração", en: "Account and Settings", es: "Cuenta y Configuración" },
     icon: "usuarios",
-    content: `## Convidando usuários
-
-1. Acesse **Configurações → Usuários**
-2. Clique em **Convidar usuário**
-3. Informe o e-mail e selecione o papel (Admin, Gerente, Operador)
-4. O usuário receberá um e-mail com link de acesso
-
-## Papéis disponíveis
-
-| Papel | Descrição |
-|-------|-----------|
-| **Admin** | Acesso total, incluindo configurações e faturamento |
-| **Gerente** | Visualiza todos os dados, sem acesso a configurações críticas |
-| **Operador** | Acesso restrito ao pipeline e contatos definidos |
-
-## Permissões
-
-Além dos papéis padrão, o Beeno permite configurar o acesso de cada usuário com dois níveis de controle:
-
-- **Permissão personalizada**: define exatamente o que um usuário específico pode ver, fazer ou editar em cada módulo (contatos, negócios, empresas, relatórios etc.)
-- **Grupo de permissões**: cria um perfil de acesso reutilizável para várias pessoas com a mesma função. Ideal quando várias pessoas do time precisam do mesmo nível de acesso
-
-Para criar um grupo de permissões:
-1. Acesse **Configurações → Usuários → Grupos de Permissão**
-2. Crie um grupo com nome descritivo (ex.: "SDR", "Gerente Comercial")
-3. Defina permissões por módulo (visualizar, editar, deletar)
-4. Atribua usuários ao grupo
-
-## Equipes
-
-Agrupe usuários em equipes para segmentar acessos, visualizações e distribuir leads automaticamente:
-
-1. Acesse **Configurações → Usuários → Equipes**
-2. Clique em **+ Nova equipe** e dê um nome (ex.: "Vendas SP")
-3. Adicione os membros clicando em **+ Adicionar membro**
-
-## Autenticação de dois fatores (2FA)
-
-Cada usuário pode ativar 2FA em **Perfil → Segurança → Ativar 2FA**, usando um app autenticador (Google Authenticator, Authy). Recomendado para todos os administradores da conta.`,
+    content: {
+      pt: "## Convidando usuários\n\n1. Acesse **Configurações → Usuários**\n2. Clique em **Convidar usuário**\n3. Informe o e-mail e selecione o papel (Admin, Gerente, Operador)\n4. O usuário receberá um e-mail com link de acesso\n\n## Papéis disponíveis\n\n| Papel | Descrição |\n|-------|-----------|\n| **Admin** | Acesso total, incluindo configurações e faturamento |\n| **Gerente** | Visualiza todos os dados, sem acesso a configurações críticas |\n| **Operador** | Acesso restrito ao pipeline e contatos definidos |\n\n## Permissões\n\nAlém dos papéis padrão, o Beeno permite configurar o acesso de cada usuário com dois níveis de controle:\n\n- **Permissão personalizada**: define exatamente o que um usuário específico pode ver, fazer ou editar em cada módulo (contatos, negócios, empresas, relatórios etc.)\n- **Grupo de permissões**: cria um perfil de acesso reutilizável para várias pessoas com a mesma função. Ideal quando várias pessoas do time precisam do mesmo nível de acesso\n\nPara criar um grupo de permissões:\n1. Acesse **Configurações → Usuários → Grupos de Permissão**\n2. Crie um grupo com nome descritivo (ex.: \"SDR\", \"Gerente Comercial\")\n3. Defina permissões por módulo (visualizar, editar, deletar)\n4. Atribua usuários ao grupo\n\n## Equipes\n\nAgrupe usuários em equipes para segmentar acessos, visualizações e distribuir leads automaticamente:\n\n1. Acesse **Configurações → Usuários → Equipes**\n2. Clique em **+ Nova equipe** e dê um nome (ex.: \"Vendas SP\")\n3. Adicione os membros clicando em **+ Adicionar membro**\n\n## Autenticação de dois fatores (2FA)\n\nCada usuário pode ativar 2FA em **Perfil → Segurança → Ativar 2FA**, usando um app autenticador (Google Authenticator, Authy). Recomendado para todos os administradores da conta.",
+      en: "## Inviting Users\n\n1. Go to **Settings → Users**\n2. Click **Invite user**\n3. Enter the email address and select the role (Admin, Manager, Operator)\n4. The user will receive an email with an access link\n\n## Available Roles\n\n| Role | Description |\n|-------|-----------|\n| **Admin** | Full access, including settings and billing |\n| **Manager** | Views all data, without access to critical settings |\n| **Operator** | Restricted access to defined pipelines and contacts |\n\n## Permissions\n\nIn addition to the standard roles, Beeno lets you configure each user's access with two levels of control:\n\n- **Custom permission**: defines exactly what a specific user can view, do, or edit in each module (contacts, deals, companies, reports, etc.)\n- **Permission group**: creates a reusable access profile for multiple people with the same role. Ideal when several people on the team need the same level of access\n\nTo create a permission group:\n1. Go to **Settings → Users → Permission Groups**\n2. Create a group with a descriptive name (e.g., \"SDR\", \"Sales Manager\")\n3. Set permissions by module (view, edit, delete)\n4. Assign users to the group\n\n## Teams\n\nGroup users into teams to segment access, views, and automatically distribute leads:\n\n1. Go to **Settings → Users → Teams**\n2. Click **+ New team** and give it a name (e.g., \"Sales SP\")\n3. Add members by clicking **+ Add member**\n\n## Two-Factor Authentication (2FA)\n\nEach user can enable 2FA under **Profile → Security → Enable 2FA**, using an authenticator app (Google Authenticator, Authy). Recommended for all account administrators.",
+      es: "## Invitar usuarios\n\n1. Ingresa a **Configuración → Usuarios**\n2. Haz clic en **Invitar usuario**\n3. Ingresa el correo electrónico y selecciona el rol (Admin, Gerente, Operador)\n4. El usuario recibirá un correo con un enlace de acceso\n\n## Roles disponibles\n\n| Rol | Descripción |\n|-------|-----------|\n| **Admin** | Acceso total, incluida la configuración y la facturación |\n| **Gerente** | Visualiza todos los datos, sin acceso a configuraciones críticas |\n| **Operador** | Acceso restringido al pipeline y a los contactos definidos |\n\n## Permisos\n\nAdemás de los roles predeterminados, Beeno permite configurar el acceso de cada usuario con dos niveles de control:\n\n- **Permiso personalizado**: define exactamente qué puede ver, hacer o editar un usuario específico en cada módulo (contactos, negocios, empresas, reportes, etc.)\n- **Grupo de permisos**: crea un perfil de acceso reutilizable para varias personas con la misma función. Ideal cuando varias personas del equipo necesitan el mismo nivel de acceso\n\nPara crear un grupo de permisos:\n1. Ingresa a **Configuración → Usuarios → Grupos de Permisos**\n2. Crea un grupo con un nombre descriptivo (ej.: \"SDR\", \"Gerente Comercial\")\n3. Define permisos por módulo (ver, editar, eliminar)\n4. Asigna usuarios al grupo\n\n## Equipos\n\nAgrupa usuarios en equipos para segmentar accesos, vistas y distribuir leads automáticamente:\n\n1. Ingresa a **Configuración → Usuarios → Equipos**\n2. Haz clic en **+ Nuevo equipo** y asígnale un nombre (ej.: \"Ventas SP\")\n3. Agrega miembros haciendo clic en **+ Agregar miembro**\n\n## Autenticación de dos factores (2FA)\n\nCada usuario puede activar el 2FA en **Perfil → Seguridad → Activar 2FA**, usando una app autenticadora (Google Authenticator, Authy). Se recomienda para todos los administradores de la cuenta.",
+    },
   },
-
-  //  CRM
   {
     slug: "contatos",
-    title: "Contatos",
-    description: "Crie, busque, atualize e gerencie contatos no CRM.",
+    title: { pt: "Contatos", en: "Contacts", es: "Contactos" },
+    description: { pt: "Crie, busque, atualize e gerencie contatos no CRM.", en: "Create, search, update, and manage contacts in the CRM.", es: "Crea, busca, actualiza y gestiona contactos en el CRM." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "contato",
-    content: `## O que são contatos
-
-A área de Contatos é onde todas as informações relevantes sobre seus leads e clientes ficam armazenadas centralmente: dados de contato, histórico de interações, negociações anteriores, preferências e demais informações pertinentes. Isso permite que sua equipe gerencie e cultive relacionamentos, acompanhe a comunicação, defina lembretes de follow-up e personalize cada interação.
-
-## Criando um contato
-
-1. Acesse **CRM → Contatos**
-2. Clique em **+ Novo contato**
-3. Preencha as propriedades definidas para o cadastro (nome, e-mail, telefone e demais campos)
-4. Clique em **Salvar**
-
-## Buscando um contato
-
-Use a barra de busca no topo da lista de contatos para encontrar por nome, e-mail ou telefone. Para critérios mais específicos, use os filtros avançados da lista, por exemplo, buscar todos os contatos de um estado ou de um proprietário específico.
-
-## Ações em massa
-
-É possível selecionar vários contatos na listagem e excluí-los ou editar uma propriedade em todos de uma só vez. Também é possível selecionar um ou vários contatos e inscrevê-los em um fluxo de automação já existente diretamente pela listagem, ou inscrever um contato específico pelo próprio registro dele.
-
-## Registro e associações
-
-Na Timeline do contato (Atividades Recentes), todas as ações realizadas nele ou relacionadas a ele ficam registradas, facilitando o histórico e o acompanhamento das informações mais importantes. Você pode expandir cada atividade para ver detalhes ou recolher para visualizar só um resumo.
-
-Um contato pode ser associado a outros objetos para uma gestão mais completa:
-- **Negócios**: acompanhe todas as oportunidades de venda relacionadas a esse contato
-- **Empresas**: mantenha o contexto organizacional, vendo interações e negócios da empresa em que o contato trabalha
-- **Tarefas**: associe follow-ups, ligações, e-mails e reuniões relacionados ao contato
-- **Anexos**: acesse documentos importantes, como contratos e propostas, direto do registro
-
-## Ações em contatos
-
-Na interface, acesse um contato para:
-- Adicionar notas (geral, e-mail, ligação, reunião)
-- Criar tarefas e follow-ups
-- Enviar e-mail
-- Associar a negócios e empresas
-- Adicionar etiquetas
-
-## Exportar contatos
-
-Aplique os filtros desejados na listagem e clique em **Exportar**. O CRM gera um arquivo em CSV, que pode ser convertido em Excel.
-
-## Cadastro em lote
-
-Para cadastrar vários contatos de uma vez, use a opção **Importar** na tela de Contatos e envie uma planilha. Veja o artigo de Importação de dados para o passo a passo completo.`,
+    content: {
+      pt: "## O que são contatos\n\nA área de Contatos é onde todas as informações relevantes sobre seus leads e clientes ficam armazenadas centralmente: dados de contato, histórico de interações, negociações anteriores, preferências e demais informações pertinentes. Isso permite que sua equipe gerencie e cultive relacionamentos, acompanhe a comunicação, defina lembretes de follow-up e personalize cada interação.\n\n## Criando um contato\n\n1. Acesse **CRM → Contatos**\n2. Clique em **+ Novo contato**\n3. Preencha as propriedades definidas para o cadastro (nome, e-mail, telefone e demais campos)\n4. Clique em **Salvar**\n\n## Buscando um contato\n\nUse a barra de busca no topo da lista de contatos para encontrar por nome, e-mail ou telefone. Para critérios mais específicos, use os filtros avançados da lista, por exemplo, buscar todos os contatos de um estado ou de um proprietário específico.\n\n## Ações em massa\n\nÉ possível selecionar vários contatos na listagem e excluí-los ou editar uma propriedade em todos de uma só vez. Também é possível selecionar um ou vários contatos e inscrevê-los em um fluxo de automação já existente diretamente pela listagem, ou inscrever um contato específico pelo próprio registro dele.\n\n## Registro e associações\n\nNa Timeline do contato (Atividades Recentes), todas as ações realizadas nele ou relacionadas a ele ficam registradas, facilitando o histórico e o acompanhamento das informações mais importantes. Você pode expandir cada atividade para ver detalhes ou recolher para visualizar só um resumo.\n\nUm contato pode ser associado a outros objetos para uma gestão mais completa:\n- **Negócios**: acompanhe todas as oportunidades de venda relacionadas a esse contato\n- **Empresas**: mantenha o contexto organizacional, vendo interações e negócios da empresa em que o contato trabalha\n- **Tarefas**: associe follow-ups, ligações, e-mails e reuniões relacionados ao contato\n- **Anexos**: acesse documentos importantes, como contratos e propostas, direto do registro\n\n## Ações em contatos\n\nNa interface, acesse um contato para:\n- Adicionar notas (geral, e-mail, ligação, reunião)\n- Criar tarefas e follow-ups\n- Enviar e-mail\n- Associar a negócios e empresas\n- Adicionar etiquetas\n\n## Exportar contatos\n\nAplique os filtros desejados na listagem e clique em **Exportar**. O CRM gera um arquivo em CSV, que pode ser convertido em Excel.\n\n## Cadastro em lote\n\nPara cadastrar vários contatos de uma vez, use a opção **Importar** na tela de Contatos e envie uma planilha. Veja o artigo de Importação de dados para o passo a passo completo.",
+      en: "## What Contacts Are\n\nThe Contacts area is where all relevant information about your leads and customers is centrally stored: contact details, interaction history, past deals, preferences, and other pertinent information. This lets your team manage and nurture relationships, track communication, set follow-up reminders, and personalize every interaction.\n\n## Creating a Contact\n\n1. Go to **CRM → Contacts**\n2. Click **+ New contact**\n3. Fill in the properties defined for the record (name, email, phone, and other fields)\n4. Click **Save**\n\n## Searching for a Contact\n\nUse the search bar at the top of the contacts list to find someone by name, email, or phone. For more specific criteria, use the list's advanced filters, for example, to find all contacts from a given state or a specific owner.\n\n## Bulk Actions\n\nYou can select multiple contacts in the list and delete them or edit a property on all of them at once. You can also select one or several contacts and enroll them in an existing automation flow directly from the list, or enroll a specific contact from their own record.\n\n## Record and Associations\n\nIn the contact's Timeline (Recent Activities), every action taken on or related to the contact is logged, making it easier to track history and follow the most important information. You can expand each activity to see details or collapse it to view just a summary.\n\nA contact can be associated with other objects for more complete management:\n- **Deals**: track all sales opportunities related to this contact\n- **Companies**: keep the organizational context, seeing interactions and deals for the company the contact works at\n- **Tasks**: link follow-ups, calls, emails, and meetings related to the contact\n- **Attachments**: access important documents, such as contracts and proposals, directly from the record\n\n## Actions on Contacts\n\nFrom the interface, open a contact to:\n- Add notes (general, email, call, meeting)\n- Create tasks and follow-ups\n- Send an email\n- Associate with deals and companies\n- Add tags\n\n## Exporting Contacts\n\nApply the desired filters to the list and click **Export**. The CRM generates a CSV file, which can be converted to Excel.\n\n## Bulk Import\n\nTo register multiple contacts at once, use the **Import** option on the Contacts screen and upload a spreadsheet. See the data import article for the complete step-by-step guide.",
+      es: "## Qué son los contactos\n\nEl área de Contactos es donde se almacena de forma centralizada toda la información relevante sobre tus leads y clientes: datos de contacto, historial de interacciones, negociaciones anteriores, preferencias y demás información pertinente. Esto permite que tu equipo gestione y cultive relaciones, dé seguimiento a la comunicación, defina recordatorios de seguimiento y personalice cada interacción.\n\n## Crear un contacto\n\n1. Ingresa a **CRM → Contactos**\n2. Haz clic en **+ Nuevo contacto**\n3. Completa las propiedades definidas para el registro (nombre, correo electrónico, teléfono y demás campos)\n4. Haz clic en **Guardar**\n\n## Buscar un contacto\n\nUsa la barra de búsqueda en la parte superior de la lista de contactos para encontrar por nombre, correo electrónico o teléfono. Para criterios más específicos, usa los filtros avanzados de la lista, por ejemplo, para buscar todos los contactos de un estado o de un propietario específico.\n\n## Acciones masivas\n\nPuedes seleccionar varios contactos en el listado y eliminarlos o editar una propiedad en todos a la vez. También puedes seleccionar uno o varios contactos e inscribirlos en un flujo de automatización ya existente directamente desde el listado, o inscribir un contacto específico desde su propio registro.\n\n## Registro y asociaciones\n\nEn la Línea de tiempo del contacto (Actividades recientes), quedan registradas todas las acciones realizadas en él o relacionadas con él, lo que facilita el historial y el seguimiento de la información más importante. Puedes expandir cada actividad para ver los detalles o contraerla para ver solo un resumen.\n\nUn contacto puede asociarse a otros objetos para una gestión más completa:\n- **Negocios**: da seguimiento a todas las oportunidades de venta relacionadas con este contacto\n- **Empresas**: mantén el contexto organizacional, viendo interacciones y negocios de la empresa en la que trabaja el contacto\n- **Tareas**: asocia seguimientos, llamadas, correos y reuniones relacionados con el contacto\n- **Adjuntos**: accede a documentos importantes, como contratos y propuestas, directamente desde el registro\n\n## Acciones en contactos\n\nEn la interfaz, ingresa a un contacto para:\n- Agregar notas (general, correo, llamada, reunión)\n- Crear tareas y seguimientos\n- Enviar un correo electrónico\n- Asociar a negocios y empresas\n- Agregar etiquetas\n\n## Exportar contactos\n\nAplica los filtros deseados en el listado y haz clic en **Exportar**. El CRM genera un archivo CSV, que se puede convertir a Excel.\n\n## Registro por lotes\n\nPara registrar varios contactos a la vez, usa la opción **Importar** en la pantalla de Contactos y sube una hoja de cálculo. Consulta el artículo de Importación de datos para ver la guía completa paso a paso.",
+    },
   },
   {
     slug: "negocios",
-    title: "Negócios",
-    description: "Gerencie oportunidades de venda em pipelines.",
+    title: { pt: "Negócios", en: "Deals", es: "Negocios" },
+    description: { pt: "Gerencie oportunidades de venda em pipelines.", en: "Manage sales opportunities in pipelines.", es: "Gestiona oportunidades de venta en pipelines." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "negocio",
-    content: `## O que são negócios
-
-Um negócio representa uma oportunidade ou transação que sua empresa acompanha: seja para vendas, suporte, pós-venda, implantação ou qualquer outro processo com etapas sequenciais. Já o pipeline (funil) é a estrutura onde esses negócios são organizados e visualizados por estágio, facilitando o monitoramento do progresso de cada oportunidade.
-
-A vantagem de ter pipelines personalizados é que você pode adaptar as etapas para diferentes fluxos (comercial, onboarding de clientes, renovação de contratos e outros), permitindo que cada equipe acompanhe suas próprias atividades com clareza.
-
-## Criando um negócio
-
-1. Acesse o pipeline desejado em **CRM → Negócios**
-2. Clique em **+ Novo negócio** na etapa inicial
-3. Preencha nome, valor, responsável e associe contatos ou empresas relacionadas
-
-## Movendo de etapa
-
-Arraste o card do negócio para a etapa desejada no quadro Kanban, ou abra o negócio e altere a etapa diretamente no campo correspondente.
-
-## Buscando e filtrando negócios
-
-A listagem de negócios traz a visão geral de todas as oportunidades em andamento, com opção de personalizar quais campos aparecem e a ordem das colunas. Alguns filtros úteis:
-- **Contatos associados**: negócios relacionados a um contato específico
-- **Empresa associada**: oportunidades vinculadas a uma empresa
-- **Proprietário**: agrupa negócios por responsável
-- **Data de fechamento / criação**: prioriza por prazo ou analisa o histórico do funil
-- **Filtros avançados**: combine pipeline, etapa e propriedades personalizadas
-
-## Associando produtos
-
-Abra o negócio, acesse a seção de produtos e clique em **+ Adicionar produto** para vincular itens do catálogo, com quantidade e desconto.
-
-## Visão Kanban
-
-O Kanban exibe os negócios em colunas por etapa. Configure quais propriedades aparecem nos cards em **Configurações → Pipelines → Personalização do Kanban**.
-
-## Colaboração
-
-Adicione colaboradores a um negócio para compartilhar visibilidade sem transferir a propriedade. Acesse o negócio e clique em **+ Colaborador**.
-
-## Cadastro em lote
-
-Para criar vários negócios de uma vez, use a opção **Importar** na tela de Negócios. Veja o artigo de Importação de dados para o passo a passo completo.`,
+    content: {
+      pt: "## O que são negócios\n\nUm negócio representa uma oportunidade ou transação que sua empresa acompanha: seja para vendas, suporte, pós-venda, implantação ou qualquer outro processo com etapas sequenciais. Já o pipeline (funil) é a estrutura onde esses negócios são organizados e visualizados por estágio, facilitando o monitoramento do progresso de cada oportunidade.\n\nA vantagem de ter pipelines personalizados é que você pode adaptar as etapas para diferentes fluxos (comercial, onboarding de clientes, renovação de contratos e outros), permitindo que cada equipe acompanhe suas próprias atividades com clareza.\n\n## Criando um negócio\n\n1. Acesse o pipeline desejado em **CRM → Negócios**\n2. Clique em **+ Novo negócio** na etapa inicial\n3. Preencha nome, valor, responsável e associe contatos ou empresas relacionadas\n\n## Movendo de etapa\n\nArraste o card do negócio para a etapa desejada no quadro Kanban, ou abra o negócio e altere a etapa diretamente no campo correspondente.\n\n## Buscando e filtrando negócios\n\nA listagem de negócios traz a visão geral de todas as oportunidades em andamento, com opção de personalizar quais campos aparecem e a ordem das colunas. Alguns filtros úteis:\n- **Contatos associados**: negócios relacionados a um contato específico\n- **Empresa associada**: oportunidades vinculadas a uma empresa\n- **Proprietário**: agrupa negócios por responsável\n- **Data de fechamento / criação**: prioriza por prazo ou analisa o histórico do funil\n- **Filtros avançados**: combine pipeline, etapa e propriedades personalizadas\n\n## Associando produtos\n\nAbra o negócio, acesse a seção de produtos e clique em **+ Adicionar produto** para vincular itens do catálogo, com quantidade e desconto.\n\n## Visão Kanban\n\nO Kanban exibe os negócios em colunas por etapa. Configure quais propriedades aparecem nos cards em **Configurações → Pipelines → Personalização do Kanban**.\n\n## Colaboração\n\nAdicione colaboradores a um negócio para compartilhar visibilidade sem transferir a propriedade. Acesse o negócio e clique em **+ Colaborador**.\n\n## Cadastro em lote\n\nPara criar vários negócios de uma vez, use a opção **Importar** na tela de Negócios. Veja o artigo de Importação de dados para o passo a passo completo.",
+      en: "## What Deals Are\n\nA deal represents an opportunity or transaction that your company tracks: whether for sales, support, post-sale, implementation, or any other process with sequential stages. The pipeline (funnel), in turn, is the structure where these deals are organized and viewed by stage, making it easier to monitor each opportunity's progress.\n\nThe advantage of having custom pipelines is that you can adapt the stages to different flows (sales, customer onboarding, contract renewal, and others), letting each team track its own activities with clarity.\n\n## Creating a Deal\n\n1. Go to the desired pipeline under **CRM → Deals**\n2. Click **+ New deal** at the initial stage\n3. Fill in the name, value, and owner, and associate related contacts or companies\n\n## Moving Between Stages\n\nDrag the deal's card to the desired stage on the Kanban board, or open the deal and change the stage directly in the corresponding field.\n\n## Searching and Filtering Deals\n\nThe deals list provides an overview of all opportunities in progress, with the option to customize which fields appear and the column order. Some useful filters:\n- **Associated contacts**: deals related to a specific contact\n- **Associated company**: opportunities linked to a company\n- **Owner**: groups deals by owner\n- **Close / creation date**: prioritize by deadline or analyze the pipeline's history\n- **Advanced filters**: combine pipeline, stage, and custom properties\n\n## Associating Products\n\nOpen the deal, go to the products section, and click **+ Add product** to link catalog items, with quantity and discount.\n\n## Kanban View\n\nThe Kanban board displays deals in columns by stage. Configure which properties appear on the cards in **Settings → Pipelines → Kanban Customization**.\n\n## Collaboration\n\nAdd collaborators to a deal to share visibility without transferring ownership. Open the deal and click **+ Collaborator**.\n\n## Bulk Import\n\nTo create multiple deals at once, use the **Import** option on the Deals screen. See the data import article for the complete step-by-step guide.",
+      es: "## Qué son los negocios\n\nUn negocio representa una oportunidad o transacción que tu empresa da seguimiento: ya sea para ventas, soporte, posventa, implementación o cualquier otro proceso con etapas secuenciales. El pipeline (embudo), por su parte, es la estructura donde esos negocios se organizan y visualizan por etapa, lo que facilita monitorear el progreso de cada oportunidad.\n\nLa ventaja de contar con pipelines personalizados es que puedes adaptar las etapas a diferentes flujos (comercial, onboarding de clientes, renovación de contratos y otros), permitiendo que cada equipo dé seguimiento a sus propias actividades con claridad.\n\n## Crear un negocio\n\n1. Ingresa al pipeline deseado en **CRM → Negocios**\n2. Haz clic en **+ Nuevo negocio** en la etapa inicial\n3. Completa el nombre, el valor, el responsable y asocia los contactos o empresas relacionados\n\n## Mover de etapa\n\nArrastra la tarjeta del negocio a la etapa deseada en el tablero Kanban, o abre el negocio y cambia la etapa directamente en el campo correspondiente.\n\n## Buscar y filtrar negocios\n\nEl listado de negocios ofrece una visión general de todas las oportunidades en curso, con la opción de personalizar qué campos aparecen y el orden de las columnas. Algunos filtros útiles:\n- **Contactos asociados**: negocios relacionados con un contacto específico\n- **Empresa asociada**: oportunidades vinculadas a una empresa\n- **Propietario**: agrupa negocios por responsable\n- **Fecha de cierre / creación**: prioriza por plazo o analiza el historial del embudo\n- **Filtros avanzados**: combina pipeline, etapa y propiedades personalizadas\n\n## Asociar productos\n\nAbre el negocio, accede a la sección de productos y haz clic en **+ Agregar producto** para vincular artículos del catálogo, con cantidad y descuento.\n\n## Vista Kanban\n\nEl Kanban muestra los negocios en columnas por etapa. Configura qué propiedades aparecen en las tarjetas en **Configuración → Pipelines → Personalización del Kanban**.\n\n## Colaboración\n\nAgrega colaboradores a un negocio para compartir visibilidad sin transferir la propiedad. Ingresa al negocio y haz clic en **+ Colaborador**.\n\n## Registro por lotes\n\nPara crear varios negocios a la vez, usa la opción **Importar** en la pantalla de Negocios. Consulta el artículo de Importación de datos para ver la guía completa paso a paso.",
+    },
   },
   {
     slug: "empresas",
-    title: "Empresas",
-    description: "Gerencie organizações associadas a contatos e negócios.",
+    title: { pt: "Empresas", en: "Companies", es: "Empresas" },
+    description: { pt: "Gerencie organizações associadas a contatos e negócios.", en: "Manage organizations associated with contacts and deals.", es: "Gestiona las organizaciones asociadas a contactos y negocios." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "empresa",
-    content: `## O que são empresas
-
-Empresas são organizações (CNPJs, contas corporativas) que você pode associar a contatos e negócios. Útil para operações B2B onde múltiplos contatos pertencem a uma mesma empresa.
-
-## Criando uma empresa
-
-1. Acesse **CRM → Empresas**
-2. Clique em **+ Nova empresa**
-3. Preencha nome, domínio, cidade e demais propriedades
-
-## Buscando empresas
-
-Use a busca ou os filtros da lista de empresas para localizar por nome, domínio, cidade ou estado.
-
-## Associando contato a uma empresa
-
-Abra a empresa e clique em **+ Associar contato**, ou associe pelo próprio cadastro do contato.
-
-## Atualizando uma empresa
-
-Abra a empresa desejada e edite os campos diretamente. As alterações são salvas automaticamente.
-
-## Cadastro em lote
-
-Para cadastrar várias empresas de uma vez, use a opção **Importar** na tela de Empresas. Veja o artigo de Importação de dados para o passo a passo completo.`,
+    content: {
+      pt: "## O que são empresas\n\nEmpresas são organizações (CNPJs, contas corporativas) que você pode associar a contatos e negócios. Útil para operações B2B onde múltiplos contatos pertencem a uma mesma empresa.\n\n## Criando uma empresa\n\n1. Acesse **CRM → Empresas**\n2. Clique em **+ Nova empresa**\n3. Preencha nome, domínio, cidade e demais propriedades\n\n## Buscando empresas\n\nUse a busca ou os filtros da lista de empresas para localizar por nome, domínio, cidade ou estado.\n\n## Associando contato a uma empresa\n\nAbra a empresa e clique em **+ Associar contato**, ou associe pelo próprio cadastro do contato.\n\n## Atualizando uma empresa\n\nAbra a empresa desejada e edite os campos diretamente. As alterações são salvas automaticamente.\n\n## Cadastro em lote\n\nPara cadastrar várias empresas de uma vez, use a opção **Importar** na tela de Empresas. Veja o artigo de Importação de dados para o passo a passo completo.",
+      en: "## What are companies\n\nCompanies are organizations (tax IDs, corporate accounts) that you can associate with contacts and deals. Useful for B2B operations where multiple contacts belong to the same company.\n\n## Creating a company\n\n1. Go to **CRM → Companies**\n2. Click **+ New company**\n3. Fill in the name, domain, city, and other properties\n\n## Searching for companies\n\nUse the search bar or the filters in the companies list to find records by name, domain, city, or state.\n\n## Associating a contact with a company\n\nOpen the company and click **+ Associate contact**, or associate it from the contact's own record.\n\n## Updating a company\n\nOpen the desired company and edit the fields directly. Changes are saved automatically.\n\n## Bulk registration\n\nTo register several companies at once, use the **Import** option on the Companies screen. See the Data Import article for the complete step-by-step guide.",
+      es: "## Qué son las empresas\n\nLas empresas son organizaciones (identificación fiscal, cuentas corporativas) que puedes asociar a contactos y negocios. Es útil en operaciones B2B donde varios contactos pertenecen a la misma empresa.\n\n## Crear una empresa\n\n1. Ve a **CRM → Empresas**\n2. Haz clic en **+ Nueva empresa**\n3. Completa el nombre, dominio, ciudad y demás propiedades\n\n## Buscar empresas\n\nUsa la búsqueda o los filtros de la lista de empresas para localizarlas por nombre, dominio, ciudad o estado.\n\n## Asociar un contacto a una empresa\n\nAbre la empresa y haz clic en **+ Asociar contacto**, o asócialo desde el propio registro del contacto.\n\n## Actualizar una empresa\n\nAbre la empresa deseada y edita los campos directamente. Los cambios se guardan automáticamente.\n\n## Registro masivo\n\nPara registrar varias empresas a la vez, usa la opción **Importar** en la pantalla de Empresas. Consulta el artículo de Importación de datos para ver el paso a paso completo.",
+    },
   },
   {
     slug: "pipelines",
-    title: "Pipelines",
-    description: "Crie e configure funis de venda com etapas customizadas.",
+    title: { pt: "Pipelines", en: "Pipelines", es: "Pipelines" },
+    description: { pt: "Crie e configure funis de venda com etapas customizadas.", en: "Create and configure sales funnels with custom stages.", es: "Crea y configura embudos de venta con etapas personalizadas." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "pipeline",
-    content: `## O que são pipelines
-
-Pipelines são funis de vendas que organizam negócios em etapas sequenciais, do primeiro contato ao fechamento. Cada empresa pode ter múltiplos pipelines para diferentes processos (vendas, pós-venda, reativação, etc.).
-
-## Criando um pipeline
-
-1. Acesse **Configurações → Pipelines**
-2. Clique em **+ Novo pipeline**
-3. Dê um nome e adicione as etapas na ordem desejada, definindo a probabilidade de fechamento de cada uma
-
-## Personalização do Kanban
-
-Em **Configurações → Pipelines → Personalização**, você pode:
-- Escolher quais propriedades aparecem nos cards
-- Definir a ordem de exibição dos campos
-- Adicionar indicadores visuais por propriedade
-
-## Regras de etapa
-
-Configure restrições para controlar quando um negócio pode avançar:
-1. Acesse **Configurações → Pipelines**
-2. Selecione o pipeline e clique em **Regras**
-3. Defina propriedades obrigatórias por etapa
-
-## Rótulos
-
-Adicione rótulos coloridos a negócios para identificação visual rápida (ex: "Urgente", "VIP", "Em negociação"). Configure em **Configurações → Rótulos**.`,
+    content: {
+      pt: "## O que são pipelines\n\nPipelines são funis de vendas que organizam negócios em etapas sequenciais, do primeiro contato ao fechamento. Cada empresa pode ter múltiplos pipelines para diferentes processos (vendas, pós-venda, reativação, etc.).\n\n## Criando um pipeline\n\n1. Acesse **Configurações → Pipelines**\n2. Clique em **+ Novo pipeline**\n3. Dê um nome e adicione as etapas na ordem desejada, definindo a probabilidade de fechamento de cada uma\n\n## Personalização do Kanban\n\nEm **Configurações → Pipelines → Personalização**, você pode:\n- Escolher quais propriedades aparecem nos cards\n- Definir a ordem de exibição dos campos\n- Adicionar indicadores visuais por propriedade\n\n## Regras de etapa\n\nConfigure restrições para controlar quando um negócio pode avançar:\n1. Acesse **Configurações → Pipelines**\n2. Selecione o pipeline e clique em **Regras**\n3. Defina propriedades obrigatórias por etapa\n\n## Rótulos\n\nAdicione rótulos coloridos a negócios para identificação visual rápida (ex: \"Urgente\", \"VIP\", \"Em negociação\"). Configure em **Configurações → Rótulos**.",
+      en: "## What are pipelines\n\nPipelines are sales funnels that organize deals into sequential stages, from first contact to close. Each company can have multiple pipelines for different processes (sales, post-sale, reactivation, etc.).\n\n## Creating a pipeline\n\n1. Go to **Settings → Pipelines**\n2. Click **+ New pipeline**\n3. Give it a name and add the stages in the desired order, setting the closing probability for each one\n\n## Kanban customization\n\nIn **Settings → Pipelines → Customization**, you can:\n- Choose which properties appear on the cards\n- Set the display order of the fields\n- Add visual indicators per property\n\n## Stage rules\n\nConfigure restrictions to control when a deal can move forward:\n1. Go to **Settings → Pipelines**\n2. Select the pipeline and click **Rules**\n3. Set required properties per stage\n\n## Labels\n\nAdd colored labels to deals for quick visual identification (e.g., \"Urgent\", \"VIP\", \"Negotiating\"). Configure them in **Settings → Labels**.",
+      es: "## Qué son los pipelines\n\nLos pipelines son embudos de ventas que organizan los negocios en etapas secuenciales, desde el primer contacto hasta el cierre. Cada empresa puede tener varios pipelines para diferentes procesos (ventas, posventa, reactivación, etc.).\n\n## Crear un pipeline\n\n1. Ve a **Configuración → Pipelines**\n2. Haz clic en **+ Nuevo pipeline**\n3. Asígnale un nombre y agrega las etapas en el orden deseado, definiendo la probabilidad de cierre de cada una\n\n## Personalización del Kanban\n\nEn **Configuración → Pipelines → Personalización**, puedes:\n- Elegir qué propiedades aparecen en las tarjetas\n- Definir el orden de visualización de los campos\n- Agregar indicadores visuales por propiedad\n\n## Reglas de etapa\n\nConfigura restricciones para controlar cuándo un negocio puede avanzar:\n1. Ve a **Configuración → Pipelines**\n2. Selecciona el pipeline y haz clic en **Reglas**\n3. Define las propiedades obligatorias por etapa\n\n## Etiquetas\n\nAgrega etiquetas de colores a los negocios para identificarlos visualmente con rapidez (por ejemplo, \"Urgente\", \"VIP\", \"En negociación\"). Configúralas en **Configuración → Etiquetas**.",
+    },
   },
   {
     slug: "propriedades",
-    title: "Propriedades",
-    description: "Crie e gerencie campos customizados para objetos do CRM.",
+    title: { pt: "Propriedades", en: "Properties", es: "Propiedades" },
+    description: { pt: "Crie e gerencie campos customizados para objetos do CRM.", en: "Create and manage custom fields for CRM objects.", es: "Crea y gestiona campos personalizados para los objetos del CRM." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "propriedade",
-    content: `## O que são propriedades
-
-Propriedades são campos personalizados ou padrão que armazenam informações sobre os diferentes objetos do CRM: contatos, negócios e empresas. Elas funcionam como os "atributos" que descrevem um objeto, guardando informações estruturadas conforme a necessidade do seu negócio.
-
-Alguns exemplos comuns:
-- **Contatos**: nome, e-mail, telefone, cargo, data de criação
-- **Negócios**: valor, etapa do pipeline, probabilidade de fechamento, data de fechamento esperada
-- **Empresas**: nome da empresa, segmento, número de funcionários, endereço
-
-## Criando uma propriedade customizada
-
-1. Acesse **Configurações → Propriedades**
-2. Escolha o objeto (Contato, Negócio ou Empresa) e clique em **+ Nova propriedade**
-3. Defina nome e tipo
-4. Salve para disponibilizar o campo nos cadastros
-
-Configurar uma propriedade vai além de atribuir um nome: também é possível definir diferentes campos de preenchimento e obrigatoriedades para cada objeto.
-
-## Tipos de propriedade
-
-| Tipo | Descrição |
-|------|-----------|
-| Texto | Texto livre |
-| Número | Valor numérico |
-| Data | Armazena datas no formato dia/mês/ano |
-| Data/Hora | Armazena data e hora |
-| Seletor único | Permite escolher uma opção em uma lista |
-| Múltipla escolha | Permite escolher mais de uma opção em uma lista |
-| Checkbox | Verdadeiro/falso |
-| Moeda | Valor monetário |
-| Usuário | Exibe como opções os usuários cadastrados no CRM |
-
-## Obrigatória e Identificador Único
-
-Além do tipo, cada propriedade pode ter duas configurações adicionais:
-- **Obrigatória**: torna o preenchimento do campo necessário para criar o objeto
-- **Identificador único**: garante que não existam dois registros com o mesmo valor nessa propriedade, evitando duplicidade
-
->  Configure "Identificador único" apenas em campos que realmente têm um valor exclusivo por contato, como e-mail. Usar essa opção de forma inadequada pode causar fusão de contatos em massa e rastreio incorreto de atividades.
-
-## Propriedades condicionais
-
-Configure propriedades que só aparecem quando outra propriedade tem um valor específico. Em **Configurações → Propriedades → Condicionais**.
-
-## Configurações de exibição
-
-Escolha quais propriedades aparecem e em qual ordem nas páginas de contatos, negócios e empresas em **Configurações → Propriedades → Configurações de Exibição**.
-
-## Boas práticas
-
-- Use nomenclaturas claras e padronizadas para facilitar a compreensão da equipe
-- Mantenha as propriedades atualizadas e remova campos que não são mais utilizados
-- Treine a equipe para preencher as informações de forma consistente
-- Use automações para preencher ou atualizar propriedades automaticamente quando possível`,
+    content: {
+      pt: "## O que são propriedades\n\nPropriedades são campos personalizados ou padrão que armazenam informações sobre os diferentes objetos do CRM: contatos, negócios e empresas. Elas funcionam como os \"atributos\" que descrevem um objeto, guardando informações estruturadas conforme a necessidade do seu negócio.\n\nAlguns exemplos comuns:\n- **Contatos**: nome, e-mail, telefone, cargo, data de criação\n- **Negócios**: valor, etapa do pipeline, probabilidade de fechamento, data de fechamento esperada\n- **Empresas**: nome da empresa, segmento, número de funcionários, endereço\n\n## Criando uma propriedade customizada\n\n1. Acesse **Configurações → Propriedades**\n2. Escolha o objeto (Contato, Negócio ou Empresa) e clique em **+ Nova propriedade**\n3. Defina nome e tipo\n4. Salve para disponibilizar o campo nos cadastros\n\nConfigurar uma propriedade vai além de atribuir um nome: também é possível definir diferentes campos de preenchimento e obrigatoriedades para cada objeto.\n\n## Tipos de propriedade\n\n| Tipo | Descrição |\n|------|-----------|\n| Texto | Texto livre |\n| Número | Valor numérico |\n| Data | Armazena datas no formato dia/mês/ano |\n| Data/Hora | Armazena data e hora |\n| Seletor único | Permite escolher uma opção em uma lista |\n| Múltipla escolha | Permite escolher mais de uma opção em uma lista |\n| Checkbox | Verdadeiro/falso |\n| Moeda | Valor monetário |\n| Usuário | Exibe como opções os usuários cadastrados no CRM |\n\n## Obrigatória e Identificador Único\n\nAlém do tipo, cada propriedade pode ter duas configurações adicionais:\n- **Obrigatória**: torna o preenchimento do campo necessário para criar o objeto\n- **Identificador único**: garante que não existam dois registros com o mesmo valor nessa propriedade, evitando duplicidade\n\n>  Configure \"Identificador único\" apenas em campos que realmente têm um valor exclusivo por contato, como e-mail. Usar essa opção de forma inadequada pode causar fusão de contatos em massa e rastreio incorreto de atividades.\n\n## Propriedades condicionais\n\nConfigure propriedades que só aparecem quando outra propriedade tem um valor específico. Em **Configurações → Propriedades → Condicionais**.\n\n## Configurações de exibição\n\nEscolha quais propriedades aparecem e em qual ordem nas páginas de contatos, negócios e empresas em **Configurações → Propriedades → Configurações de Exibição**.\n\n## Boas práticas\n\n- Use nomenclaturas claras e padronizadas para facilitar a compreensão da equipe\n- Mantenha as propriedades atualizadas e remova campos que não são mais utilizados\n- Treine a equipe para preencher as informações de forma consistente\n- Use automações para preencher ou atualizar propriedades automaticamente quando possível",
+      en: "## What are properties\n\nProperties are custom or default fields that store information about the different CRM objects: contacts, deals, and companies. They work as the \"attributes\" that describe an object, holding structured information according to your business needs.\n\nSome common examples:\n- **Contacts**: name, email, phone, job title, creation date\n- **Deals**: value, pipeline stage, closing probability, expected close date\n- **Companies**: company name, industry, number of employees, address\n\n## Creating a custom property\n\n1. Go to **Settings → Properties**\n2. Choose the object (Contact, Deal, or Company) and click **+ New property**\n3. Set the name and type\n4. Save to make the field available on the records\n\nConfiguring a property goes beyond assigning a name: you can also define different input fields and requirements for each object.\n\n## Property types\n\n| Type | Description |\n|------|-----------|\n| Text | Free text |\n| Number | Numeric value |\n| Date | Stores dates in day/month/year format |\n| Date/Time | Stores date and time |\n| Single select | Lets you choose one option from a list |\n| Multiple choice | Lets you choose more than one option from a list |\n| Checkbox | True/false |\n| Currency | Monetary value |\n| User | Displays the CRM's registered users as options |\n\n## Required and Unique Identifier\n\nBesides the type, each property can have two additional settings:\n- **Required**: makes filling in the field mandatory to create the object\n- **Unique identifier**: ensures no two records share the same value for that property, preventing duplicates\n\n>  Only configure \"Unique identifier\" on fields that genuinely have a value that's unique per contact, such as email. Using this option improperly can cause mass contact merging and incorrect activity tracking.\n\n## Conditional properties\n\nConfigure properties that only appear when another property has a specific value. In **Settings → Properties → Conditional**.\n\n## Display settings\n\nChoose which properties appear, and in what order, on the contacts, deals, and companies pages in **Settings → Properties → Display Settings**.\n\n## Best practices\n\n- Use clear, standardized naming to make it easier for the team to understand\n- Keep properties up to date and remove fields that are no longer used\n- Train the team to fill in information consistently\n- Use automations to fill in or update properties automatically whenever possible",
+      es: "## Qué son las propiedades\n\nLas propiedades son campos personalizados o predeterminados que almacenan información sobre los distintos objetos del CRM: contactos, negocios y empresas. Funcionan como los \"atributos\" que describen un objeto, guardando información estructurada según las necesidades de tu negocio.\n\nAlgunos ejemplos comunes:\n- **Contactos**: nombre, correo electrónico, teléfono, cargo, fecha de creación\n- **Negocios**: valor, etapa del pipeline, probabilidad de cierre, fecha de cierre esperada\n- **Empresas**: nombre de la empresa, sector, número de empleados, dirección\n\n## Crear una propiedad personalizada\n\n1. Ve a **Configuración → Propiedades**\n2. Elige el objeto (Contacto, Negocio o Empresa) y haz clic en **+ Nueva propiedad**\n3. Define el nombre y el tipo\n4. Guarda para que el campo quede disponible en los registros\n\nConfigurar una propiedad va más allá de asignarle un nombre: también puedes definir distintos campos de captura y obligatoriedades para cada objeto.\n\n## Tipos de propiedad\n\n| Tipo | Descripción |\n|------|-----------|\n| Texto | Texto libre |\n| Número | Valor numérico |\n| Fecha | Almacena fechas en formato día/mes/año |\n| Fecha/Hora | Almacena fecha y hora |\n| Selector único | Permite elegir una opción de una lista |\n| Selección múltiple | Permite elegir más de una opción de una lista |\n| Casilla de verificación | Verdadero/falso |\n| Moneda | Valor monetario |\n| Usuario | Muestra como opciones los usuarios registrados en el CRM |\n\n## Obligatoria e Identificador Único\n\nAdemás del tipo, cada propiedad puede tener dos configuraciones adicionales:\n- **Obligatoria**: hace que completar el campo sea necesario para crear el objeto\n- **Identificador único**: garantiza que no existan dos registros con el mismo valor en esa propiedad, evitando duplicados\n\n>  Configura \"Identificador único\" solo en campos que realmente tengan un valor exclusivo por contacto, como el correo electrónico. Usar esta opción de forma inadecuada puede provocar la fusión masiva de contactos y un seguimiento incorrecto de las actividades.\n\n## Propiedades condicionales\n\nConfigura propiedades que solo aparecen cuando otra propiedad tiene un valor específico. En **Configuración → Propiedades → Condicionales**.\n\n## Configuración de visualización\n\nElige qué propiedades aparecen y en qué orden en las páginas de contactos, negocios y empresas en **Configuración → Propiedades → Configuración de Visualización**.\n\n## Buenas prácticas\n\n- Usa nomenclaturas claras y estandarizadas para facilitar la comprensión del equipo\n- Mantén las propiedades actualizadas y elimina los campos que ya no se utilizan\n- Capacita al equipo para completar la información de forma consistente\n- Usa automatizaciones para completar o actualizar propiedades automáticamente cuando sea posible",
+    },
   },
   {
     slug: "tarefas",
-    title: "Tarefas",
-    description: "Crie e gerencie atividades e follow-ups do time.",
+    title: { pt: "Tarefas", en: "Tasks", es: "Tareas" },
+    description: { pt: "Crie e gerencie atividades e follow-ups do time.", en: "Create and manage your team's activities and follow-ups.", es: "Crea y gestiona las actividades y los seguimientos del equipo." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "tarefa",
-    content: `## O que são tarefas
-
-Tarefas são atividades ou ações específicas atribuídas a usuários ou equipes para garantir o acompanhamento e a gestão eficiente de relacionamentos e processos de vendas. Elas ajudam a manter o fluxo de trabalho organizado e garantem que nenhum aspecto do relacionamento com o cliente seja negligenciado. É possível criar e gerenciar tarefas tanto pela área dedicada quanto diretamente pelos objetos (contatos e negócios).
-
-## Criando uma tarefa
-
-1. Acesse **CRM → Tarefas** e clique em **Nova tarefa**, ou abra o contato/negócio relacionado
-2. Preencha os campos necessários: título, data de vencimento, tipo e prioridade
-3. Associe a um contato ou negócio, se aplicável
-
-Os objetos atrelados podem ser abertos rapidamente pela própria listagem de tarefas, facilitando a execução e o acompanhamento.
-
-## Tipos de tarefa
-
-- To do
-- Ligação
-- E-mail
-
-## Buscando e exportando tarefas
-
-Use os filtros da lista de tarefas para ver, por exemplo, apenas as tarefas em aberto de um responsável específico. Combine o filtro por período de vencimento ou status para relatórios personalizados (tarefas vencidas, concluídas ou pendentes). Depois de filtrar, clique em **Exportar** para gerar um arquivo em CSV.
-
-## Acompanhamento e conclusão
-
-O responsável por uma tarefa é notificado por e-mail e por pop-up quando ela chega na data e horário de vencimento. O percentual de andamento fica visível na listagem, e a conclusão pode ser feita direto pelo objeto atrelado ou pela própria tabela de tarefas, clicando no ícone de status:
-- **Amarelo**: tarefas a vencer
-- **Vermelho**: tarefas que passaram do vencimento sem serem concluídas`,
+    content: {
+      pt: "## O que são tarefas\n\nTarefas são atividades ou ações específicas atribuídas a usuários ou equipes para garantir o acompanhamento e a gestão eficiente de relacionamentos e processos de vendas. Elas ajudam a manter o fluxo de trabalho organizado e garantem que nenhum aspecto do relacionamento com o cliente seja negligenciado. É possível criar e gerenciar tarefas tanto pela área dedicada quanto diretamente pelos objetos (contatos e negócios).\n\n## Criando uma tarefa\n\n1. Acesse **CRM → Tarefas** e clique em **Nova tarefa**, ou abra o contato/negócio relacionado\n2. Preencha os campos necessários: título, data de vencimento, tipo e prioridade\n3. Associe a um contato ou negócio, se aplicável\n\nOs objetos atrelados podem ser abertos rapidamente pela própria listagem de tarefas, facilitando a execução e o acompanhamento.\n\n## Tipos de tarefa\n\n- To do\n- Ligação\n- E-mail\n\n## Buscando e exportando tarefas\n\nUse os filtros da lista de tarefas para ver, por exemplo, apenas as tarefas em aberto de um responsável específico. Combine o filtro por período de vencimento ou status para relatórios personalizados (tarefas vencidas, concluídas ou pendentes). Depois de filtrar, clique em **Exportar** para gerar um arquivo em CSV.\n\n## Acompanhamento e conclusão\n\nO responsável por uma tarefa é notificado por e-mail e por pop-up quando ela chega na data e horário de vencimento. O percentual de andamento fica visível na listagem, e a conclusão pode ser feita direto pelo objeto atrelado ou pela própria tabela de tarefas, clicando no ícone de status:\n- **Amarelo**: tarefas a vencer\n- **Vermelho**: tarefas que passaram do vencimento sem serem concluídas",
+      en: "## What are tasks\n\nTasks are activities or specific actions assigned to users or teams to ensure efficient follow-up and management of relationships and sales processes. They help keep the workflow organized and ensure that no aspect of the customer relationship is neglected. Tasks can be created and managed both from the dedicated area and directly from the objects (contacts and deals).\n\n## Creating a task\n\n1. Go to **CRM → Tasks** and click **New task**, or open the related contact/deal\n2. Fill in the required fields: title, due date, type, and priority\n3. Associate it with a contact or deal, if applicable\n\nLinked objects can be opened quickly right from the task list, making execution and follow-up easier.\n\n## Task types\n\n- To do\n- Call\n- Email\n\n## Searching and exporting tasks\n\nUse the task list filters to view, for example, only the open tasks of a specific owner. Combine the due date range or status filter for custom reports (overdue, completed, or pending tasks). After filtering, click **Export** to generate a CSV file.\n\n## Follow-up and completion\n\nThe task owner is notified by email and pop-up when the task reaches its due date and time. Progress percentage is visible in the list, and completion can be done directly from the linked object or from the task table itself, by clicking the status icon:\n- **Yellow**: tasks coming due\n- **Red**: tasks that are past due and not yet completed",
+      es: "## Qué son las tareas\n\nLas tareas son actividades o acciones específicas asignadas a usuarios o equipos para garantizar el seguimiento y la gestión eficiente de las relaciones y los procesos de venta. Ayudan a mantener organizado el flujo de trabajo y aseguran que ningún aspecto de la relación con el cliente quede desatendido. Es posible crear y gestionar tareas tanto desde el área dedicada como directamente desde los objetos (contactos y negocios).\n\n## Crear una tarea\n\n1. Ve a **CRM → Tareas** y haz clic en **Nueva tarea**, o abre el contacto/negocio relacionado\n2. Completa los campos necesarios: título, fecha de vencimiento, tipo y prioridad\n3. Asóciala a un contacto o negocio, si corresponde\n\nLos objetos vinculados se pueden abrir rápidamente desde el propio listado de tareas, lo que facilita la ejecución y el seguimiento.\n\n## Tipos de tarea\n\n- Por hacer\n- Llamada\n- Correo electrónico\n\n## Buscar y exportar tareas\n\nUsa los filtros de la lista de tareas para ver, por ejemplo, solo las tareas abiertas de un responsable específico. Combina el filtro de rango de vencimiento o de estado para generar reportes personalizados (tareas vencidas, completadas o pendientes). Después de filtrar, haz clic en **Exportar** para generar un archivo CSV.\n\n## Seguimiento y finalización\n\nEl responsable de una tarea recibe una notificación por correo electrónico y por ventana emergente cuando esta llega a su fecha y hora de vencimiento. El porcentaje de avance es visible en el listado, y la finalización puede hacerse directamente desde el objeto vinculado o desde la propia tabla de tareas, haciendo clic en el ícono de estado:\n- **Amarillo**: tareas por vencer\n- **Rojo**: tareas que superaron la fecha de vencimiento sin haberse completado",
+    },
   },
   {
     slug: "produtos",
-    title: "Produtos",
-    description: "Gerencie o catálogo de produtos e regras de desconto.",
+    title: { pt: "Produtos", en: "Products", es: "Productos" },
+    description: { pt: "Gerencie o catálogo de produtos e regras de desconto.", en: "Manage your product catalog and discount rules.", es: "Gestiona el catálogo de productos y las reglas de descuento." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "produto",
-    content: `## O que são produtos
-
-Produtos são os itens ou serviços que sua empresa vende ou oferece aos clientes. A funcionalidade de produtos permite gerenciar e rastrear informações detalhadas sobre o catálogo, facilitando a organização, as vendas e o suporte.
-
-## Cadastrando um produto
-
-1. Acesse **CRM → Produtos**
-2. Clique em **Criar Produto**
-3. Insira os dados obrigatórios (nome e preço unitário) e outros detalhes opcionais
-
-Após a criação, o produto já fica disponível para ser associado a negociações. Os campos de cadastro de produto são padrão da ferramenta, sem opção de personalização adicional.
-
-## Associando produto a um negócio
-
-Acesse a associação de produtos na lateral direita do negócio e clique em **+ Adicionar produto**. Defina quantidade e desconto para cada item associado.
-
-## Regras de desconto
-
-Configure limites máximos de desconto por produto ou categoria em **Configurações → Produtos → Regras de Desconto**.
-
-Isso garante que vendedores não ofereçam descontos além do permitido pela política comercial.
-
-## Buscando produtos
-
-Use os filtros da lista de produtos para localizar por faixa de preço ou outra propriedade.`,
+    content: {
+      pt: "## O que são produtos\n\nProdutos são os itens ou serviços que sua empresa vende ou oferece aos clientes. A funcionalidade de produtos permite gerenciar e rastrear informações detalhadas sobre o catálogo, facilitando a organização, as vendas e o suporte.\n\n## Cadastrando um produto\n\n1. Acesse **CRM → Produtos**\n2. Clique em **Criar Produto**\n3. Insira os dados obrigatórios (nome e preço unitário) e outros detalhes opcionais\n\nApós a criação, o produto já fica disponível para ser associado a negociações. Os campos de cadastro de produto são padrão da ferramenta, sem opção de personalização adicional.\n\n## Associando produto a um negócio\n\nAcesse a associação de produtos na lateral direita do negócio e clique em **+ Adicionar produto**. Defina quantidade e desconto para cada item associado.\n\n## Regras de desconto\n\nConfigure limites máximos de desconto por produto ou categoria em **Configurações → Produtos → Regras de Desconto**.\n\nIsso garante que vendedores não ofereçam descontos além do permitido pela política comercial.\n\n## Buscando produtos\n\nUse os filtros da lista de produtos para localizar por faixa de preço ou outra propriedade.",
+      en: "## What are products\n\nProducts are the items or services your company sells or offers to customers. The products feature lets you manage and track detailed information about your catalog, making it easier to organize, sell, and support them.\n\n## Registering a product\n\n1. Go to **CRM → Products**\n2. Click **Create Product**\n3. Enter the required data (name and unit price) and other optional details\n\nOnce created, the product is immediately available to be associated with deals. Product registration fields are standard to the tool, with no option for additional customization.\n\n## Associating a product with a deal\n\nAccess the product association on the right-hand side panel of the deal and click **+ Add product**. Set the quantity and discount for each associated item.\n\n## Discount rules\n\nConfigure maximum discount limits per product or category in **Settings → Products → Discount Rules**.\n\nThis ensures salespeople don't offer discounts beyond what the commercial policy allows.\n\n## Searching for products\n\nUse the product list filters to find items by price range or another property.",
+      es: "## Qué son los productos\n\nLos productos son los artículos o servicios que tu empresa vende u ofrece a los clientes. La función de productos permite gestionar y hacer seguimiento de información detallada sobre el catálogo, facilitando su organización, venta y soporte.\n\n## Registrar un producto\n\n1. Ve a **CRM → Productos**\n2. Haz clic en **Crear Producto**\n3. Ingresa los datos obligatorios (nombre y precio unitario) y otros detalles opcionales\n\nUna vez creado, el producto queda disponible de inmediato para asociarse a negociaciones. Los campos de registro de producto son estándar de la herramienta, sin opción de personalización adicional.\n\n## Asociar un producto a un negocio\n\nAccede a la asociación de productos en el panel lateral derecho del negocio y haz clic en **+ Agregar producto**. Define la cantidad y el descuento para cada artículo asociado.\n\n## Reglas de descuento\n\nConfigura los límites máximos de descuento por producto o categoría en **Configuración → Productos → Reglas de Descuento**.\n\nEsto garantiza que los vendedores no ofrezcan descuentos por encima de lo permitido por la política comercial.\n\n## Buscar productos\n\nUsa los filtros de la lista de productos para localizarlos por rango de precio u otra propiedad.",
+    },
   },
   {
     slug: "etiquetas",
-    title: "Etiquetas",
-    description: "Organize contatos e negócios com tags.",
+    title: { pt: "Etiquetas", en: "Tags", es: "Etiquetas" },
+    description: { pt: "Organize contatos e negócios com tags.", en: "Organize contacts and deals with tags.", es: "Organiza contactos y negocios con etiquetas." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "etiqueta",
-    content: `## O que são etiquetas
-
-As etiquetas funcionam como marcadores ou palavras-chave que você pode adicionar a registros (como contatos ou negócios) para organizar e categorizar informações de forma mais eficiente. Elas também permitem automações dentro dos fluxos de trabalho, facilitando ainda mais a gestão do CRM.
-
-## Criando uma etiqueta
-
-1. Acesse **CRM → Etiquetas**
-2. Clique em **Criar etiqueta**
-3. Preencha o nome e a descrição
-4. Cadastre para criar a etiqueta
-
-## Aplicando uma etiqueta
-
-Na lateral de exibição de um contato ou negócio, é possível atrelar etiquetas existentes ou remover essa associação a qualquer momento.
-
-## Consultando registros por etiqueta
-
-Acesse a área de Etiquetas e clique na quantidade de registros de uma etiqueta específica para ver a listagem completa de contatos e negócios que a possuem.`,
+    content: {
+      pt: "## O que são etiquetas\n\nAs etiquetas funcionam como marcadores ou palavras-chave que você pode adicionar a registros (como contatos ou negócios) para organizar e categorizar informações de forma mais eficiente. Elas também permitem automações dentro dos fluxos de trabalho, facilitando ainda mais a gestão do CRM.\n\n## Criando uma etiqueta\n\n1. Acesse **CRM → Etiquetas**\n2. Clique em **Criar etiqueta**\n3. Preencha o nome e a descrição\n4. Cadastre para criar a etiqueta\n\n## Aplicando uma etiqueta\n\nNa lateral de exibição de um contato ou negócio, é possível atrelar etiquetas existentes ou remover essa associação a qualquer momento.\n\n## Consultando registros por etiqueta\n\nAcesse a área de Etiquetas e clique na quantidade de registros de uma etiqueta específica para ver a listagem completa de contatos e negócios que a possuem.",
+      en: "## What are tags\n\nTags work as markers or keywords that you can add to records (such as contacts or deals) to organize and categorize information more efficiently. They also enable automations within workflows, making CRM management even easier.\n\n## Creating a tag\n\n1. Go to **CRM → Tags**\n2. Click **Create tag**\n3. Fill in the name and description\n4. Save to create the tag\n\n## Applying a tag\n\nIn the side panel of a contact or deal, you can attach existing tags or remove that association at any time.\n\n## Viewing records by tag\n\nGo to the Tags area and click the record count for a specific tag to see the full list of contacts and deals that have it.",
+      es: "## Qué son las etiquetas\n\nLas etiquetas funcionan como marcadores o palabras clave que puedes agregar a los registros (como contactos o negocios) para organizar y categorizar la información de forma más eficiente. También permiten automatizaciones dentro de los flujos de trabajo, facilitando aún más la gestión del CRM.\n\n## Crear una etiqueta\n\n1. Ve a **CRM → Etiquetas**\n2. Haz clic en **Crear etiqueta**\n3. Completa el nombre y la descripción\n4. Guarda para crear la etiqueta\n\n## Aplicar una etiqueta\n\nEn el panel lateral de un contacto o negocio, puedes vincular etiquetas existentes o eliminar esa asociación en cualquier momento.\n\n## Consultar registros por etiqueta\n\nVe al área de Etiquetas y haz clic en la cantidad de registros de una etiqueta específica para ver el listado completo de contactos y negocios que la tienen.",
+    },
   },
   {
     slug: "paineis",
-    title: "Painéis personalizados",
-    description: "Crie dashboards com métricas da operação.",
+    title: { pt: "Painéis personalizados", en: "Custom Dashboards", es: "Paneles personalizados" },
+    description: { pt: "Crie dashboards com métricas da operação.", en: "Create dashboards with operational metrics.", es: "Crea paneles con las métricas de la operación." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "painel",
-    content: `## O que são painéis
-
-Painéis (dashboards) são telas com gráficos e métricas personalizados para acompanhar a performance comercial em tempo real.
-
-## Criar painel
-
-1. Acesse **Painéis** no menu lateral
-2. Clique em **+ Novo painel**
-3. Dê um nome ao painel
-4. Adicione widgets clicando em **+ Adicionar widget**
-
-## Tipos de widget disponíveis
-
-- **Gráfico de barras**: volume de negócios por etapa, por período
-- **Gráfico de linhas**: evolução ao longo do tempo
-- **Pizza/Donut**: distribuição por categoria
-- **Número (KPI)**: valor único em destaque (ex: total de leads)
-- **Tabela**: lista detalhada com propriedades customizadas
-- **Funil**: taxa de conversão entre etapas
-
-## Métricas populares
-
-| Métrica | Descrição |
-|---------|-----------|
-| Leads gerados | Total de novos contatos por período |
-| Taxa de conversão | % de leads que fecharam |
-| Ticket médio | Valor médio dos negócios fechados |
-| Ciclo de vendas | Tempo médio do primeiro contato ao fechamento |
-| Atividades por vendedor | Produtividade individual da equipe |
-
-## Filtros e segmentação
-
-Cada widget pode ser filtrado por período, pipeline, etapa, usuário responsável ou qualquer propriedade customizada.`,
+    content: {
+      pt: "## O que são painéis\n\nPainéis (dashboards) são telas com gráficos e métricas personalizados para acompanhar a performance comercial em tempo real.\n\n## Criar painel\n\n1. Acesse **Painéis** no menu lateral\n2. Clique em **+ Novo painel**\n3. Dê um nome ao painel\n4. Adicione widgets clicando em **+ Adicionar widget**\n\n## Tipos de widget disponíveis\n\n- **Gráfico de barras**: volume de negócios por etapa, por período\n- **Gráfico de linhas**: evolução ao longo do tempo\n- **Pizza/Donut**: distribuição por categoria\n- **Número (KPI)**: valor único em destaque (ex: total de leads)\n- **Tabela**: lista detalhada com propriedades customizadas\n- **Funil**: taxa de conversão entre etapas\n\n## Métricas populares\n\n| Métrica | Descrição |\n|---------|-----------|\n| Leads gerados | Total de novos contatos por período |\n| Taxa de conversão | % de leads que fecharam |\n| Ticket médio | Valor médio dos negócios fechados |\n| Ciclo de vendas | Tempo médio do primeiro contato ao fechamento |\n| Atividades por vendedor | Produtividade individual da equipe |\n\n## Filtros e segmentação\n\nCada widget pode ser filtrado por período, pipeline, etapa, usuário responsável ou qualquer propriedade customizada.",
+      en: "## What are dashboards\n\nDashboards are screens with custom charts and metrics for tracking sales performance in real time.\n\n## Creating a dashboard\n\n1. Go to **Dashboards** in the side menu\n2. Click **+ New dashboard**\n3. Give the dashboard a name\n4. Add widgets by clicking **+ Add widget**\n\n## Available widget types\n\n- **Bar chart**: deal volume by stage, by period\n- **Line chart**: progress over time\n- **Pie/Donut**: distribution by category\n- **Number (KPI)**: a single highlighted value (e.g., total leads)\n- **Table**: detailed list with custom properties\n- **Funnel**: conversion rate between stages\n\n## Popular metrics\n\n| Metric | Description |\n|---------|-----------|\n| Leads generated | Total new contacts per period |\n| Conversion rate | % of leads that closed |\n| Average deal size | Average value of closed deals |\n| Sales cycle | Average time from first contact to close |\n| Activities per salesperson | Individual team productivity |\n\n## Filters and segmentation\n\nEach widget can be filtered by period, pipeline, stage, owner, or any custom property.",
+      es: "## Qué son los paneles\n\nLos paneles (dashboards) son pantallas con gráficos y métricas personalizados para hacer seguimiento del desempeño comercial en tiempo real.\n\n## Crear un panel\n\n1. Ve a **Paneles** en el menú lateral\n2. Haz clic en **+ Nuevo panel**\n3. Asígnale un nombre al panel\n4. Agrega widgets haciendo clic en **+ Agregar widget**\n\n## Tipos de widget disponibles\n\n- **Gráfico de barras**: volumen de negocios por etapa, por período\n- **Gráfico de líneas**: evolución a lo largo del tiempo\n- **Circular/Donut**: distribución por categoría\n- **Número (KPI)**: valor único destacado (por ejemplo, total de leads)\n- **Tabla**: listado detallado con propiedades personalizadas\n- **Embudo**: tasa de conversión entre etapas\n\n## Métricas populares\n\n| Métrica | Descripción |\n|---------|-----------|\n| Leads generados | Total de contactos nuevos por período |\n| Tasa de conversión | % de leads que cerraron |\n| Ticket promedio | Valor promedio de los negocios cerrados |\n| Ciclo de ventas | Tiempo promedio desde el primer contacto hasta el cierre |\n| Actividades por vendedor | Productividad individual del equipo |\n\n## Filtros y segmentación\n\nCada widget puede filtrarse por período, pipeline, etapa, usuario responsable o cualquier propiedad personalizada.",
+    },
   },
   {
     slug: "importacao",
-    title: "Importação de dados",
-    description: "Importe contatos, empresas e negócios via planilha.",
+    title: { pt: "Importação de dados", en: "Data Import", es: "Importación de datos" },
+    description: { pt: "Importe contatos, empresas e negócios via planilha.", en: "Import contacts, companies, and deals via spreadsheet.", es: "Importe contactos, empresas y negocios mediante una hoja de cálculo." },
     category: "crm",
-    categoryLabel: "CRM",
+    categoryLabel: { pt: "CRM", en: "CRM", es: "CRM" },
     icon: "importacao",
-    content: `## Importando dados
-
-O Beeno permite importar **Contatos**, **Empresas** e **Negócios** via arquivo CSV ou XLSX.
-
-## Passo a passo
-
-1. Acesse **Configurações → Importação**
-2. Selecione o tipo de objeto (Contatos, Empresas ou Negócios)
-3. Baixe o **modelo de planilha** para garantir o formato correto
-4. Preencha a planilha com seus dados
-5. Faça upload do arquivo
-6. Mapeie as colunas da planilha para as propriedades do Beeno
-7. Revise as incompatibilidades e confirme a importação
-
-## Dicas importantes
-
-- **Telefones**: use o formato internacional sem formatação (ex: \`5511999999999\`)
-- **Datas**: use o formato dia/mês/ano
-- **Duplicatas**: o sistema detecta duplicatas por e-mail e telefone. Você pode escolher ignorar ou atualizar o registro existente
-- **Limite**: até 10.000 registros por importação
-
-## Campos obrigatórios por objeto
-
-| Objeto | Campo obrigatório |
-|--------|------------------|
-| Contato | Nome ou E-mail |
-| Empresa | Nome |
-| Negócio | Nome e Pipeline |`,
+    content: {
+      pt: "## Importando dados\n\nO Beeno permite importar **Contatos**, **Empresas** e **Negócios** via arquivo CSV ou XLSX.\n\n## Passo a passo\n\n1. Acesse **Configurações → Importação**\n2. Selecione o tipo de objeto (Contatos, Empresas ou Negócios)\n3. Baixe o **modelo de planilha** para garantir o formato correto\n4. Preencha a planilha com seus dados\n5. Faça upload do arquivo\n6. Mapeie as colunas da planilha para as propriedades do Beeno\n7. Revise as incompatibilidades e confirme a importação\n\n## Dicas importantes\n\n- **Telefones**: use o formato internacional sem formatação (ex: `5511999999999`)\n- **Datas**: use o formato dia/mês/ano\n- **Duplicatas**: o sistema detecta duplicatas por e-mail e telefone. Você pode escolher ignorar ou atualizar o registro existente\n- **Limite**: até 10.000 registros por importação\n\n## Campos obrigatórios por objeto\n\n| Objeto | Campo obrigatório |\n|--------|------------------|\n| Contato | Nome ou E-mail |\n| Empresa | Nome |\n| Negócio | Nome e Pipeline |",
+      en: "## Importing data\n\nBeeno lets you import **Contacts**, **Companies**, and **Deals** via a CSV or XLSX file.\n\n## Step by step\n\n1. Go to **Settings → Import**\n2. Select the object type (Contacts, Companies, or Deals)\n3. Download the **spreadsheet template** to ensure the correct format\n4. Fill in the spreadsheet with your data\n5. Upload the file\n6. Map the spreadsheet columns to Beeno properties\n7. Review any mismatches and confirm the import\n\n## Important tips\n\n- **Phone numbers**: use the international format with no formatting (e.g. `5511999999999`)\n- **Dates**: use the day/month/year format\n- **Duplicates**: the system detects duplicates by email and phone number. You can choose to ignore or update the existing record\n- **Limit**: up to 10,000 records per import\n\n## Required fields by object\n\n| Object | Required field |\n|--------|------------------|\n| Contact | Name or Email |\n| Company | Name |\n| Deal | Name and Pipeline |",
+      es: "## Importar datos\n\nBeeno permite importar **Contactos**, **Empresas** y **Negocios** mediante un archivo CSV o XLSX.\n\n## Paso a paso\n\n1. Ingrese a **Configuración → Importación**\n2. Seleccione el tipo de objeto (Contactos, Empresas o Negocios)\n3. Descargue la **plantilla de hoja de cálculo** para garantizar el formato correcto\n4. Complete la hoja de cálculo con sus datos\n5. Suba el archivo\n6. Asocie las columnas de la hoja de cálculo con las propiedades de Beeno\n7. Revise las incompatibilidades y confirme la importación\n\n## Consejos importantes\n\n- **Teléfonos**: use el formato internacional sin ningún tipo de formato (ej.: `5511999999999`)\n- **Fechas**: use el formato día/mes/año\n- **Duplicados**: el sistema detecta duplicados por correo electrónico y teléfono. Puede elegir ignorar o actualizar el registro existente\n- **Límite**: hasta 10.000 registros por importación\n\n## Campos obligatorios por objeto\n\n| Objeto | Campo obligatorio |\n|--------|------------------|\n| Contacto | Nombre o Correo electrónico |\n| Empresa | Nombre |\n| Negocio | Nombre y Pipeline |",
+    },
   },
   {
     slug: "segmentos",
-    title: "Segmentos",
-    description: "Crie grupos filtrados de contatos para campanhas e automações.",
+    title: { pt: "Segmentos", en: "Segments", es: "Segmentos" },
+    description: { pt: "Crie grupos filtrados de contatos para campanhas e automações.", en: "Create filtered groups of contacts for campaigns and automations.", es: "Cree grupos filtrados de contactos para campañas y automatizaciones." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "segmento",
-    content: `## O que são segmentos
-
-Segmentos são listas dinâmicas de contatos que atendem a critérios específicos. São usados em fluxos de automação, campanhas de e-mail e para direcionar ações estratégicas com base nas informações do CRM.
-
-## Segmentos na interface
-
-1. Acesse **Marketing → Segmentos**
-2. Clique em **+ Novo segmento**
-3. Defina os filtros (propriedades, comportamentos, datas)
-4. Salve. O segmento atualiza dinamicamente conforme os contatos passam a atender (ou deixam de atender) aos critérios
-
-## Casos de uso
-
-- **Leads quentes**: engajaram com 3+ e-mails + visitaram a página de preços
-- **Inativos**: sem interação há mais de 90 dias
-- **Clientes VIP**: ticket médio acima de R$ 5.000
-- **Região específica**: contatos de São Paulo no segmento de saúde`,
+    content: {
+      pt: "## O que são segmentos\n\nSegmentos são listas dinâmicas de contatos que atendem a critérios específicos. São usados em fluxos de automação, campanhas de e-mail e para direcionar ações estratégicas com base nas informações do CRM.\n\n## Segmentos na interface\n\n1. Acesse **Marketing → Segmentos**\n2. Clique em **+ Novo segmento**\n3. Defina os filtros (propriedades, comportamentos, datas)\n4. Salve. O segmento atualiza dinamicamente conforme os contatos passam a atender (ou deixam de atender) aos critérios\n\n## Casos de uso\n\n- **Leads quentes**: engajaram com 3+ e-mails + visitaram a página de preços\n- **Inativos**: sem interação há mais de 90 dias\n- **Clientes VIP**: ticket médio acima de R$ 5.000\n- **Região específica**: contatos de São Paulo no segmento de saúde",
+      en: "## What segments are\n\nSegments are dynamic lists of contacts that meet specific criteria. They are used in automation flows, email campaigns, and to target strategic actions based on CRM data.\n\n## Segments in the interface\n\n1. Go to **Marketing → Segments**\n2. Click **+ New segment**\n3. Define the filters (properties, behaviors, dates)\n4. Save. The segment updates dynamically as contacts start (or stop) meeting the criteria\n\n## Use cases\n\n- **Hot leads**: engaged with 3+ emails and visited the pricing page\n- **Inactive**: no interaction for more than 90 days\n- **VIP customers**: average order value above $5,000\n- **Specific region**: contacts from São Paulo in the healthcare segment",
+      es: "## Qué son los segmentos\n\nLos segmentos son listas dinámicas de contactos que cumplen con criterios específicos. Se utilizan en flujos de automatización, campañas de correo electrónico y para dirigir acciones estratégicas basadas en la información del CRM.\n\n## Segmentos en la interfaz\n\n1. Ingrese a **Marketing → Segmentos**\n2. Haga clic en **+ Nuevo segmento**\n3. Defina los filtros (propiedades, comportamientos, fechas)\n4. Guarde. El segmento se actualiza dinámicamente a medida que los contactos comienzan (o dejan) de cumplir los criterios\n\n## Casos de uso\n\n- **Leads calientes**: interactuaron con 3 o más correos y visitaron la página de precios\n- **Inactivos**: sin interacción hace más de 90 días\n- **Clientes VIP**: ticket promedio superior a $5.000\n- **Región específica**: contactos de São Paulo en el segmento de salud",
+    },
   },
-
   {
     slug: "fluxos-automacao",
-    title: "Fluxos de automação",
-    description: "Crie sequências automáticas de ações, condições e decisões.",
+    title: { pt: "Fluxos de automação", en: "Automation Flows", es: "Flujos de automatización" },
+    description: { pt: "Crie sequências automáticas de ações, condições e decisões.", en: "Build automatic sequences of actions, conditions, and decisions.", es: "Cree secuencias automáticas de acciones, condiciones y decisiones." },
     category: "automacao",
-    categoryLabel: "Automação",
+    categoryLabel: { pt: "Automação", en: "Automation", es: "Automatización" },
     icon: "automacao",
-    content: `## O que são fluxos de automação
-
-Fluxos de automação são sequências de ações executadas automaticamente quando um contato ou negócio atende a certas condições. Permitem nutrir leads, mover negócios de etapa, enviar mensagens, criar tarefas e atualizar dados sem intervenção manual.
-
-## Tipos de fluxo
-
-Ao criar um fluxo, a primeira escolha é o **tipo**, que define qual objeto será inscrito e quais gatilhos de entrada estarão disponíveis.
-
-### Baseado em Contatos
-Trabalha com dados do contato inscrito individualmente. Gatilhos disponíveis:
-- **Segmentação de contato**: inscreve todos os contatos de um segmento
-- **Formulários**: inscreve quem preencheu um formulário específico
-- **Inscrição manual**: contatos adicionados um a um
-- **Mudança de propriedade**: inscreve quando uma propriedade é atualizada para um valor específico
-
-### Baseado em Negócios
-Trabalha com dados da negociação inscrita individualmente. Gatilhos disponíveis:
-- **Etapas da pipeline**: inscreve negócios que chegam a uma etapa específica
-- **Inscrição manual**: negócios adicionados manualmente
-- **Mudança de propriedade**: inscreve quando uma propriedade do negócio é atualizada
-
-> Não é possível misturar dois tipos de gatilho no mesmo fluxo, mas é possível selecionar mais de uma referência dentro do gatilho escolhido (ex.: vários segmentos ao mesmo tempo).
-
-## Como criar um fluxo
-
-1. Acesse **Fluxos de Automação → Criar fluxo** e escolha o tipo (contato ou negócio)
-2. Defina o gatilho de inscrição no construtor
-3. Monte o fluxograma combinando **Ações**, **Condicionais** e **Decisões**
-4. Configure nome, descrição, data de ativação/desativação e se permite reinscrição
-5. Ative o fluxo
-
-## Ações disponíveis
-
-Cada ação executa uma tarefa automática; ao concluir, o fluxo segue para o próximo nó conectado.
-
-| Ação | O que faz |
-|------|-----------|
-| **Ajustar pontos do contato** | Soma ou remove pontos de Lead Score do contato |
-| **Alterar etapa do negócio** | Move o negócio para outra etapa, no mesmo funil ou em outro |
-| **Alterar etiquetas** | Adiciona ou remove etiquetas do contato/negócio |
-| **Atraso** | Pausa o fluxo por um tempo fixo, uma data de calendário ou com base em uma propriedade de data do registro (ex.: lembrete antes de uma reunião) |
-| **Clonar registro** | Duplica um negócio para outro funil (ou o mesmo), com opção de sobrescrever propriedades como etapa e pipeline |
-| **Copiar valor da propriedade** | Copia o valor de uma propriedade para outra, no mesmo objeto ou entre objetos diferentes (os tipos precisam ser compatíveis) |
-| **Criar registro** | Cria automaticamente um novo Contato, Negócio ou Empresa, com associações, etiquetas e propriedades definidas |
-| **Criar tarefa** | Gera uma tarefa (To do, Ligação ou E-mail) para um usuário, com prioridade e prazo |
-| **Definir valor da propriedade** | Preenche ou atualiza uma propriedade de Contato, Empresa ou Negócio |
-| **Enviar e-mail** | Dispara um e-mail do tipo Marketing ou Transacional para o contato |
-| **Enviar notificação interna por e-mail** | Avisa usuários internos do CRM (ex.: proprietário do negócio) em vez do lead |
-| **Enviar webhook** | Envia uma requisição HTTP (GET, POST, PUT, PATCH ou DELETE) para um sistema externo, com headers e parâmetros customizados |
-| **Inscrever em outro fluxo** | Encadeia o registro em outro fluxo de automação já existente |
-| **Inserir/remover do segmento** | Adiciona ou remove o contato de um ou mais segmentos dinamicamente |
-| **Ir para ação** | Pula para outra ação já existente no mesmo fluxo, sem duplicar passos |
-| **Limpar propriedades** | Apaga o valor de uma ou mais propriedades do objeto |
-| **Manipular tarefas** | Finaliza ou exclui tarefas pendentes (criadas manual ou automaticamente) vinculadas ao registro |
-| **Reativar recebimento de comunicação** | Reabilita um contato marcado como opt-out |
-| **Revezar proprietário** | Redistribui automaticamente o proprietário de contatos, negócios ou empresas entre usuários/equipes, de forma igualitária ou por percentual |
-| **Suspender recebimento de comunicação** | Bloqueia temporariamente o envio de comunicações para o registro, com motivo registrado |
-| **API de conversão** | Envia um evento de conversão para o Meta Pixel (requer Pixel e Evento previamente configurados) |
-
-## Condicionais
-
-Condicionais criam ramificações no fluxo: toda condicional tem uma saída **positiva** (quando o registro atende ao critério) e uma **negativa** (quando não atende). Tipos disponíveis:
-
-- **Campanhas do registro**: valida se o contato já passou por outro fluxo, com opção de filtrar por data
-- **Etiquetas do registro**: valida se o objeto principal do fluxo possui determinada etiqueta
-- **Possui e-mail válido**: valida a propriedade nativa de e-mail do contato
-- **Segmento do contato**: valida se o contato pertence a um ou mais segmentos
-- **Validar campo de formulário**: checa a resposta de um contato em um campo específico de formulário (disponível em fluxos de contato)
-- **Validar tarefas**: verifica se existem tarefas pendentes (manuais ou automáticas) vinculadas ao registro
-- **Valor da propriedade do registro**: compara o valor de uma propriedade de Contato, Negócio ou Empresa (a condicional mais flexível, com múltiplos operadores de comparação)
-
-## Decisões
-
-Diferente das condicionais, decisões se baseiam em **ações que o próprio contato realizou** dentro de uma janela de tempo, muito usadas em cadências de follow-up. Disponíveis apenas em fluxos baseados em contato.
-
-Toda decisão tem saída positiva (a ação ocorreu) e negativa (não ocorreu dentro do prazo configurado). Tipos disponíveis:
-
-- **Baixou o arquivo**: verifica se o contato baixou um arquivo hospedado no Beeno
-- **Enviar formulário**: verifica se o contato preencheu um formulário dentro do prazo
-- **Visita a uma página**: verifica se o contato visitou uma landing page (ou página externa com rastreio configurado), com opção de validar a origem do acesso (referrer)
-- **Decisões de e-mail**: verifica se o contato abriu, clicou ou respondeu a um e-mail enviado anteriormente no mesmo fluxo
-
-> Dica: mantenha janelas de espera curtas no início da cadência e aumente gradualmente para não pressionar demais o contato.
-
-## Alvo de fluxo
-
-O **alvo** é um conjunto de filtros que, quando atendidos por um registro, o remove automaticamente do fluxo, evitando comunicações desnecessárias após o objetivo ter sido alcançado.
-
-Exemplo: se o objetivo do fluxo é agendar uma reunião, o alvo pode ser "Contato agendou reunião **OU** virou cliente". Assim que uma dessas condições acontecer, o contato sai do fluxo.
-
-Configure o alvo na aba **Configurações** do fluxo, combinando grupos **E** (todas as condições precisam ser verdadeiras) e grupos **OU** (basta uma). Se o alvo for atingido enquanto o registro está em uma ação de atraso, ele conclui essa ação antes de ser removido do fluxo.
-
-## Métricas e registros
-
-Acompanhe o desempenho em **Fluxos → [nome do fluxo]**:
-- **Estatísticas do fluxo**: evolução diária de contatos/negócios adicionados
-- **Mapa das ações**: quantos registros entraram, avançaram, concluíram ou falharam em cada ação
-- **Atividade recente**: alterações de configuração e quem as fez, útil para auditoria
-- **Análise individual**: abra a lista de registros inscritos e veja, na linha do tempo de cada contato ou negócio, todas as ações do fluxo que já foram executadas`,
+    content: {
+      pt: "## O que são fluxos de automação\n\nFluxos de automação são sequências de ações executadas automaticamente quando um contato ou negócio atende a certas condições. Permitem nutrir leads, mover negócios de etapa, enviar mensagens, criar tarefas e atualizar dados sem intervenção manual.\n\n## Tipos de fluxo\n\nAo criar um fluxo, a primeira escolha é o **tipo**, que define qual objeto será inscrito e quais gatilhos de entrada estarão disponíveis.\n\n### Baseado em Contatos\nTrabalha com dados do contato inscrito individualmente. Gatilhos disponíveis:\n- **Segmentação de contato**: inscreve todos os contatos de um segmento\n- **Formulários**: inscreve quem preencheu um formulário específico\n- **Inscrição manual**: contatos adicionados um a um\n- **Mudança de propriedade**: inscreve quando uma propriedade é atualizada para um valor específico\n\n### Baseado em Negócios\nTrabalha com dados da negociação inscrita individualmente. Gatilhos disponíveis:\n- **Etapas da pipeline**: inscreve negócios que chegam a uma etapa específica\n- **Inscrição manual**: negócios adicionados manualmente\n- **Mudança de propriedade**: inscreve quando uma propriedade do negócio é atualizada\n\n> Não é possível misturar dois tipos de gatilho no mesmo fluxo, mas é possível selecionar mais de uma referência dentro do gatilho escolhido (ex.: vários segmentos ao mesmo tempo).\n\n## Como criar um fluxo\n\n1. Acesse **Fluxos de Automação → Criar fluxo** e escolha o tipo (contato ou negócio)\n2. Defina o gatilho de inscrição no construtor\n3. Monte o fluxograma combinando **Ações**, **Condicionais** e **Decisões**\n4. Configure nome, descrição, data de ativação/desativação e se permite reinscrição\n5. Ative o fluxo\n\n## Ações disponíveis\n\nCada ação executa uma tarefa automática; ao concluir, o fluxo segue para o próximo nó conectado.\n\n| Ação | O que faz |\n|------|-----------|\n| **Ajustar pontos do contato** | Soma ou remove pontos de Lead Score do contato |\n| **Alterar etapa do negócio** | Move o negócio para outra etapa, no mesmo funil ou em outro |\n| **Alterar etiquetas** | Adiciona ou remove etiquetas do contato/negócio |\n| **Atraso** | Pausa o fluxo por um tempo fixo, uma data de calendário ou com base em uma propriedade de data do registro (ex.: lembrete antes de uma reunião) |\n| **Clonar registro** | Duplica um negócio para outro funil (ou o mesmo), com opção de sobrescrever propriedades como etapa e pipeline |\n| **Copiar valor da propriedade** | Copia o valor de uma propriedade para outra, no mesmo objeto ou entre objetos diferentes (os tipos precisam ser compatíveis) |\n| **Criar registro** | Cria automaticamente um novo Contato, Negócio ou Empresa, com associações, etiquetas e propriedades definidas |\n| **Criar tarefa** | Gera uma tarefa (To do, Ligação ou E-mail) para um usuário, com prioridade e prazo |\n| **Definir valor da propriedade** | Preenche ou atualiza uma propriedade de Contato, Empresa ou Negócio |\n| **Enviar e-mail** | Dispara um e-mail do tipo Marketing ou Transacional para o contato |\n| **Enviar notificação interna por e-mail** | Avisa usuários internos do CRM (ex.: proprietário do negócio) em vez do lead |\n| **Enviar webhook** | Envia uma requisição HTTP (GET, POST, PUT, PATCH ou DELETE) para um sistema externo, com headers e parâmetros customizados |\n| **Inscrever em outro fluxo** | Encadeia o registro em outro fluxo de automação já existente |\n| **Inserir/remover do segmento** | Adiciona ou remove o contato de um ou mais segmentos dinamicamente |\n| **Ir para ação** | Pula para outra ação já existente no mesmo fluxo, sem duplicar passos |\n| **Limpar propriedades** | Apaga o valor de uma ou mais propriedades do objeto |\n| **Manipular tarefas** | Finaliza ou exclui tarefas pendentes (criadas manual ou automaticamente) vinculadas ao registro |\n| **Reativar recebimento de comunicação** | Reabilita um contato marcado como opt-out |\n| **Revezar proprietário** | Redistribui automaticamente o proprietário de contatos, negócios ou empresas entre usuários/equipes, de forma igualitária ou por percentual |\n| **Suspender recebimento de comunicação** | Bloqueia temporariamente o envio de comunicações para o registro, com motivo registrado |\n| **API de conversão** | Envia um evento de conversão para o Meta Pixel (requer Pixel e Evento previamente configurados) |\n\n## Condicionais\n\nCondicionais criam ramificações no fluxo: toda condicional tem uma saída **positiva** (quando o registro atende ao critério) e uma **negativa** (quando não atende). Tipos disponíveis:\n\n- **Campanhas do registro**: valida se o contato já passou por outro fluxo, com opção de filtrar por data\n- **Etiquetas do registro**: valida se o objeto principal do fluxo possui determinada etiqueta\n- **Possui e-mail válido**: valida a propriedade nativa de e-mail do contato\n- **Segmento do contato**: valida se o contato pertence a um ou mais segmentos\n- **Validar campo de formulário**: checa a resposta de um contato em um campo específico de formulário (disponível em fluxos de contato)\n- **Validar tarefas**: verifica se existem tarefas pendentes (manuais ou automáticas) vinculadas ao registro\n- **Valor da propriedade do registro**: compara o valor de uma propriedade de Contato, Negócio ou Empresa (a condicional mais flexível, com múltiplos operadores de comparação)\n\n## Decisões\n\nDiferente das condicionais, decisões se baseiam em **ações que o próprio contato realizou** dentro de uma janela de tempo, muito usadas em cadências de follow-up. Disponíveis apenas em fluxos baseados em contato.\n\nToda decisão tem saída positiva (a ação ocorreu) e negativa (não ocorreu dentro do prazo configurado). Tipos disponíveis:\n\n- **Baixou o arquivo**: verifica se o contato baixou um arquivo hospedado no Beeno\n- **Enviar formulário**: verifica se o contato preencheu um formulário dentro do prazo\n- **Visita a uma página**: verifica se o contato visitou uma landing page (ou página externa com rastreio configurado), com opção de validar a origem do acesso (referrer)\n- **Decisões de e-mail**: verifica se o contato abriu, clicou ou respondeu a um e-mail enviado anteriormente no mesmo fluxo\n\n> Dica: mantenha janelas de espera curtas no início da cadência e aumente gradualmente para não pressionar demais o contato.\n\n## Alvo de fluxo\n\nO **alvo** é um conjunto de filtros que, quando atendidos por um registro, o remove automaticamente do fluxo, evitando comunicações desnecessárias após o objetivo ter sido alcançado.\n\nExemplo: se o objetivo do fluxo é agendar uma reunião, o alvo pode ser \"Contato agendou reunião **OU** virou cliente\". Assim que uma dessas condições acontecer, o contato sai do fluxo.\n\nConfigure o alvo na aba **Configurações** do fluxo, combinando grupos **E** (todas as condições precisam ser verdadeiras) e grupos **OU** (basta uma). Se o alvo for atingido enquanto o registro está em uma ação de atraso, ele conclui essa ação antes de ser removido do fluxo.\n\n## Métricas e registros\n\nAcompanhe o desempenho em **Fluxos → [nome do fluxo]**:\n- **Estatísticas do fluxo**: evolução diária de contatos/negócios adicionados\n- **Mapa das ações**: quantos registros entraram, avançaram, concluíram ou falharam em cada ação\n- **Atividade recente**: alterações de configuração e quem as fez, útil para auditoria\n- **Análise individual**: abra a lista de registros inscritos e veja, na linha do tempo de cada contato ou negócio, todas as ações do fluxo que já foram executadas",
+      en: "## What automation flows are\n\nAutomation flows are sequences of actions that run automatically when a contact or deal meets certain conditions. They let you nurture leads, move deals between stages, send messages, create tasks, and update data without manual intervention.\n\n## Flow types\n\nWhen creating a flow, the first choice is the **type**, which defines which object will be enrolled and which entry triggers will be available.\n\n### Contact-based\nWorks with the data of the individually enrolled contact. Available triggers:\n- **Contact segmentation**: enrolls every contact in a segment\n- **Forms**: enrolls whoever submitted a specific form\n- **Manual enrollment**: contacts added one by one\n- **Property change**: enrolls when a property is updated to a specific value\n\n### Deal-based\nWorks with the data of the individually enrolled deal. Available triggers:\n- **Pipeline stages**: enrolls deals that reach a specific stage\n- **Manual enrollment**: deals added manually\n- **Property change**: enrolls when a deal property is updated\n\n> You cannot mix two trigger types in the same flow, but you can select more than one reference within the chosen trigger (e.g., several segments at once).\n\n## How to create a flow\n\n1. Go to **Automation Flows → Create flow** and choose the type (contact or deal)\n2. Set the enrollment trigger in the builder\n3. Build the flowchart by combining **Actions**, **Conditions**, and **Decisions**\n4. Configure the name, description, activation/deactivation date, and whether re-enrollment is allowed\n5. Activate the flow\n\n## Available actions\n\nEach action performs an automatic task; once completed, the flow moves on to the next connected node.\n\n| Action | What it does |\n|------|-----------|\n| **Adjust contact score** | Adds or removes Lead Score points from the contact |\n| **Change deal stage** | Moves the deal to another stage, in the same pipeline or a different one |\n| **Change tags** | Adds or removes tags from the contact/deal |\n| **Delay** | Pauses the flow for a fixed amount of time, a calendar date, or based on a date property of the record (e.g., a reminder before a meeting) |\n| **Clone record** | Duplicates a deal into another pipeline (or the same one), with the option to override properties such as stage and pipeline |\n| **Copy property value** | Copies the value of one property to another, within the same object or between different objects (the types must be compatible) |\n| **Create record** | Automatically creates a new Contact, Deal, or Company, with associations, tags, and properties defined |\n| **Create task** | Generates a task (To-do, Call, or Email) for a user, with a priority and due date |\n| **Set property value** | Fills in or updates a Contact, Company, or Deal property |\n| **Send email** | Triggers a Marketing or Transactional email to the contact |\n| **Send internal email notification** | Notifies internal CRM users (e.g., the deal owner) instead of the lead |\n| **Send webhook** | Sends an HTTP request (GET, POST, PUT, PATCH, or DELETE) to an external system, with custom headers and parameters |\n| **Enroll in another flow** | Chains the record into another existing automation flow |\n| **Add/remove from segment** | Dynamically adds or removes the contact from one or more segments |\n| **Go to action** | Jumps to another action already existing in the same flow, without duplicating steps |\n| **Clear properties** | Erases the value of one or more properties of the object |\n| **Manage tasks** | Completes or deletes pending tasks (created manually or automatically) linked to the record |\n| **Re-enable communication** | Re-enables a contact marked as opted out |\n| **Rotate owner** | Automatically redistributes the owner of contacts, deals, or companies among users/teams, either evenly or by percentage |\n| **Suspend communication** | Temporarily blocks communications from being sent to the record, with a logged reason |\n| **Conversions API** | Sends a conversion event to Meta Pixel (requires a previously configured Pixel and Event) |\n\n## Conditions\n\nConditions create branches in the flow: every condition has a **positive** outcome (when the record meets the criteria) and a **negative** one (when it doesn't). Available types:\n\n- **Record campaigns**: checks whether the contact has already gone through another flow, with the option to filter by date\n- **Record tags**: checks whether the flow's main object has a specific tag\n- **Has a valid email**: validates the contact's native email property\n- **Contact segment**: checks whether the contact belongs to one or more segments\n- **Validate form field**: checks a contact's answer in a specific form field (available in contact-based flows)\n- **Validate tasks**: checks whether there are pending tasks (manual or automatic) linked to the record\n- **Record property value**: compares the value of a Contact, Deal, or Company property (the most flexible condition, with multiple comparison operators)\n\n## Decisions\n\nUnlike conditions, decisions are based on **actions the contact themselves performed** within a time window, and are widely used in follow-up cadences. Available only in contact-based flows.\n\nEvery decision has a positive outcome (the action occurred) and a negative one (it did not occur within the configured time frame). Available types:\n\n- **Downloaded the file**: checks whether the contact downloaded a file hosted on Beeno\n- **Submitted a form**: checks whether the contact filled out a form within the deadline\n- **Visited a page**: checks whether the contact visited a landing page (or an external page with tracking configured), with the option to validate the traffic source (referrer)\n- **Email decisions**: checks whether the contact opened, clicked, or replied to an email previously sent in the same flow\n\n> Tip: keep waiting windows short at the beginning of the cadence and increase them gradually so you don't overwhelm the contact.\n\n## Flow goal\n\nThe **goal** is a set of filters that, once met by a record, automatically removes it from the flow, avoiding unnecessary communications after the objective has been reached.\n\nExample: if the flow's objective is to schedule a meeting, the goal can be \"Contact scheduled a meeting **OR** became a customer.\" As soon as one of these conditions occurs, the contact exits the flow.\n\nConfigure the goal in the flow's **Settings** tab, combining **AND** groups (all conditions must be true) and **OR** groups (only one needs to be true). If the goal is reached while the record is in a delay action, it finishes that action before being removed from the flow.\n\n## Metrics and records\n\nTrack performance under **Flows → [flow name]**:\n- **Flow statistics**: daily evolution of contacts/deals added\n- **Action map**: how many records entered, advanced, completed, or failed at each action\n- **Recent activity**: configuration changes and who made them, useful for auditing\n- **Individual analysis**: open the list of enrolled records and see, in the timeline of each contact or deal, every flow action that has already run",
+      es: "## Qué son los flujos de automatización\n\nLos flujos de automatización son secuencias de acciones que se ejecutan automáticamente cuando un contacto o negocio cumple determinadas condiciones. Permiten nutrir leads, mover negocios de etapa, enviar mensajes, crear tareas y actualizar datos sin intervención manual.\n\n## Tipos de flujo\n\nAl crear un flujo, la primera elección es el **tipo**, que define qué objeto se inscribirá y qué disparadores de entrada estarán disponibles.\n\n### Basado en Contactos\nTrabaja con los datos del contacto inscrito individualmente. Disparadores disponibles:\n- **Segmentación de contacto**: inscribe a todos los contactos de un segmento\n- **Formularios**: inscribe a quien haya completado un formulario específico\n- **Inscripción manual**: contactos agregados uno por uno\n- **Cambio de propiedad**: inscribe cuando una propiedad se actualiza a un valor específico\n\n### Basado en Negocios\nTrabaja con los datos del negocio inscrito individualmente. Disparadores disponibles:\n- **Etapas del pipeline**: inscribe negocios que llegan a una etapa específica\n- **Inscripción manual**: negocios agregados manualmente\n- **Cambio de propiedad**: inscribe cuando se actualiza una propiedad del negocio\n\n> No es posible combinar dos tipos de disparador en el mismo flujo, pero sí es posible seleccionar más de una referencia dentro del disparador elegido (ej.: varios segmentos al mismo tiempo).\n\n## Cómo crear un flujo\n\n1. Ingrese a **Flujos de Automatización → Crear flujo** y elija el tipo (contacto o negocio)\n2. Defina el disparador de inscripción en el constructor\n3. Arme el diagrama de flujo combinando **Acciones**, **Condicionales** y **Decisiones**\n4. Configure el nombre, la descripción, la fecha de activación/desactivación y si se permite la reinscripción\n5. Active el flujo\n\n## Acciones disponibles\n\nCada acción ejecuta una tarea automática; al finalizar, el flujo continúa hacia el siguiente nodo conectado.\n\n| Acción | Qué hace |\n|------|-----------|\n| **Ajustar puntos del contacto** | Suma o resta puntos de Lead Score del contacto |\n| **Cambiar etapa del negocio** | Mueve el negocio a otra etapa, dentro del mismo pipeline o en otro |\n| **Cambiar etiquetas** | Agrega o quita etiquetas del contacto/negocio |\n| **Retraso** | Pausa el flujo por un tiempo fijo, una fecha de calendario o según una propiedad de fecha del registro (ej.: recordatorio antes de una reunión) |\n| **Clonar registro** | Duplica un negocio hacia otro pipeline (o el mismo), con la opción de sobrescribir propiedades como etapa y pipeline |\n| **Copiar valor de propiedad** | Copia el valor de una propiedad hacia otra, dentro del mismo objeto o entre objetos diferentes (los tipos deben ser compatibles) |\n| **Crear registro** | Crea automáticamente un nuevo Contacto, Negocio o Empresa, con asociaciones, etiquetas y propiedades definidas |\n| **Crear tarea** | Genera una tarea (Pendiente, Llamada o Correo electrónico) para un usuario, con prioridad y plazo |\n| **Definir valor de propiedad** | Completa o actualiza una propiedad de Contacto, Empresa o Negocio |\n| **Enviar correo electrónico** | Dispara un correo de tipo Marketing o Transaccional al contacto |\n| **Enviar notificación interna por correo electrónico** | Avisa a los usuarios internos del CRM (ej.: propietario del negocio) en lugar del lead |\n| **Enviar webhook** | Envía una solicitud HTTP (GET, POST, PUT, PATCH o DELETE) a un sistema externo, con encabezados y parámetros personalizados |\n| **Inscribir en otro flujo** | Encadena el registro en otro flujo de automatización ya existente |\n| **Agregar/quitar del segmento** | Agrega o quita al contacto de uno o más segmentos de forma dinámica |\n| **Ir a acción** | Salta a otra acción ya existente en el mismo flujo, sin duplicar pasos |\n| **Limpiar propiedades** | Borra el valor de una o más propiedades del objeto |\n| **Gestionar tareas** | Finaliza o elimina tareas pendientes (creadas manual o automáticamente) vinculadas al registro |\n| **Reactivar recepción de comunicación** | Rehabilita a un contacto marcado como opt-out |\n| **Rotar propietario** | Redistribuye automáticamente el propietario de contactos, negocios o empresas entre usuarios/equipos, de forma equitativa o por porcentaje |\n| **Suspender recepción de comunicación** | Bloquea temporalmente el envío de comunicaciones al registro, con motivo registrado |\n| **API de conversión** | Envía un evento de conversión a Meta Pixel (requiere un Pixel y un Evento previamente configurados) |\n\n## Condicionales\n\nLas condicionales crean ramificaciones en el flujo: toda condicional tiene una salida **positiva** (cuando el registro cumple el criterio) y una **negativa** (cuando no lo cumple). Tipos disponibles:\n\n- **Campañas del registro**: valida si el contacto ya pasó por otro flujo, con opción de filtrar por fecha\n- **Etiquetas del registro**: valida si el objeto principal del flujo posee determinada etiqueta\n- **Posee correo electrónico válido**: valida la propiedad nativa de correo electrónico del contacto\n- **Segmento del contacto**: valida si el contacto pertenece a uno o más segmentos\n- **Validar campo de formulario**: verifica la respuesta de un contacto en un campo específico de un formulario (disponible en flujos de contacto)\n- **Validar tareas**: verifica si existen tareas pendientes (manuales o automáticas) vinculadas al registro\n- **Valor de propiedad del registro**: compara el valor de una propiedad de Contacto, Negocio o Empresa (la condicional más flexible, con múltiples operadores de comparación)\n\n## Decisiones\n\nA diferencia de las condicionales, las decisiones se basan en **acciones que el propio contacto realizó** dentro de una ventana de tiempo, muy utilizadas en secuencias de seguimiento. Disponibles solo en flujos basados en contacto.\n\nToda decisión tiene una salida positiva (la acción ocurrió) y una negativa (no ocurrió dentro del plazo configurado). Tipos disponibles:\n\n- **Descargó el archivo**: verifica si el contacto descargó un archivo alojado en Beeno\n- **Envió formulario**: verifica si el contacto completó un formulario dentro del plazo\n- **Visita a una página**: verifica si el contacto visitó una landing page (o una página externa con seguimiento configurado), con opción de validar el origen del acceso (referrer)\n- **Decisiones de correo electrónico**: verifica si el contacto abrió, hizo clic o respondió a un correo enviado anteriormente en el mismo flujo\n\n> Consejo: mantenga ventanas de espera cortas al inicio de la secuencia y auméntelas gradualmente para no presionar demasiado al contacto.\n\n## Objetivo del flujo\n\nEl **objetivo** es un conjunto de filtros que, al ser cumplidos por un registro, lo eliminan automáticamente del flujo, evitando comunicaciones innecesarias después de haber alcanzado el objetivo.\n\nEjemplo: si el objetivo del flujo es agendar una reunión, el objetivo puede ser \"El contacto agendó una reunión **O** se convirtió en cliente\". En cuanto se cumpla una de estas condiciones, el contacto sale del flujo.\n\nConfigure el objetivo en la pestaña **Configuración** del flujo, combinando grupos **Y** (todas las condiciones deben ser verdaderas) y grupos **O** (basta con una). Si el objetivo se alcanza mientras el registro está en una acción de retraso, esta concluye esa acción antes de ser eliminado del flujo.\n\n## Métricas y registros\n\nSiga el desempeño en **Flujos → [nombre del flujo]**:\n- **Estadísticas del flujo**: evolución diaria de contactos/negocios agregados\n- **Mapa de acciones**: cuántos registros entraron, avanzaron, completaron o fallaron en cada acción\n- **Actividad reciente**: cambios de configuración y quién los realizó, útil para auditoría\n- **Análisis individual**: abra la lista de registros inscritos y vea, en la línea de tiempo de cada contacto o negocio, todas las acciones del flujo que ya se ejecutaron",
+    },
   },
-
-  //  MARKETING
   {
     slug: "formularios",
-    title: "Formulários",
-    description: "Crie formulários para capturar leads integrados ao CRM.",
+    title: { pt: "Formulários", en: "Forms", es: "Formularios" },
+    description: { pt: "Crie formulários para capturar leads integrados ao CRM.", en: "Create forms to capture leads integrated with the CRM.", es: "Cree formularios para captar leads integrados al CRM." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "pipeline",
-    content: `## O que são formulários
-
-Os formulários nativos do Beeno vão muito além da simples captação de leads: eles criam ou atualizam automaticamente contatos e empresas no CRM, permitindo iniciar de imediato uma cadência de primeiro contato e notificar sua equipe sobre cada nova chegada. Por serem nativos, você mantém controle total sobre o fluxo de dados e evita retrabalho com integrações externas frágeis.
-
-## Criando um formulário
-
-1. Acesse **Marketing → Formulários** e clique em **Criar formulário**
-2. Em **Adicionar campo**, escolha entre as opções disponíveis: texto, e-mail (com validação automática), telefone, data, data/hora, arquivo, entre outras
-3. Para cada campo, selecione qual propriedade de contato ou empresa ele deve preencher automaticamente. Em campos do tipo lista, as opções da propriedade já aparecem prontas no formulário
-4. Na aba **Configurações**, ajuste o comportamento individual de cada campo
-5. Na aba **Ações**, defina o que acontece após o envio: disponibilizar um arquivo para download, notificar sua equipe por e-mail, entre outras
-6. Na aba **Estilos**, personalize o layout: formato dos campos, espaçamentos, cores e animações
-
-## Integração com webhook
-
-Configure um webhook para ser notificado a cada novo preenchimento, direto em **Configurações** do formulário, informando a URL de destino.
-
-## Rastreamento de UTM
-
-Adicione campos ocultos para capturar automaticamente os parâmetros de campanha (origem, mídia, campanha) da URL de onde o contato veio. Os dados ficam salvos nas propriedades do contato.`,
+    content: {
+      pt: "## O que são formulários\n\nOs formulários nativos do Beeno vão muito além da simples captação de leads: eles criam ou atualizam automaticamente contatos e empresas no CRM, permitindo iniciar de imediato uma cadência de primeiro contato e notificar sua equipe sobre cada nova chegada. Por serem nativos, você mantém controle total sobre o fluxo de dados e evita retrabalho com integrações externas frágeis.\n\n## Criando um formulário\n\n1. Acesse **Marketing → Formulários** e clique em **Criar formulário**\n2. Em **Adicionar campo**, escolha entre as opções disponíveis: texto, e-mail (com validação automática), telefone, data, data/hora, arquivo, entre outras\n3. Para cada campo, selecione qual propriedade de contato ou empresa ele deve preencher automaticamente. Em campos do tipo lista, as opções da propriedade já aparecem prontas no formulário\n4. Na aba **Configurações**, ajuste o comportamento individual de cada campo\n5. Na aba **Ações**, defina o que acontece após o envio: disponibilizar um arquivo para download, notificar sua equipe por e-mail, entre outras\n6. Na aba **Estilos**, personalize o layout: formato dos campos, espaçamentos, cores e animações\n\n## Integração com webhook\n\nConfigure um webhook para ser notificado a cada novo preenchimento, direto em **Configurações** do formulário, informando a URL de destino.\n\n## Rastreamento de UTM\n\nAdicione campos ocultos para capturar automaticamente os parâmetros de campanha (origem, mídia, campanha) da URL de onde o contato veio. Os dados ficam salvos nas propriedades do contato.",
+      en: "## What forms are\n\nBeeno's native forms go far beyond simple lead capture: they automatically create or update contacts and companies in the CRM, letting you immediately start a first-contact cadence and notify your team about every new arrival. Because they're native, you keep full control over the data flow and avoid rework with fragile external integrations.\n\n## Creating a form\n\n1. Go to **Marketing → Forms** and click **Create form**\n2. Under **Add field**, choose from the available options: text, email (with automatic validation), phone, date, date/time, file, among others\n3. For each field, select which contact or company property it should automatically fill in. For list-type fields, the property's options already appear ready-made in the form\n4. On the **Settings** tab, adjust the individual behavior of each field\n5. On the **Actions** tab, define what happens after submission: making a file available for download, notifying your team by email, among others\n6. On the **Styles** tab, customize the layout: field format, spacing, colors, and animations\n\n## Webhook integration\n\nSet up a webhook to be notified every time the form is submitted, directly in the form's **Settings**, by providing the destination URL.\n\n## UTM tracking\n\nAdd hidden fields to automatically capture campaign parameters (source, medium, campaign) from the URL the contact came from. The data is saved in the contact's properties.",
+      es: "## Qué son los formularios\n\nLos formularios nativos de Beeno van mucho más allá de la simple captación de leads: crean o actualizan automáticamente contactos y empresas en el CRM, permitiendo iniciar de inmediato una secuencia de primer contacto y notificar a su equipo sobre cada nueva llegada. Al ser nativos, usted mantiene el control total sobre el flujo de datos y evita el retrabajo con integraciones externas frágiles.\n\n## Cómo crear un formulario\n\n1. Ingrese a **Marketing → Formularios** y haga clic en **Crear formulario**\n2. En **Agregar campo**, elija entre las opciones disponibles: texto, correo electrónico (con validación automática), teléfono, fecha, fecha/hora, archivo, entre otras\n3. Para cada campo, seleccione qué propiedad de contacto o empresa debe completar automáticamente. En los campos de tipo lista, las opciones de la propiedad ya aparecen listas en el formulario\n4. En la pestaña **Configuración**, ajuste el comportamiento individual de cada campo\n5. En la pestaña **Acciones**, defina qué sucede después del envío: poner un archivo a disposición para descargar, notificar a su equipo por correo electrónico, entre otras\n6. En la pestaña **Estilos**, personalice el diseño: formato de los campos, espaciados, colores y animaciones\n\n## Integración con webhook\n\nConfigure un webhook para recibir una notificación cada vez que se complete el formulario, directamente en la **Configuración** del formulario, indicando la URL de destino.\n\n## Seguimiento de UTM\n\nAgregue campos ocultos para capturar automáticamente los parámetros de campaña (origen, medio, campaña) de la URL desde la que llegó el contacto. Los datos quedan guardados en las propiedades del contacto.",
+    },
   },
   {
     slug: "landing-page",
-    title: "Landing Pages",
-    description: "Crie páginas de captura nativas no Beeno.",
+    title: { pt: "Landing Pages", en: "Landing Pages", es: "Landing Pages" },
+    description: { pt: "Crie páginas de captura nativas no Beeno.", en: "Create native capture pages in Beeno.", es: "Cree páginas de captura nativas en Beeno." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "lp",
-    content: `## Landing Pages no Beeno
-
-As landing pages do Beeno são muito mais que páginas de captura: elas já nascem integradas ao CRM, criando automaticamente contatos, empresas e negócios, além de acionar cadências de primeiro contato e avisar sua equipe sobre cada nova conversão. Por serem publicadas direto da plataforma, você tem controle total do fluxo de dados e evita retrabalho com construtores externos e integrações frágeis.
-
-## Criando uma landing page
-
-1. Acesse **Marketing → Landing Page** e clique em **Criar página**
-2. Escolha um modelo na galeria de templates, ou inicie com uma página em branco
-3. Edite os blocos (texto, imagem, formulário, CTA)
-4. Configure o domínio personalizado
-5. Publique
-
-## Conectar domínio personalizado
-
-Para usar seu domínio (ex: oferta.suaempresa.com):
-1. Acesse **Configurações → Domínios**
-2. Adicione o subdomínio
-3. Configure o CNAME no seu provedor de DNS
-4. Aguarde a propagação (até 48h)
-
-## Integração com formulários
-
-Toda LP inclui automaticamente um formulário integrado ao CRM. Os leads capturados entram diretamente no pipeline configurado.
-
-## Boas práticas
-
-- Use um título claro e objetivo (benefício principal)
-- Inclua **prova social** (depoimentos, logos de clientes)
-- CTA visível acima da dobra (sem scroll)
-- Formulário com poucos campos (nome + e-mail + telefone é suficiente)
-- Versão mobile otimizada`,
+    content: {
+      pt: "## Landing Pages no Beeno\n\nAs landing pages do Beeno são muito mais que páginas de captura: elas já nascem integradas ao CRM, criando automaticamente contatos, empresas e negócios, além de acionar cadências de primeiro contato e avisar sua equipe sobre cada nova conversão. Por serem publicadas direto da plataforma, você tem controle total do fluxo de dados e evita retrabalho com construtores externos e integrações frágeis.\n\n## Criando uma landing page\n\n1. Acesse **Marketing → Landing Page** e clique em **Criar página**\n2. Escolha um modelo na galeria de templates, ou inicie com uma página em branco\n3. Edite os blocos (texto, imagem, formulário, CTA)\n4. Configure o domínio personalizado\n5. Publique\n\n## Conectar domínio personalizado\n\nPara usar seu domínio (ex: oferta.suaempresa.com):\n1. Acesse **Configurações → Domínios**\n2. Adicione o subdomínio\n3. Configure o CNAME no seu provedor de DNS\n4. Aguarde a propagação (até 48h)\n\n## Integração com formulários\n\nToda LP inclui automaticamente um formulário integrado ao CRM. Os leads capturados entram diretamente no pipeline configurado.\n\n## Boas práticas\n\n- Use um título claro e objetivo (benefício principal)\n- Inclua **prova social** (depoimentos, logos de clientes)\n- CTA visível acima da dobra (sem scroll)\n- Formulário com poucos campos (nome + e-mail + telefone é suficiente)\n- Versão mobile otimizada",
+      en: "## Landing Pages in Beeno\n\nBeeno's landing pages are much more than capture pages: they're born already integrated with the CRM, automatically creating contacts, companies, and deals, as well as triggering first-contact cadences and alerting your team about every new conversion. Because they're published directly from the platform, you have full control over the data flow and avoid rework with external builders and fragile integrations.\n\n## Creating a landing page\n\n1. Go to **Marketing → Landing Page** and click **Create page**\n2. Choose a template from the template gallery, or start with a blank page\n3. Edit the blocks (text, image, form, CTA)\n4. Set up the custom domain\n5. Publish\n\n## Connecting a custom domain\n\nTo use your own domain (e.g., offer.yourcompany.com):\n1. Go to **Settings → Domains**\n2. Add the subdomain\n3. Set up the CNAME record with your DNS provider\n4. Wait for propagation (up to 48h)\n\n## Integration with forms\n\nEvery landing page automatically includes a form integrated with the CRM. Captured leads go straight into the configured pipeline.\n\n## Best practices\n\n- Use a clear, objective headline (the main benefit)\n- Include **social proof** (testimonials, customer logos)\n- Keep the CTA visible above the fold (no scrolling needed)\n- Use a form with few fields (name + email + phone is enough)\n- Provide an optimized mobile version",
+      es: "## Landing Pages en Beeno\n\nLas landing pages de Beeno son mucho más que páginas de captura: nacen ya integradas al CRM, creando automáticamente contactos, empresas y negocios, además de activar secuencias de primer contacto y avisar a su equipo sobre cada nueva conversión. Al publicarse directamente desde la plataforma, usted tiene control total del flujo de datos y evita el retrabajo con constructores externos e integraciones frágiles.\n\n## Cómo crear una landing page\n\n1. Ingrese a **Marketing → Landing Page** y haga clic en **Crear página**\n2. Elija una plantilla en la galería de plantillas, o comience con una página en blanco\n3. Edite los bloques (texto, imagen, formulario, CTA)\n4. Configure el dominio personalizado\n5. Publique\n\n## Conectar un dominio personalizado\n\nPara usar su propio dominio (ej.: oferta.suempresa.com):\n1. Ingrese a **Configuración → Dominios**\n2. Agregue el subdominio\n3. Configure el registro CNAME en su proveedor de DNS\n4. Espere la propagación (hasta 48 h)\n\n## Integración con formularios\n\nToda landing page incluye automáticamente un formulario integrado al CRM. Los leads capturados ingresan directamente al pipeline configurado.\n\n## Buenas prácticas\n\n- Use un título claro y directo (beneficio principal)\n- Incluya **prueba social** (testimonios, logos de clientes)\n- CTA visible sin necesidad de desplazarse (above the fold)\n- Formulario con pocos campos (nombre + correo electrónico + teléfono es suficiente)\n- Versión móvil optimizada",
+    },
   },
   {
     slug: "arquivos",
-    title: "Arquivos",
-    description: "Centralize e monitore o compartilhamento de documentos.",
+    title: { pt: "Arquivos", en: "Files", es: "Archivos" },
+    description: { pt: "Centralize e monitore o compartilhamento de documentos.", en: "Centralize and track document sharing.", es: "Centralice y monitoree el intercambio de documentos." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "arquivo",
-    content: `## O que são Arquivos
-
-A área de **Arquivos** centraliza documentos digitais relacionados a contatos, negócios e demais registros do CRM. Cada arquivo enviado gera automaticamente um link de download exclusivo e permite acompanhar quantas vezes ele foi baixado.
-
-## Onde usar arquivos
-
-Depois de enviados, os arquivos podem ser reaproveitados em:
-- **E-mails**: como anexo ou link em campanhas e comunicados
-- **Redirecionamento de formulários**: direcione o contato para download após o envio
-- **Landing pages**: disponibilize materiais de apoio, catálogos ou e-books
-- **Fluxos de automação**: use a decisão "Baixou o arquivo" para ramificar o fluxo com base no download
-
-## Como enviar um novo arquivo
-
-1. Acesse **Marketing → Arquivos**
-2. Clique em **Novo arquivo** e selecione o arquivo a importar
-3. Preencha as informações básicas (nome, descrição)
-4. Salve. O arquivo precisa estar **ativo** para poder ser utilizado
-
-## Monitorando arquivos existentes
-
-Na listagem de arquivos, abra qualquer item para ver:
-- O **link público** de compartilhamento e download
-- **Métricas de downloads**
-- **Pré-visualização** do conteúdo`,
+    content: {
+      pt: "## O que são Arquivos\n\nA área de **Arquivos** centraliza documentos digitais relacionados a contatos, negócios e demais registros do CRM. Cada arquivo enviado gera automaticamente um link de download exclusivo e permite acompanhar quantas vezes ele foi baixado.\n\n## Onde usar arquivos\n\nDepois de enviados, os arquivos podem ser reaproveitados em:\n- **E-mails**: como anexo ou link em campanhas e comunicados\n- **Redirecionamento de formulários**: direcione o contato para download após o envio\n- **Landing pages**: disponibilize materiais de apoio, catálogos ou e-books\n- **Fluxos de automação**: use a decisão \"Baixou o arquivo\" para ramificar o fluxo com base no download\n\n## Como enviar um novo arquivo\n\n1. Acesse **Marketing → Arquivos**\n2. Clique em **Novo arquivo** e selecione o arquivo a importar\n3. Preencha as informações básicas (nome, descrição)\n4. Salve. O arquivo precisa estar **ativo** para poder ser utilizado\n\n## Monitorando arquivos existentes\n\nNa listagem de arquivos, abra qualquer item para ver:\n- O **link público** de compartilhamento e download\n- **Métricas de downloads**\n- **Pré-visualização** do conteúdo",
+      en: "## What Files are\n\nThe **Files** area centralizes digital documents related to contacts, deals, and other CRM records. Every uploaded file automatically generates a unique download link and lets you track how many times it has been downloaded.\n\n## Where to use files\n\nOnce uploaded, files can be reused in:\n- **Emails**: as an attachment or link in campaigns and communications\n- **Form redirects**: send the contact to download the file after submission\n- **Landing pages**: make supporting materials, catalogs, or e-books available\n- **Automation flows**: use the \"Downloaded the file\" decision to branch the flow based on the download\n\n## How to upload a new file\n\n1. Go to **Marketing → Files**\n2. Click **New file** and select the file to import\n3. Fill in the basic information (name, description)\n4. Save. The file must be **active** to be usable\n\n## Monitoring existing files\n\nIn the file listing, open any item to see:\n- The **public** sharing and download link\n- **Download metrics**\n- A **preview** of the content",
+      es: "## Qué son los Archivos\n\nEl área de **Archivos** centraliza documentos digitales relacionados con contactos, negocios y demás registros del CRM. Cada archivo subido genera automáticamente un enlace de descarga exclusivo y permite hacer seguimiento de cuántas veces fue descargado.\n\n## Dónde usar los archivos\n\nUna vez subidos, los archivos pueden reutilizarse en:\n- **Correos electrónicos**: como adjunto o enlace en campañas y comunicados\n- **Redirección de formularios**: dirija al contacto a la descarga después del envío\n- **Landing pages**: ponga a disposición materiales de apoyo, catálogos o e-books\n- **Flujos de automatización**: use la decisión \"Descargó el archivo\" para ramificar el flujo según la descarga\n\n## Cómo subir un nuevo archivo\n\n1. Ingrese a **Marketing → Archivos**\n2. Haga clic en **Nuevo archivo** y seleccione el archivo a importar\n3. Complete la información básica (nombre, descripción)\n4. Guarde. El archivo debe estar **activo** para poder utilizarse\n\n## Monitorear archivos existentes\n\nEn el listado de archivos, abra cualquier elemento para ver:\n- El **enlace público** de intercambio y descarga\n- **Métricas de descargas**\n- **Vista previa** del contenido",
+    },
   },
   {
     slug: "emails",
-    title: "E-mails",
-    description: "Crie, envie e acompanhe métricas de campanhas de e-mail.",
+    title: { pt: "E-mails", en: "Emails", es: "Correos electrónicos" },
+    description: { pt: "Crie, envie e acompanhe métricas de campanhas de e-mail.", en: "Create, send, and track metrics for email campaigns.", es: "Crea, envía y da seguimiento a las métricas de tus campañas de correo electrónico." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "email",
-    content: `## O que é a área de E-mails
-
-Reúne tudo que você precisa para criar, automatizar e acompanhar campanhas de e-mail: modelos reutilizáveis, envios automáticos baseados em ações do contato e o histórico completo de entregas, aberturas e cliques.
-
-## Tipos de e-mail
-
-| Tipo | Quando usar |
-|------|-------------|
-| **E-mail automatizado** | Disparos dentro de fluxos de automação ou envios pontuais na ficha do contato, ideal quando o envio precisa se mesclar com outras ações do fluxo |
-| **E-mail regular** | Disparos para um ou mais segmentos, sem gatilhos adicionais, ideal para campanhas pontuais de e-mail marketing |
-
-## Como criar um e-mail
-
-1. Acesse **Marketing → E-mails → Criar e-mail** e escolha o tipo (automatizado ou regular)
-2. Escolha um modelo da galeria ou comece do zero
-3. Monte o e-mail no editor visual, use **Exibir estrutura** para revisar o esqueleto de linhas e conteúdos, e **Salvar como novo modelo** para reaproveitar o layout depois
-4. Na aba **Detalhes**, configure:
-   - **Nome e e-mail do remetente** (o domínio precisa estar conectado, veja [Domínios](#))
-   - **E-mail para respostas** e **cópia oculta**
-   - **Anexos** (arquivos já salvos em [Arquivos](#))
-   - **Versão em texto simples**, alternativa para melhorar a entregabilidade
-5. Defina os detalhes finais: **assunto**, **nome interno** (aparece na listagem e métricas), **categoria** (ex.: Transacional, Prospecção) e, em e-mails regulares, o **segmento** de destino
-6. Escolha entre **enviar agora** ou **agendar** data e horário
-
-## Métricas de envio
-
-Na listagem, cada e-mail mostra a quantidade de enviados, lidos e clicados, clique no número para abrir a lista filtrada de contatos correspondente. Ao abrir um e-mail específico, o detalhamento inclui:
-
-- **Total de tentativas vs. enviados**
-- **Aberturas** e **cliques**
-- **Rejeições** (bounce, e-mail incorreto ou inexistente)
-- **Cancelamentos de assinatura**
-- **Falhas de envio** (ex.: domínio com baixa reputação)
-
-> Ao registrar uma rejeição, o contato é automaticamente marcado como desinscrito de novas comunicações.
-
-O **dashboard de Marketing** também reúne essas métricas com filtro por período.`,
+    content: {
+      pt: "## O que é a área de E-mails\n\nReúne tudo que você precisa para criar, automatizar e acompanhar campanhas de e-mail: modelos reutilizáveis, envios automáticos baseados em ações do contato e o histórico completo de entregas, aberturas e cliques.\n\n## Tipos de e-mail\n\n| Tipo | Quando usar |\n|------|-------------|\n| **E-mail automatizado** | Disparos dentro de fluxos de automação ou envios pontuais na ficha do contato, ideal quando o envio precisa se mesclar com outras ações do fluxo |\n| **E-mail regular** | Disparos para um ou mais segmentos, sem gatilhos adicionais, ideal para campanhas pontuais de e-mail marketing |\n\n## Como criar um e-mail\n\n1. Acesse **Marketing → E-mails → Criar e-mail** e escolha o tipo (automatizado ou regular)\n2. Escolha um modelo da galeria ou comece do zero\n3. Monte o e-mail no editor visual, use **Exibir estrutura** para revisar o esqueleto de linhas e conteúdos, e **Salvar como novo modelo** para reaproveitar o layout depois\n4. Na aba **Detalhes**, configure:\n   - **Nome e e-mail do remetente** (o domínio precisa estar conectado, veja [Domínios](#))\n   - **E-mail para respostas** e **cópia oculta**\n   - **Anexos** (arquivos já salvos em [Arquivos](#))\n   - **Versão em texto simples**, alternativa para melhorar a entregabilidade\n5. Defina os detalhes finais: **assunto**, **nome interno** (aparece na listagem e métricas), **categoria** (ex.: Transacional, Prospecção) e, em e-mails regulares, o **segmento** de destino\n6. Escolha entre **enviar agora** ou **agendar** data e horário\n\n## Métricas de envio\n\nNa listagem, cada e-mail mostra a quantidade de enviados, lidos e clicados, clique no número para abrir a lista filtrada de contatos correspondente. Ao abrir um e-mail específico, o detalhamento inclui:\n\n- **Total de tentativas vs. enviados**\n- **Aberturas** e **cliques**\n- **Rejeições** (bounce, e-mail incorreto ou inexistente)\n- **Cancelamentos de assinatura**\n- **Falhas de envio** (ex.: domínio com baixa reputação)\n\n> Ao registrar uma rejeição, o contato é automaticamente marcado como desinscrito de novas comunicações.\n\nO **dashboard de Marketing** também reúne essas métricas com filtro por período.",
+      en: "## What the Emails area is\n\nIt brings together everything you need to create, automate, and track email campaigns: reusable templates, automatic sends triggered by contact actions, and the full history of deliveries, opens, and clicks.\n\n## Email types\n\n| Type | When to use |\n|------|-------------|\n| **Automated email** | Sent within automation workflows or as one-off sends from the contact record, ideal when the send needs to blend with other workflow actions |\n| **Regular email** | Sent to one or more segments, with no additional triggers, ideal for one-off email marketing campaigns |\n\n## How to create an email\n\n1. Go to **Marketing → Emails → Create email** and choose the type (automated or regular)\n2. Choose a template from the gallery or start from scratch\n3. Build the email in the visual editor, use **View structure** to review the skeleton of rows and content blocks, and **Save as new template** to reuse the layout later\n4. On the **Details** tab, configure:\n   - **Sender name and email** (the domain must be connected, see [Domains](#))\n   - **Reply-to email** and **BCC**\n   - **Attachments** (files already saved in [Files](#))\n   - **Plain-text version**, an alternative to improve deliverability\n5. Set the final details: **subject**, **internal name** (shown in the listing and metrics), **category** (e.g., Transactional, Prospecting), and, for regular emails, the target **segment**\n6. Choose between **send now** or **schedule** a date and time\n\n## Send metrics\n\nIn the listing, each email shows the number of sends, reads, and clicks; click the number to open the corresponding filtered list of contacts. When you open a specific email, the breakdown includes:\n\n- **Total attempts vs. sends**\n- **Opens** and **clicks**\n- **Bounces** (incorrect or nonexistent email address)\n- **Unsubscribes**\n- **Send failures** (e.g., domain with low reputation)\n\n> When a bounce is recorded, the contact is automatically marked as unsubscribed from future communications.\n\nThe **Marketing dashboard** also brings these metrics together with a date-range filter.",
+      es: "## Qué es el área de Correos electrónicos\n\nReúne todo lo que necesitas para crear, automatizar y dar seguimiento a campañas de correo electrónico: plantillas reutilizables, envíos automáticos basados en acciones del contacto y el historial completo de entregas, aperturas y clics.\n\n## Tipos de correo\n\n| Tipo | Cuándo usarlo |\n|------|-------------|\n| **Correo automatizado** | Se envía dentro de flujos de automatización o como envíos puntuales desde la ficha del contacto, ideal cuando el envío necesita combinarse con otras acciones del flujo |\n| **Correo regular** | Se envía a uno o más segmentos, sin disparadores adicionales, ideal para campañas puntuales de email marketing |\n\n## Cómo crear un correo\n\n1. Ve a **Marketing → Correos electrónicos → Crear correo** y elige el tipo (automatizado o regular)\n2. Elige una plantilla de la galería o empieza desde cero\n3. Arma el correo en el editor visual, usa **Ver estructura** para revisar el esqueleto de filas y contenidos, y **Guardar como nueva plantilla** para reutilizar el diseño más adelante\n4. En la pestaña **Detalles**, configura:\n   - **Nombre y correo del remitente** (el dominio debe estar conectado, consulta [Dominios](#))\n   - **Correo para respuestas** y **copia oculta**\n   - **Archivos adjuntos** (archivos ya guardados en [Archivos](#))\n   - **Versión en texto plano**, una alternativa para mejorar la entregabilidad\n5. Define los detalles finales: **asunto**, **nombre interno** (aparece en el listado y en las métricas), **categoría** (por ejemplo, Transaccional, Prospección) y, en correos regulares, el **segmento** de destino\n6. Elige entre **enviar ahora** o **programar** fecha y hora\n\n## Métricas de envío\n\nEn el listado, cada correo muestra la cantidad de enviados, leídos y clics; haz clic en el número para abrir la lista filtrada de contactos correspondiente. Al abrir un correo específico, el detalle incluye:\n\n- **Total de intentos vs. enviados**\n- **Aperturas** y **clics**\n- **Rebotes** (correo incorrecto o inexistente)\n- **Cancelaciones de suscripción**\n- **Fallas de envío** (por ejemplo, dominio con baja reputación)\n\n> Al registrarse un rebote, el contacto se marca automáticamente como no suscrito a nuevas comunicaciones.\n\nEl **panel de Marketing** también reúne estas métricas con filtro por período.",
+    },
   },
   {
     slug: "dominios",
-    title: "Domínios",
-    description: "Configure domínio próprio para e-mail e landing pages.",
+    title: { pt: "Domínios", en: "Domains", es: "Dominios" },
+    description: { pt: "Configure domínio próprio para e-mail e landing pages.", en: "Set up your own domain for email and landing pages.", es: "Configura tu propio dominio para correo electrónico y landing pages." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "dominio",
-    content: `## Por que conectar um domínio
-
-Para enviar e-mails com seu próprio domínio (melhorando a entregabilidade) e publicar landing pages personalizadas, é necessário apontar o domínio corretamente dentro do Beeno.
-
-## Como conectar
-
-1. Acesse **Configurações → Domínios** e clique em **Conectar domínio**
-2. Escolha o que deseja configurar: **domínio de e-mail** ou **domínio de landing page**
-3. Digite o domínio, ele precisa ser próprio, ou seja, você precisa ter acesso aos registros DNS dele
-
-> Nunca use o domínio principal do seu site institucional. Se o site é \`www.suaempresa.com.br\`, não use \`suaempresa.com.br\`, use uma variação como \`lp.suaempresa.com.br\` ou \`mail.suaempresa.com.br\`.
-
-4. O Beeno gera os registros DNS necessários. Acesse o painel do seu provedor (Registro.br, GoDaddy, HostGator etc.) e aponte todos os registros exibidos, sem exceção
-5. Depois de apontar, volte ao Beeno e **revalide a conexão**. Quando todos os itens aparecerem em verde, o domínio está conectado
-
-## Depois de conectado
-
-**Para e-mail**: defina o domínio como **domínio primário de envio** e preencha as configurações padrão (nome do remetente, endereço etc.). A partir daí, os disparos saem autenticados pelo seu domínio.
-
-**Para landing pages**: crie as páginas normalmente, ao publicar, elas já ficam disponíveis no domínio configurado.
-
-Se tiver dificuldades no apontamento, consulte a documentação do seu provedor de domínio ou peça apoio ao time técnico responsável pelo DNS.`,
+    content: {
+      pt: "## Por que conectar um domínio\n\nPara enviar e-mails com seu próprio domínio (melhorando a entregabilidade) e publicar landing pages personalizadas, é necessário apontar o domínio corretamente dentro do Beeno.\n\n## Como conectar\n\n1. Acesse **Configurações → Domínios** e clique em **Conectar domínio**\n2. Escolha o que deseja configurar: **domínio de e-mail** ou **domínio de landing page**\n3. Digite o domínio, ele precisa ser próprio, ou seja, você precisa ter acesso aos registros DNS dele\n\n> Nunca use o domínio principal do seu site institucional. Se o site é `www.suaempresa.com.br`, não use `suaempresa.com.br`, use uma variação como `lp.suaempresa.com.br` ou `mail.suaempresa.com.br`.\n\n4. O Beeno gera os registros DNS necessários. Acesse o painel do seu provedor (Registro.br, GoDaddy, HostGator etc.) e aponte todos os registros exibidos, sem exceção\n5. Depois de apontar, volte ao Beeno e **revalide a conexão**. Quando todos os itens aparecerem em verde, o domínio está conectado\n\n## Depois de conectado\n\n**Para e-mail**: defina o domínio como **domínio primário de envio** e preencha as configurações padrão (nome do remetente, endereço etc.). A partir daí, os disparos saem autenticados pelo seu domínio.\n\n**Para landing pages**: crie as páginas normalmente, ao publicar, elas já ficam disponíveis no domínio configurado.\n\nSe tiver dificuldades no apontamento, consulte a documentação do seu provedor de domínio ou peça apoio ao time técnico responsável pelo DNS.",
+      en: "## Why connect a domain\n\nTo send emails from your own domain (improving deliverability) and publish custom landing pages, you need to point the domain correctly within Beeno.\n\n## How to connect it\n\n1. Go to **Settings → Domains** and click **Connect domain**\n2. Choose what you want to configure: **email domain** or **landing page domain**\n3. Enter the domain, it must be your own, meaning you need access to its DNS records\n\n> Never use your main corporate website domain. If the site is `www.suaempresa.com.br`, don't use `suaempresa.com.br`, use a variation such as `lp.suaempresa.com.br` or `mail.suaempresa.com.br`.\n\n4. Beeno generates the required DNS records. Go to your provider's dashboard (Registro.br, GoDaddy, HostGator, etc.) and point all the displayed records, without exception\n5. After pointing them, go back to Beeno and **revalidate the connection**. Once all items appear in green, the domain is connected\n\n## After connecting\n\n**For email**: set the domain as the **primary sending domain** and fill in the default settings (sender name, address, etc.). From then on, sends go out authenticated by your domain.\n\n**For landing pages**: create pages as usual, once published, they'll already be available on the configured domain.\n\nIf you run into trouble with the DNS pointing, check your domain provider's documentation or ask the technical team responsible for DNS for support.",
+      es: "## Por qué conectar un dominio\n\nPara enviar correos desde tu propio dominio (mejorando la entregabilidad) y publicar landing pages personalizadas, es necesario apuntar el dominio correctamente dentro de Beeno.\n\n## Cómo conectarlo\n\n1. Ve a **Configuración → Dominios** y haz clic en **Conectar dominio**\n2. Elige qué deseas configurar: **dominio de correo** o **dominio de landing page**\n3. Escribe el dominio, debe ser propio, es decir, debes tener acceso a sus registros DNS\n\n> Nunca uses el dominio principal de tu sitio institucional. Si el sitio es `www.suaempresa.com.br`, no uses `suaempresa.com.br`, usa una variación como `lp.suaempresa.com.br` o `mail.suaempresa.com.br`.\n\n4. Beeno genera los registros DNS necesarios. Ingresa al panel de tu proveedor (Registro.br, GoDaddy, HostGator, etc.) y apunta todos los registros mostrados, sin excepción\n5. Después de apuntarlos, vuelve a Beeno y **revalida la conexión**. Cuando todos los elementos aparezcan en verde, el dominio estará conectado\n\n## Después de conectado\n\n**Para correo**: define el dominio como **dominio principal de envío** y completa la configuración predeterminada (nombre del remitente, dirección, etc.). A partir de ahí, los envíos saldrán autenticados por tu dominio.\n\n**Para landing pages**: crea las páginas normalmente, al publicarlas, ya estarán disponibles en el dominio configurado.\n\nSi tienes dificultades con el apuntamiento, consulta la documentación de tu proveedor de dominio o pide apoyo al equipo técnico responsable del DNS.",
+    },
   },
   {
     slug: "anuncios",
-    title: "Anúncios",
-    description: "Conecte contas de anúncios, veja criativos e sincronize leads.",
+    title: { pt: "Anúncios", en: "Ads", es: "Anuncios" },
+    description: { pt: "Conecte contas de anúncios, veja criativos e sincronize leads.", en: "Connect ad accounts, view creatives, and sync leads.", es: "Conecta cuentas de anuncios, revisa los creativos y sincroniza leads." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "ads",
-    content: `## O que a área de Anúncios oferece
-
-Conecte contas de anúncios do **Meta Ads, Google Ads e LinkedIn Ads** para acompanhar custos, leads e conversões sem sair do CRM, com dashboards prontos e sincronização automática de leads gerados por formulários.
-
-## Conectar uma conta de anúncios
-
-1. Acesse **Marketing → Anúncios → Contas de Anúncios**
-2. Escolha a plataforma desejada e siga o pop-up de vínculo, autenticando com um usuário que tenha permissão de administrador na conta de anúncios
-3. Após conectado, a conta aparece na listagem com seu status de conexão
-
-## Sincronização de leads de formulários (Meta Ads)
-
-Com a conta conectada, é possível sincronizar formulários **Lead Ads** do Meta diretamente com o CRM:
-
-1. Acesse **Marketing → Anúncios → Sincronização de leads → Criar sincronização**
-2. Selecione a conta, a página vinculada e o formulário desejado
-3. Mapeie os campos do formulário para as propriedades de contato correspondentes
-4. Opcionalmente, defina uma inscrição automática em um fluxo de automação
-5. Salve. Novos leads do formulário passam a criar contatos automaticamente no Beeno
-
-> **Leads não estão chegando?** Normalmente é permissão no Meta Business Manager. Acesse **Configurações → Integrações → Acesso a leads** na página vinculada ao formulário, abra a aba **CRMs** e confirme se o Beeno está na lista de CRMs autorizados. Se não estiver, use **Assign CRM** para atribuí-lo. Esse passo precisa ser repetido para cada página com formulários ativos.
-
-## Gerenciador de Anúncios
-
-Acompanhe a performance das campanhas conectadas direto no CRM, em **Marketing → Anúncios**:
-
-- **Filtros**: conta, status e período
-- **Resumo de performance**: impressões, cliques, contatos, negócios, valor gasto e ROI
-- **Navegação em camadas**: Campanhas → Conjuntos de anúncios → Anúncios, cada nível com métricas de CPC, CPM, CTR, valor gasto, orçamento, contatos e negócios gerados
-
-> A atualização das métricas pode levar até 24 horas, pois depende da sincronização com cada plataforma. Pequenas diferenças em relação ao painel nativo da plataforma são esperadas por conta dessa janela.`,
+    content: {
+      pt: "## O que a área de Anúncios oferece\n\nConecte contas de anúncios do **Meta Ads, Google Ads e LinkedIn Ads** para acompanhar custos, leads e conversões sem sair do CRM, com dashboards prontos e sincronização automática de leads gerados por formulários.\n\n## Conectar uma conta de anúncios\n\n1. Acesse **Marketing → Anúncios → Contas de Anúncios**\n2. Escolha a plataforma desejada e siga o pop-up de vínculo, autenticando com um usuário que tenha permissão de administrador na conta de anúncios\n3. Após conectado, a conta aparece na listagem com seu status de conexão\n\n## Sincronização de leads de formulários (Meta Ads)\n\nCom a conta conectada, é possível sincronizar formulários **Lead Ads** do Meta diretamente com o CRM:\n\n1. Acesse **Marketing → Anúncios → Sincronização de leads → Criar sincronização**\n2. Selecione a conta, a página vinculada e o formulário desejado\n3. Mapeie os campos do formulário para as propriedades de contato correspondentes\n4. Opcionalmente, defina uma inscrição automática em um fluxo de automação\n5. Salve. Novos leads do formulário passam a criar contatos automaticamente no Beeno\n\n> **Leads não estão chegando?** Normalmente é permissão no Meta Business Manager. Acesse **Configurações → Integrações → Acesso a leads** na página vinculada ao formulário, abra a aba **CRMs** e confirme se o Beeno está na lista de CRMs autorizados. Se não estiver, use **Assign CRM** para atribuí-lo. Esse passo precisa ser repetido para cada página com formulários ativos.\n\n## Gerenciador de Anúncios\n\nAcompanhe a performance das campanhas conectadas direto no CRM, em **Marketing → Anúncios**:\n\n- **Filtros**: conta, status e período\n- **Resumo de performance**: impressões, cliques, contatos, negócios, valor gasto e ROI\n- **Navegação em camadas**: Campanhas → Conjuntos de anúncios → Anúncios, cada nível com métricas de CPC, CPM, CTR, valor gasto, orçamento, contatos e negócios gerados\n\n> A atualização das métricas pode levar até 24 horas, pois depende da sincronização com cada plataforma. Pequenas diferenças em relação ao painel nativo da plataforma são esperadas por conta dessa janela.",
+      en: "## What the Ads area offers\n\nConnect **Meta Ads, Google Ads, and LinkedIn Ads** accounts to track costs, leads, and conversions without leaving the CRM, with ready-made dashboards and automatic syncing of leads generated from forms.\n\n## Connecting an ad account\n\n1. Go to **Marketing → Ads → Ad Accounts**\n2. Choose the desired platform and follow the connection pop-up, authenticating with a user who has administrator permission on the ad account\n3. Once connected, the account appears in the listing with its connection status\n\n## Lead form sync (Meta Ads)\n\nWith the account connected, you can sync **Lead Ads** forms from Meta directly with the CRM:\n\n1. Go to **Marketing → Ads → Lead Sync → Create sync**\n2. Select the account, the linked page, and the desired form\n3. Map the form fields to the corresponding contact properties\n4. Optionally, set an automatic enrollment into an automation workflow\n5. Save. New leads from the form will automatically create contacts in Beeno\n\n> **Leads not coming in?** This is usually a permissions issue in Meta Business Manager. Go to **Settings → Integrations → Lead access** on the page linked to the form, open the **CRMs** tab, and confirm that Beeno is on the list of authorized CRMs. If it isn't, use **Assign CRM** to assign it. This step needs to be repeated for each page with active forms.\n\n## Ads Manager\n\nTrack the performance of connected campaigns directly in the CRM, under **Marketing → Ads**:\n\n- **Filters**: account, status, and date range\n- **Performance summary**: impressions, clicks, contacts, deals, amount spent, and ROI\n- **Layered navigation**: Campaigns → Ad sets → Ads, each level with CPC, CPM, CTR, amount spent, budget, contacts, and deals generated metrics\n\n> Metrics can take up to 24 hours to update, since they depend on syncing with each platform. Small differences compared to the platform's native dashboard are expected due to this window.",
+      es: "## Qué ofrece el área de Anuncios\n\nConecta cuentas de **Meta Ads, Google Ads y LinkedIn Ads** para dar seguimiento a costos, leads y conversiones sin salir del CRM, con paneles listos para usar y sincronización automática de leads generados por formularios.\n\n## Conectar una cuenta de anuncios\n\n1. Ve a **Marketing → Anuncios → Cuentas de anuncios**\n2. Elige la plataforma deseada y sigue el pop-up de vinculación, autenticándote con un usuario que tenga permiso de administrador en la cuenta de anuncios\n3. Una vez conectada, la cuenta aparece en el listado con su estado de conexión\n\n## Sincronización de leads de formularios (Meta Ads)\n\nCon la cuenta conectada, es posible sincronizar formularios **Lead Ads** de Meta directamente con el CRM:\n\n1. Ve a **Marketing → Anuncios → Sincronización de leads → Crear sincronización**\n2. Selecciona la cuenta, la página vinculada y el formulario deseado\n3. Mapea los campos del formulario a las propiedades de contacto correspondientes\n4. Opcionalmente, define una inscripción automática en un flujo de automatización\n5. Guarda. Los nuevos leads del formulario pasarán a crear contactos automáticamente en Beeno\n\n> **¿No están llegando los leads?** Normalmente es un tema de permisos en Meta Business Manager. Ve a **Configuración → Integraciones → Acceso a leads** en la página vinculada al formulario, abre la pestaña **CRMs** y confirma si Beeno está en la lista de CRMs autorizados. Si no lo está, usa **Assign CRM** para asignarlo. Este paso debe repetirse para cada página con formularios activos.\n\n## Administrador de Anuncios\n\nDa seguimiento al desempeño de las campañas conectadas directamente en el CRM, en **Marketing → Anuncios**:\n\n- **Filtros**: cuenta, estado y período\n- **Resumen de desempeño**: impresiones, clics, contactos, negocios, monto invertido y ROI\n- **Navegación en capas**: Campañas → Conjuntos de anuncios → Anuncios, cada nivel con métricas de CPC, CPM, CTR, monto invertido, presupuesto, contactos y negocios generados\n\n> La actualización de las métricas puede tardar hasta 24 horas, ya que depende de la sincronización con cada plataforma. Se esperan pequeñas diferencias respecto al panel nativo de la plataforma debido a esta ventana de tiempo.",
+    },
   },
   {
     slug: "meta-pixel",
-    title: "Meta Pixel",
-    description: "Conecte o Pixel da Meta e otimize campanhas com eventos de conversão.",
+    title: { pt: "Meta Pixel", en: "Meta Pixel", es: "Meta Pixel" },
+    description: { pt: "Conecte o Pixel da Meta e otimize campanhas com eventos de conversão.", en: "Connect the Meta Pixel and optimize campaigns with conversion events.", es: "Conecta el Pixel de Meta y optimiza campañas con eventos de conversión." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "pixel",
-    content: `## O que é o Meta Pixel
-
-O Pixel da Meta é um trecho de rastreamento usado para medir conversões, criar públicos e otimizar campanhas no Facebook e Instagram. Ao conectá-lo ao Beeno, você combina as métricas de aquisição com os dados de relacionamento do CRM (etapas do funil, origem, oportunidades), permitindo que o algoritmo de anúncios aprenda com sinais de qualidade, não apenas cliques.
-
-## Pré-requisitos
-
-1. Acesso à **Página** do Facebook e à **Conta de Anúncios** onde o Pixel está cadastrado (com permissão de administrador)
-2. O Pixel já criado no **Gerenciador de Eventos** da Meta
-3. Estar logado com o perfil correto da Meta no navegador
-
-> Se sua empresa usa Business Manager, garanta que Pixel, Página e Conta de Anúncios pertencem ao mesmo Business e que seu usuário tem as permissões necessárias.
-
-## Conectar um Pixel existente
-
-1. Acesse **Configurações → Anúncios → Pixel → Adicionar Pixel**
-2. Selecione o usuário/perfil da Meta com acesso à Página e à Conta de Anúncios
-3. Após autenticar, escolha o Pixel desejado na listagem e confirme em **Conectar**
-
-O Pixel fica com status **Conectado**, exibindo ID, nome e status. A conexão não altera o site automaticamente. O envio de eventos ocorre a partir de ações no CRM (criação de lead, mudança de etapa, conclusão de compra etc.), configuradas via Eventos.
-
-## Eventos
-
-Eventos informam ao algoritmo da Meta quais ações importam para o seu negócio:
-
-- **Eventos padrão**: pré-definidos pela Meta (ex.: \`Lead\`, \`Purchase\`, \`CompleteRegistration\`), facilitam otimização e comparação de relatórios
-- **Eventos personalizados**: criados por você (ex.: \`DemoAgendada\`, \`NegocioGanho\`) para cenários específicos do seu funil
-
-### Como criar um evento
-
-1. Acesse **Configurações → Anúncios → Eventos → Adicionar evento**
-2. Preencha: rede de anúncios (Facebook), conta de anúncios, Pixel já conectado e o tipo de conversão (fluxo de automação)
-3. Selecione os identificadores de correspondência (ex.: identificador interno, e-mail e telefone)
-4. Escolha um evento padrão ou defina o nome de um evento customizado
-5. Salve. O evento fica listado com o Pixel e a Conta de Anúncios associados
-
-## Como os eventos são disparados
-
-Os eventos são enviados através da ação **API de conversão**, disponível nos [fluxos de automação](#). Combine gatilhos, condições e outras ações (como atualização de propriedades) para que o evento seja enviado à Meta exatamente no momento certo do funil.`,
+    content: {
+      pt: "## O que é o Meta Pixel\n\nO Pixel da Meta é um trecho de rastreamento usado para medir conversões, criar públicos e otimizar campanhas no Facebook e Instagram. Ao conectá-lo ao Beeno, você combina as métricas de aquisição com os dados de relacionamento do CRM (etapas do funil, origem, oportunidades), permitindo que o algoritmo de anúncios aprenda com sinais de qualidade, não apenas cliques.\n\n## Pré-requisitos\n\n1. Acesso à **Página** do Facebook e à **Conta de Anúncios** onde o Pixel está cadastrado (com permissão de administrador)\n2. O Pixel já criado no **Gerenciador de Eventos** da Meta\n3. Estar logado com o perfil correto da Meta no navegador\n\n> Se sua empresa usa Business Manager, garanta que Pixel, Página e Conta de Anúncios pertencem ao mesmo Business e que seu usuário tem as permissões necessárias.\n\n## Conectar um Pixel existente\n\n1. Acesse **Configurações → Anúncios → Pixel → Adicionar Pixel**\n2. Selecione o usuário/perfil da Meta com acesso à Página e à Conta de Anúncios\n3. Após autenticar, escolha o Pixel desejado na listagem e confirme em **Conectar**\n\nO Pixel fica com status **Conectado**, exibindo ID, nome e status. A conexão não altera o site automaticamente. O envio de eventos ocorre a partir de ações no CRM (criação de lead, mudança de etapa, conclusão de compra etc.), configuradas via Eventos.\n\n## Eventos\n\nEventos informam ao algoritmo da Meta quais ações importam para o seu negócio:\n\n- **Eventos padrão**: pré-definidos pela Meta (ex.: `Lead`, `Purchase`, `CompleteRegistration`), facilitam otimização e comparação de relatórios\n- **Eventos personalizados**: criados por você (ex.: `DemoAgendada`, `NegocioGanho`) para cenários específicos do seu funil\n\n### Como criar um evento\n\n1. Acesse **Configurações → Anúncios → Eventos → Adicionar evento**\n2. Preencha: rede de anúncios (Facebook), conta de anúncios, Pixel já conectado e o tipo de conversão (fluxo de automação)\n3. Selecione os identificadores de correspondência (ex.: identificador interno, e-mail e telefone)\n4. Escolha um evento padrão ou defina o nome de um evento customizado\n5. Salve. O evento fica listado com o Pixel e a Conta de Anúncios associados\n\n## Como os eventos são disparados\n\nOs eventos são enviados através da ação **API de conversão**, disponível nos [fluxos de automação](#). Combine gatilhos, condições e outras ações (como atualização de propriedades) para que o evento seja enviado à Meta exatamente no momento certo do funil.",
+      en: "## What the Meta Pixel is\n\nThe Meta Pixel is a piece of tracking code used to measure conversions, build audiences, and optimize campaigns on Facebook and Instagram. By connecting it to Beeno, you combine acquisition metrics with the CRM's relationship data (funnel stages, source, opportunities), allowing the ads algorithm to learn from quality signals, not just clicks.\n\n## Prerequisites\n\n1. Access to the Facebook **Page** and to the **Ad Account** where the Pixel is registered (with administrator permission)\n2. The Pixel already created in Meta's **Events Manager**\n3. Being logged in with the correct Meta profile in the browser\n\n> If your company uses Business Manager, make sure the Pixel, Page, and Ad Account all belong to the same Business and that your user has the necessary permissions.\n\n## Connecting an existing Pixel\n\n1. Go to **Settings → Ads → Pixel → Add Pixel**\n2. Select the Meta user/profile with access to the Page and Ad Account\n3. After authenticating, choose the desired Pixel from the listing and confirm with **Connect**\n\nThe Pixel is shown with a **Connected** status, displaying its ID, name, and status. Connecting it does not automatically change your website. Events are sent based on actions in the CRM (lead creation, stage change, completed purchase, etc.), configured via Events.\n\n## Events\n\nEvents tell Meta's algorithm which actions matter for your business:\n\n- **Standard events**: predefined by Meta (e.g., `Lead`, `Purchase`, `CompleteRegistration`), they make optimization and report comparison easier\n- **Custom events**: created by you (e.g., `DemoAgendada`, `NegocioGanho`) for scenarios specific to your funnel\n\n### How to create an event\n\n1. Go to **Settings → Ads → Events → Add event**\n2. Fill in: ad network (Facebook), ad account, the already-connected Pixel, and the conversion type (automation workflow)\n3. Select the matching identifiers (e.g., internal identifier, email, and phone)\n4. Choose a standard event or set the name of a custom event\n5. Save. The event will be listed with its associated Pixel and Ad Account\n\n## How events are triggered\n\nEvents are sent through the **Conversion API** action, available in [automation workflows](#). Combine triggers, conditions, and other actions (such as property updates) so the event is sent to Meta at exactly the right moment in the funnel.",
+      es: "## Qué es el Meta Pixel\n\nEl Pixel de Meta es un fragmento de rastreo usado para medir conversiones, crear audiencias y optimizar campañas en Facebook e Instagram. Al conectarlo a Beeno, combinas las métricas de adquisición con los datos de relación del CRM (etapas del embudo, origen, oportunidades), permitiendo que el algoritmo de anuncios aprenda de señales de calidad, no solo de clics.\n\n## Requisitos previos\n\n1. Acceso a la **Página** de Facebook y a la **Cuenta de Anuncios** donde está registrado el Pixel (con permiso de administrador)\n2. El Pixel ya creado en el **Administrador de Eventos** de Meta\n3. Estar conectado con el perfil correcto de Meta en el navegador\n\n> Si tu empresa usa Business Manager, asegúrate de que el Pixel, la Página y la Cuenta de Anuncios pertenezcan al mismo Business y de que tu usuario tenga los permisos necesarios.\n\n## Conectar un Pixel existente\n\n1. Ve a **Configuración → Anuncios → Pixel → Agregar Pixel**\n2. Selecciona el usuario/perfil de Meta con acceso a la Página y a la Cuenta de Anuncios\n3. Después de autenticarte, elige el Pixel deseado en el listado y confirma en **Conectar**\n\nEl Pixel queda con estado **Conectado**, mostrando ID, nombre y estado. La conexión no modifica el sitio web automáticamente. El envío de eventos ocurre a partir de acciones en el CRM (creación de lead, cambio de etapa, compra completada, etc.), configuradas mediante Eventos.\n\n## Eventos\n\nLos eventos le indican al algoritmo de Meta qué acciones importan para tu negocio:\n\n- **Eventos estándar**: predefinidos por Meta (por ejemplo, `Lead`, `Purchase`, `CompleteRegistration`), facilitan la optimización y la comparación de reportes\n- **Eventos personalizados**: creados por ti (por ejemplo, `DemoAgendada`, `NegocioGanho`) para escenarios específicos de tu embudo\n\n### Cómo crear un evento\n\n1. Ve a **Configuración → Anuncios → Eventos → Agregar evento**\n2. Completa: red de anuncios (Facebook), cuenta de anuncios, el Pixel ya conectado y el tipo de conversión (flujo de automatización)\n3. Selecciona los identificadores de coincidencia (por ejemplo, identificador interno, correo y teléfono)\n4. Elige un evento estándar o define el nombre de un evento personalizado\n5. Guarda. El evento quedará listado junto con el Pixel y la Cuenta de Anuncios asociados\n\n## Cómo se disparan los eventos\n\nLos eventos se envían mediante la acción **API de conversión**, disponible en los [flujos de automatización](#). Combina disparadores, condiciones y otras acciones (como la actualización de propiedades) para que el evento se envíe a Meta exactamente en el momento correcto del embudo.",
+    },
   },
   {
     slug: "pontuacao",
-    title: "Pontuação (Lead Score)",
-    description: "Configure pontuação automática para priorizar leads.",
+    title: { pt: "Pontuação (Lead Score)", en: "Scoring (Lead Score)", es: "Puntuación (Lead Score)" },
+    description: { pt: "Configure pontuação automática para priorizar leads.", en: "Set up automatic scoring to prioritize leads.", es: "Configura la puntuación automática para priorizar leads." },
     category: "marketing",
-    categoryLabel: "Marketing",
+    categoryLabel: { pt: "Marketing", en: "Marketing", es: "Marketing" },
     icon: "score",
-    content: `## O que é Lead Score
-
-O Lead Score é um sistema de pontuação que avalia automaticamente o nível de interesse e qualificação de cada lead, baseado em suas ações e características.
-
-## Como funciona
-
-Cada ação ou característica do lead adiciona ou remove pontos:
-
-| Ação | Pontos |
-|------|--------|
-| Abriu e-mail | +5 |
-| Clicou em link | +10 |
-| Visitou página de preços | +20 |
-| Preencheu formulário | +30 |
-| Trabalha em empresa grande | +15 |
-| Cargo de decisor | +25 |
-| Inatividade (30 dias) | -10 |
-
-## Configurar gatilhos de pontuação
-
-1. Acesse **Marketing → Pontuação**
-2. Clique em **+ Novo gatilho**
-3. Selecione o tipo: **Ação** (comportamental) ou **Propriedade** (demográfico)
-4. Configure a condição e os pontos
-
-## Criar segmentos por pontuação
-
-Use a pontuação como filtro na criação de um segmento (por exemplo, "pontuação maior ou igual a 50") para reunir automaticamente os leads mais qualificados. Veja o artigo de Segmentos para o passo a passo.
-
-## Fluxo baseado em pontuação
-
-Configure um fluxo de automação disparado quando o lead atinge X pontos:
-- Score ≥ 30: enviar e-mail de nurturing
-- Score ≥ 60: criar tarefa para vendedor ligar
-- Score ≥ 90: mover para etapa "Qualificado"`,
+    content: {
+      pt: "## O que é Lead Score\n\nO Lead Score é um sistema de pontuação que avalia automaticamente o nível de interesse e qualificação de cada lead, baseado em suas ações e características.\n\n## Como funciona\n\nCada ação ou característica do lead adiciona ou remove pontos:\n\n| Ação | Pontos |\n|------|--------|\n| Abriu e-mail | +5 |\n| Clicou em link | +10 |\n| Visitou página de preços | +20 |\n| Preencheu formulário | +30 |\n| Trabalha em empresa grande | +15 |\n| Cargo de decisor | +25 |\n| Inatividade (30 dias) | -10 |\n\n## Configurar gatilhos de pontuação\n\n1. Acesse **Marketing → Pontuação**\n2. Clique em **+ Novo gatilho**\n3. Selecione o tipo: **Ação** (comportamental) ou **Propriedade** (demográfico)\n4. Configure a condição e os pontos\n\n## Criar segmentos por pontuação\n\nUse a pontuação como filtro na criação de um segmento (por exemplo, \"pontuação maior ou igual a 50\") para reunir automaticamente os leads mais qualificados. Veja o artigo de Segmentos para o passo a passo.\n\n## Fluxo baseado em pontuação\n\nConfigure um fluxo de automação disparado quando o lead atinge X pontos:\n- Score ≥ 30: enviar e-mail de nurturing\n- Score ≥ 60: criar tarefa para vendedor ligar\n- Score ≥ 90: mover para etapa \"Qualificado\"",
+      en: "## What Lead Score is\n\nLead Score is a scoring system that automatically evaluates each lead's interest level and qualification, based on their actions and characteristics.\n\n## How it works\n\nEach lead action or characteristic adds or removes points:\n\n| Action | Points |\n|------|--------|\n| Opened email | +5 |\n| Clicked link | +10 |\n| Visited pricing page | +20 |\n| Filled out form | +30 |\n| Works at a large company | +15 |\n| Decision-maker role | +25 |\n| Inactivity (30 days) | -10 |\n\n## Setting up scoring triggers\n\n1. Go to **Marketing → Scoring**\n2. Click **+ New trigger**\n3. Select the type: **Action** (behavioral) or **Property** (demographic)\n4. Configure the condition and the points\n\n## Creating segments by score\n\nUse the score as a filter when creating a segment (for example, \"score greater than or equal to 50\") to automatically gather the most qualified leads. See the Segments article for the step-by-step guide.\n\n## Score-based workflow\n\nSet up an automation workflow triggered when the lead reaches X points:\n- Score ≥ 30: send nurturing email\n- Score ≥ 60: create a task for a salesperson to call\n- Score ≥ 90: move to the \"Qualified\" stage",
+      es: "## Qué es el Lead Score\n\nEl Lead Score es un sistema de puntuación que evalúa automáticamente el nivel de interés y calificación de cada lead, basándose en sus acciones y características.\n\n## Cómo funciona\n\nCada acción o característica del lead suma o resta puntos:\n\n| Acción | Puntos |\n|------|--------|\n| Abrió el correo | +5 |\n| Hizo clic en un enlace | +10 |\n| Visitó la página de precios | +20 |\n| Completó un formulario | +30 |\n| Trabaja en una empresa grande | +15 |\n| Cargo de tomador de decisiones | +25 |\n| Inactividad (30 días) | -10 |\n\n## Configurar disparadores de puntuación\n\n1. Ve a **Marketing → Puntuación**\n2. Haz clic en **+ Nuevo disparador**\n3. Selecciona el tipo: **Acción** (conductual) o **Propiedad** (demográfico)\n4. Configura la condición y los puntos\n\n## Crear segmentos por puntuación\n\nUsa la puntuación como filtro al crear un segmento (por ejemplo, \"puntuación mayor o igual a 50\") para reunir automáticamente a los leads más calificados. Consulta el artículo de Segmentos para ver el paso a paso.\n\n## Flujo basado en puntuación\n\nConfigura un flujo de automatización disparado cuando el lead alcanza X puntos:\n- Puntuación ≥ 30: enviar correo de nutrición\n- Puntuación ≥ 60: crear tarea para que un vendedor llame\n- Puntuación ≥ 90: mover a la etapa \"Calificado\"",
+    },
   },
-
-  //  INTEGRAÇÕES
   {
     slug: "associacoes",
-    title: "Associações",
-    description: "Vincule objetos entre si no CRM.",
+    title: { pt: "Associações", en: "Associations", es: "Asociaciones" },
+    description: { pt: "Vincule objetos entre si no CRM.", en: "Link objects together in the CRM.", es: "Vincula objetos entre sí en el CRM." },
     category: "integracoes",
-    categoryLabel: "Integrações",
+    categoryLabel: { pt: "Integrações", en: "Integrations", es: "Integraciones" },
     icon: "link",
-    content: `## O que são associações
-
-Associações conectam objetos do CRM entre si, por exemplo, vincular um contato a um negócio, ou uma empresa a um contato.
-
-## Tipos suportados
-
-| De | Para |
-|----|------|
-| Contato | Negócio |
-| Contato | Empresa |
-| Negócio | Contato |
-| Negócio | Empresa |
-| Negócio | Produto |
-| Empresa | Contato |
-
->  Produtos só podem ser associados a Negócios (não diretamente a Contatos ou Empresas).
-
-## Como associar na interface
-
-Na maioria dos casos, você não precisa de uma tela dedicada para associações, elas acontecem no próprio cadastro do registro:
-
-- Ao criar ou editar um **negócio**, associe contatos, empresas e produtos diretamente nos campos de associação
-- Ao abrir um **contato**, use o botão **+ Associar** para vincular a uma empresa ou negócio existente
-- Ao abrir uma **empresa**, use **+ Associar contato** para vincular pessoas a ela
-
-## Removendo uma associação
-
-Abra o registro, localize o item associado na seção correspondente e clique no ícone de remover ao lado dele. A remoção da associação não apaga nenhum dos dois registros.`,
+    content: {
+      pt: "## O que são associações\n\nAssociações conectam objetos do CRM entre si, por exemplo, vincular um contato a um negócio, ou uma empresa a um contato.\n\n## Tipos suportados\n\n| De | Para |\n|----|------|\n| Contato | Negócio |\n| Contato | Empresa |\n| Negócio | Contato |\n| Negócio | Empresa |\n| Negócio | Produto |\n| Empresa | Contato |\n\n>  Produtos só podem ser associados a Negócios (não diretamente a Contatos ou Empresas).\n\n## Como associar na interface\n\nNa maioria dos casos, você não precisa de uma tela dedicada para associações, elas acontecem no próprio cadastro do registro:\n\n- Ao criar ou editar um **negócio**, associe contatos, empresas e produtos diretamente nos campos de associação\n- Ao abrir um **contato**, use o botão **+ Associar** para vincular a uma empresa ou negócio existente\n- Ao abrir uma **empresa**, use **+ Associar contato** para vincular pessoas a ela\n\n## Removendo uma associação\n\nAbra o registro, localize o item associado na seção correspondente e clique no ícone de remover ao lado dele. A remoção da associação não apaga nenhum dos dois registros.",
+      en: "## What associations are\n\nAssociations connect CRM objects to one another, for example, linking a contact to a deal, or a company to a contact.\n\n## Supported types\n\n| From | To |\n|----|------|\n| Contact | Deal |\n| Contact | Company |\n| Deal | Contact |\n| Deal | Company |\n| Deal | Product |\n| Company | Contact |\n\n> Products can only be associated with Deals (not directly with Contacts or Companies).\n\n## How to associate records in the interface\n\nIn most cases, you don't need a dedicated screen for associations, they happen right within the record itself:\n\n- When creating or editing a **deal**, associate contacts, companies, and products directly in the association fields\n- When opening a **contact**, use the **+ Associate** button to link it to an existing company or deal\n- When opening a **company**, use **+ Associate contact** to link people to it\n\n## Removing an association\n\nOpen the record, find the associated item in the corresponding section, and click the remove icon next to it. Removing the association does not delete either of the two records.",
+      es: "## Qué son las asociaciones\n\nLas asociaciones conectan objetos del CRM entre sí, por ejemplo, vincular un contacto a un negocio, o una empresa a un contacto.\n\n## Tipos admitidos\n\n| De | A |\n|----|------|\n| Contacto | Negocio |\n| Contacto | Empresa |\n| Negocio | Contacto |\n| Negocio | Empresa |\n| Negocio | Producto |\n| Empresa | Contacto |\n\n> Los productos solo pueden asociarse a Negocios (no directamente a Contactos o Empresas).\n\n## Cómo asociar desde la interfaz\n\nEn la mayoría de los casos, no necesitas una pantalla dedicada para las asociaciones, estas ocurren dentro del propio registro:\n\n- Al crear o editar un **negocio**, asocia contactos, empresas y productos directamente en los campos de asociación\n- Al abrir un **contacto**, usa el botón **+ Asociar** para vincularlo a una empresa o negocio existente\n- Al abrir una **empresa**, usa **+ Asociar contacto** para vincular personas a ella\n\n## Cómo quitar una asociación\n\nAbre el registro, ubica el elemento asociado en la sección correspondiente y haz clic en el ícono de eliminar junto a él. Quitar la asociación no elimina ninguno de los dos registros.",
+    },
   },
   {
     slug: "webhooks",
-    title: "Webhooks e Integrações",
-    description:
-      "Configure webhooks e chaves de integração para conectar o Beeno a outras ferramentas.",
+    title: { pt: "Webhooks e Integrações", en: "Webhooks and Integrations", es: "Webhooks e integraciones" },
+    description: { pt: "Configure webhooks e chaves de integração para conectar o Beeno a outras ferramentas.", en: "Configure webhooks and integration keys to connect Beeno to other tools.", es: "Configura webhooks y claves de integración para conectar Beeno con otras herramientas." },
     category: "integracoes",
-    categoryLabel: "Integrações",
+    categoryLabel: { pt: "Integrações", en: "Integrations", es: "Integraciones" },
     icon: "integracao",
-    content: `## Webhooks
-
-Webhooks enviam notificações automáticas para uma URL externa quando eventos ocorrem no Beeno.
-
-## Configurar webhook
-
-1. Acesse **Configurações → Integrações → Webhooks**
-2. Clique em **+ Novo webhook**
-3. Informe a URL de destino
-4. Selecione os eventos a monitorar
-5. Ative o webhook
-
-## Eventos disponíveis
-
-| Evento | Descrição |
-|--------|-----------|
-| Contato criado | Um novo contato foi criado |
-| Contato atualizado | Um contato existente foi atualizado |
-| Negócio criado | Um novo negócio foi criado |
-| Negócio mudou de etapa | Um negócio avançou ou retrocedeu no funil |
-| Negócio atualizado | Um negócio existente foi atualizado |
-| Formulário preenchido | Um formulário do Beeno foi enviado |
-
-Cada notificação enviada ao seu sistema inclui o tipo de evento e os dados do registro correspondente (por exemplo, nome e e-mail de um contato recém-criado).
-
-## Chaves de integração
-
-Para conectar o Beeno a outra ferramenta (como o N8N ou outro sistema do seu time técnico), gere uma chave de acesso dedicada:
-
-1. Acesse **Configurações → Integrações → Chaves de integração**
-2. Clique em **+ Gerar chave**
-3. Dê um nome descritivo para saber depois onde ela é usada (ex.: "Integração com o site")
-4. Copie e guarde a chave em um local seguro, ela não será exibida novamente
-
->  Revogue chaves que não são mais utilizadas, e use uma chave própria para cada integração. Se tiver dúvidas técnicas sobre como usar uma chave em um sistema específico, fale com o time responsável pela integração.`,
+    content: {
+      pt: "## Webhooks\n\nWebhooks enviam notificações automáticas para uma URL externa quando eventos ocorrem no Beeno.\n\n## Configurar webhook\n\n1. Acesse **Configurações → Integrações → Webhooks**\n2. Clique em **+ Novo webhook**\n3. Informe a URL de destino\n4. Selecione os eventos a monitorar\n5. Ative o webhook\n\n## Eventos disponíveis\n\n| Evento | Descrição |\n|--------|-----------|\n| Contato criado | Um novo contato foi criado |\n| Contato atualizado | Um contato existente foi atualizado |\n| Negócio criado | Um novo negócio foi criado |\n| Negócio mudou de etapa | Um negócio avançou ou retrocedeu no funil |\n| Negócio atualizado | Um negócio existente foi atualizado |\n| Formulário preenchido | Um formulário do Beeno foi enviado |\n\nCada notificação enviada ao seu sistema inclui o tipo de evento e os dados do registro correspondente (por exemplo, nome e e-mail de um contato recém-criado).\n\n## Chaves de integração\n\nPara conectar o Beeno a outra ferramenta (como o N8N ou outro sistema do seu time técnico), gere uma chave de acesso dedicada:\n\n1. Acesse **Configurações → Integrações → Chaves de integração**\n2. Clique em **+ Gerar chave**\n3. Dê um nome descritivo para saber depois onde ela é usada (ex.: \"Integração com o site\")\n4. Copie e guarde a chave em um local seguro, ela não será exibida novamente\n\n>  Revogue chaves que não são mais utilizadas, e use uma chave própria para cada integração. Se tiver dúvidas técnicas sobre como usar uma chave em um sistema específico, fale com o time responsável pela integração.",
+      en: "## Webhooks\n\nWebhooks send automatic notifications to an external URL whenever events occur in Beeno.\n\n## Setting up a webhook\n\n1. Go to **Settings → Integrations → Webhooks**\n2. Click **+ New webhook**\n3. Enter the destination URL\n4. Select the events to monitor\n5. Enable the webhook\n\n## Available events\n\n| Event | Description |\n|--------|-----------|\n| Contact created | A new contact was created |\n| Contact updated | An existing contact was updated |\n| Deal created | A new deal was created |\n| Deal changed stage | A deal moved forward or backward in the pipeline |\n| Deal updated | An existing deal was updated |\n| Form submitted | A Beeno form was submitted |\n\nEach notification sent to your system includes the event type and the corresponding record's data (for example, the name and email of a newly created contact).\n\n## Integration keys\n\nTo connect Beeno to another tool (such as N8N or another system managed by your technical team), generate a dedicated access key:\n\n1. Go to **Settings → Integrations → Integration keys**\n2. Click **+ Generate key**\n3. Give it a descriptive name so you'll know later where it's used (e.g., \"Website integration\")\n4. Copy and store the key somewhere safe, it will not be shown again\n\n> Revoke keys that are no longer in use, and use a separate key for each integration. If you have technical questions about how to use a key in a specific system, talk to the team responsible for that integration.",
+      es: "## Webhooks\n\nLos webhooks envían notificaciones automáticas a una URL externa cuando ocurren eventos en Beeno.\n\n## Configurar un webhook\n\n1. Ve a **Configuración → Integraciones → Webhooks**\n2. Haz clic en **+ Nuevo webhook**\n3. Indica la URL de destino\n4. Selecciona los eventos a monitorear\n5. Activa el webhook\n\n## Eventos disponibles\n\n| Evento | Descripción |\n|--------|-----------|\n| Contacto creado | Se creó un nuevo contacto |\n| Contacto actualizado | Se actualizó un contacto existente |\n| Negocio creado | Se creó un nuevo negocio |\n| Negocio cambió de etapa | Un negocio avanzó o retrocedió en el embudo |\n| Negocio actualizado | Se actualizó un negocio existente |\n| Formulario completado | Se envió un formulario de Beeno |\n\nCada notificación enviada a tu sistema incluye el tipo de evento y los datos del registro correspondiente (por ejemplo, el nombre y el correo de un contacto recién creado).\n\n## Claves de integración\n\nPara conectar Beeno con otra herramienta (como N8N u otro sistema de tu equipo técnico), genera una clave de acceso dedicada:\n\n1. Ve a **Configuración → Integraciones → Claves de integración**\n2. Haz clic en **+ Generar clave**\n3. Dale un nombre descriptivo para saber después dónde se usa (por ejemplo, \"Integración con el sitio web\")\n4. Copia y guarda la clave en un lugar seguro, no volverá a mostrarse\n\n> Revoca las claves que ya no se utilicen y usa una clave propia para cada integración. Si tienes dudas técnicas sobre cómo usar una clave en un sistema específico, consulta al equipo responsable de esa integración.",
+    },
   },
 ];
 
 export const categories: Category[] = [
   {
     key: "primeiros-passos",
-    label: "Primeiros passos",
-    items: articles
-      .filter((a) => a.category === "primeiros-passos")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "Primeiros passos", en: "Getting Started", es: "Primeros pasos" },
+    items: [
+      { slug: "visao-geral", title: { pt: "Visão geral do Beeno", en: "Beeno Overview", es: "Visión general de Beeno" } },
+      { slug: "glossario", title: { pt: "Glossário CRM", en: "CRM Glossary", es: "Glosario de CRM" } },
+    ],
   },
   {
     key: "conta-configuracao",
-    label: "Conta e Configuração",
-    items: articles
-      .filter((a) => a.category === "conta-configuracao")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "Conta e Configuração", en: "Account and Settings", es: "Cuenta y Configuración" },
+    items: [
+      { slug: "conta-e-configuracoes", title: { pt: "Conta e configurações", en: "Account and Settings", es: "Cuenta y configuración" } },
+      { slug: "usuarios-permissoes", title: { pt: "Usuários e permissões", en: "Users and Permissions", es: "Usuarios y permisos" } },
+    ],
   },
   {
     key: "crm",
-    label: "CRM",
-    items: articles
-      .filter((a) => a.category === "crm")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "CRM", en: "CRM", es: "CRM" },
+    items: [
+      { slug: "contatos", title: { pt: "Contatos", en: "Contacts", es: "Contactos" } },
+      { slug: "negocios", title: { pt: "Negócios", en: "Deals", es: "Negocios" } },
+      { slug: "empresas", title: { pt: "Empresas", en: "Companies", es: "Empresas" } },
+      { slug: "pipelines", title: { pt: "Pipelines", en: "Pipelines", es: "Pipelines" } },
+      { slug: "propriedades", title: { pt: "Propriedades", en: "Properties", es: "Propiedades" } },
+      { slug: "tarefas", title: { pt: "Tarefas", en: "Tasks", es: "Tareas" } },
+      { slug: "produtos", title: { pt: "Produtos", en: "Products", es: "Productos" } },
+      { slug: "etiquetas", title: { pt: "Etiquetas", en: "Tags", es: "Etiquetas" } },
+      { slug: "paineis", title: { pt: "Painéis personalizados", en: "Custom Dashboards", es: "Paneles personalizados" } },
+      { slug: "importacao", title: { pt: "Importação de dados", en: "Data Import", es: "Importación de datos" } },
+    ],
   },
   {
     key: "automacao",
-    label: "Automação",
-    items: articles
-      .filter((a) => a.category === "automacao")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "Automação", en: "Automation", es: "Automatización" },
+    items: [
+      { slug: "fluxos-automacao", title: { pt: "Fluxos de automação", en: "Automation Flows", es: "Flujos de automatización" } },
+    ],
   },
   {
     key: "marketing",
-    label: "Marketing",
-    items: articles
-      .filter((a) => a.category === "marketing")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "Marketing", en: "Marketing", es: "Marketing" },
+    items: [
+      { slug: "segmentos", title: { pt: "Segmentos", en: "Segments", es: "Segmentos" } },
+      { slug: "formularios", title: { pt: "Formulários", en: "Forms", es: "Formularios" } },
+      { slug: "landing-page", title: { pt: "Landing Pages", en: "Landing Pages", es: "Landing Pages" } },
+      { slug: "arquivos", title: { pt: "Arquivos", en: "Files", es: "Archivos" } },
+      { slug: "emails", title: { pt: "E-mails", en: "Emails", es: "Correos electrónicos" } },
+      { slug: "dominios", title: { pt: "Domínios", en: "Domains", es: "Dominios" } },
+      { slug: "anuncios", title: { pt: "Anúncios", en: "Ads", es: "Anuncios" } },
+      { slug: "meta-pixel", title: { pt: "Meta Pixel", en: "Meta Pixel", es: "Meta Pixel" } },
+      { slug: "pontuacao", title: { pt: "Pontuação (Lead Score)", en: "Scoring (Lead Score)", es: "Puntuación (Lead Score)" } },
+    ],
   },
   {
     key: "integracoes",
-    label: "Integrações",
-    items: articles
-      .filter((a) => a.category === "integracoes")
-      .map((a) => ({ slug: a.slug, title: a.title })),
+    label: { pt: "Integrações", en: "Integrations", es: "Integraciones" },
+    items: [
+      { slug: "associacoes", title: { pt: "Associações", en: "Associations", es: "Asociaciones" } },
+      { slug: "webhooks", title: { pt: "Webhooks e Integrações", en: "Webhooks and Integrations", es: "Webhooks e integraciones" } },
+    ],
   },
 ];
 
-export const homeCards = [
+export const homeCards: { icon: string; title: LocalizedString; description: LocalizedString; slug: string }[] = [
   {
     icon: "rocket",
-    title: "Primeiros passos",
-    description: "Configure sua conta e explore o CRM",
+    title: { pt: "Primeiros passos", en: "Getting Started", es: "Primeros pasos" },
+    description: { pt: "Configure sua conta e explore o CRM", en: "Set up your account and explore the CRM", es: "Configura tu cuenta y explora el CRM" },
     slug: "visao-geral",
   },
   {
     icon: "pipeline",
-    title: "Pipelines e funis",
-    description: "Crie e personalize seus pipelines de vendas",
+    title: { pt: "Pipelines e funis", en: "Pipelines and Funnels", es: "Pipelines y embudos" },
+    description: { pt: "Crie e personalize seus pipelines de vendas", en: "Create and customize your sales pipelines", es: "Crea y personaliza tus pipelines de ventas" },
     slug: "pipelines",
   },
   {
     icon: "contacts",
-    title: "Contatos",
-    description: "Gerencie leads e clientes no CRM",
+    title: { pt: "Contatos", en: "Contacts", es: "Contactos" },
+    description: { pt: "Gerencie leads e clientes no CRM", en: "Manage leads and customers in the CRM", es: "Gestiona leads y clientes en el CRM" },
     slug: "contatos",
   },
   {
     icon: "deals",
-    title: "Negócios",
-    description: "Acompanhe oportunidades de venda",
+    title: { pt: "Negócios", en: "Deals", es: "Negocios" },
+    description: { pt: "Acompanhe oportunidades de venda", en: "Track sales opportunities", es: "Da seguimiento a las oportunidades de venta" },
     slug: "negocios",
   },
   {
     icon: "automation",
-    title: "Automações",
-    description: "Fluxos automáticos para sua operação",
+    title: { pt: "Automações", en: "Automations", es: "Automatizaciones" },
+    description: { pt: "Fluxos automáticos para sua operação", en: "Automatic flows for your operation", es: "Flujos automáticos para tu operación" },
     slug: "fluxos-automacao",
   },
   {
     icon: "link",
-    title: "Webhooks e Integrações",
-    description: "Conecte o Beeno a outras ferramentas",
+    title: { pt: "Webhooks e Integrações", en: "Webhooks and Integrations", es: "Webhooks e integraciones" },
+    description: { pt: "Conecte o Beeno a outras ferramentas", en: "Connect Beeno to other tools", es: "Conecta Beeno con otras herramientas" },
     slug: "webhooks",
   },
 ];

@@ -12,22 +12,27 @@ import { Moon, Sun, Menu, X as XIcon } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { ChatDrawer } from "@/components/ChatDrawer";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { LocaleProvider, useLocale } from "@/lib/i18n/locale-context";
+import { useStrings } from "@/lib/i18n/strings";
 
 const WA_LINK =
   "https://wa.me/5511941301642?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20Beeno.";
 
 function NotFoundComponent() {
+  const { locale } = useLocale();
+  const s = useStrings(locale);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Página não encontrada.</p>
+        <p className="mt-2 text-sm text-muted-foreground">{s.notFound.message}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
-            Voltar ao início
+            {s.notFound.backHome}
           </Link>
         </div>
       </div>
@@ -37,10 +42,12 @@ function NotFoundComponent() {
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const s = useStrings(locale);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold">Algo deu errado</h1>
+        <h1 className="text-xl font-semibold">{s.errorPage.title}</h1>
         <button
           onClick={() => {
             router.invalidate();
@@ -48,7 +55,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           }}
           className="mt-6 rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground"
         >
-          Tentar novamente
+          {s.errorPage.retry}
         </button>
       </div>
     </div>
@@ -99,7 +106,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
         <Scripts />
       </body>
     </html>
@@ -115,13 +122,19 @@ function BeenoLogo() {
 }
 
 function useDarkMode() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return (
-      localStorage.getItem("theme") === "dark" ||
-      (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    );
-  });
+  // Always start light so the client's first render matches the server-rendered
+  // HTML exactly; the stored/system preference is applied right after mount, in
+  // the effect below, to avoid a hydration mismatch.
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      setDark(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     if (dark) {
@@ -138,6 +151,8 @@ function useDarkMode() {
 function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
   const [dark, setDark] = useDarkMode();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { locale } = useLocale();
+  const s = useStrings(locale);
   const linkCls = "text-sm font-medium text-foreground/70 hover:text-foreground transition-colors";
   const activeCls = "text-foreground";
 
@@ -154,13 +169,13 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             activeProps={{ className: activeCls }}
             activeOptions={{ exact: true }}
           >
-            Início
+            {s.nav.home}
           </Link>
           <button
             onClick={onOpenChat}
             className={linkCls + " cursor-pointer bg-transparent border-none p-0"}
           >
-            Assistente IA
+            {s.nav.assistant}
           </button>
           <a
             href="https://api.beeno.ai/"
@@ -168,16 +183,17 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             rel="noopener noreferrer"
             className={linkCls}
           >
-            API Docs
+            {s.nav.apiDocs}
           </a>
         </nav>
 
         {/* Desktop actions */}
         <div className="hidden md:flex items-center gap-2">
+          <LanguageSwitcher />
           <button
             onClick={() => setDark((d) => !d)}
             className="p-2 rounded-lg border border-border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground"
-            aria-label={dark ? "Ativar modo claro" : "Ativar modo escuro"}
+            aria-label={dark ? s.nav.enableLight : s.nav.enableDark}
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
@@ -187,7 +203,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted transition"
           >
-            Acessar plataforma
+            {s.nav.platform}
           </a>
           <a
             href={WA_LINK}
@@ -195,23 +211,24 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
           >
-            Falar com suporte
+            {s.nav.support}
           </a>
         </div>
 
-        {/* Mobile: dark toggle + hamburger */}
+        {/* Mobile: language + dark toggle + hamburger */}
         <div className="flex md:hidden items-center gap-2">
+          <LanguageSwitcher compact />
           <button
             onClick={() => setDark((d) => !d)}
             className="p-2 rounded-lg border border-border bg-background text-muted-foreground"
-            aria-label="Alternar tema"
+            aria-label={s.nav.toggleTheme}
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="p-2 rounded-lg border border-border bg-background text-muted-foreground"
-            aria-label="Menu"
+            aria-label={s.nav.menu}
           >
             {mobileOpen ? <XIcon className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -226,7 +243,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             className="py-2 text-sm font-medium text-foreground/70 hover:text-foreground"
             onClick={() => setMobileOpen(false)}
           >
-            Início
+            {s.nav.home}
           </Link>
           <button
             onClick={() => {
@@ -235,7 +252,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             }}
             className="py-2 text-left text-sm font-medium text-foreground/70 hover:text-foreground bg-transparent border-none cursor-pointer"
           >
-            Assistente IA
+            {s.nav.assistant}
           </button>
           <a
             href="https://api.beeno.ai/"
@@ -244,7 +261,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             className="py-2 text-sm font-medium text-foreground/70 hover:text-foreground"
             onClick={() => setMobileOpen(false)}
           >
-            API Docs
+            {s.nav.apiDocs}
           </a>
           <div className="border-t border-border mt-1 pt-2 flex flex-col gap-2">
             <a
@@ -253,7 +270,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
               rel="noopener noreferrer"
               className="py-2 text-sm font-medium text-foreground/70 hover:text-foreground"
             >
-              Acessar plataforma
+              {s.nav.platform}
             </a>
             <a
               href={WA_LINK}
@@ -261,12 +278,22 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
               rel="noopener noreferrer"
               className="py-2 text-sm font-semibold text-primary"
             >
-              Falar com suporte
+              {s.nav.support}
             </a>
           </div>
         </div>
       )}
     </header>
+  );
+}
+
+function Footer() {
+  const { locale } = useLocale();
+  const s = useStrings(locale);
+  return (
+    <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
+      {s.footer.rights}
+    </footer>
   );
 }
 
@@ -281,9 +308,7 @@ function RootComponent() {
         <main className="flex-1">
           <Outlet />
         </main>
-        <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
-          © 2025 Beeno by Skeps. Todos os direitos reservados.
-        </footer>
+        <Footer />
       </div>
       <ChatDrawer externalOpen={chatOpen} onExternalOpenHandled={() => setChatOpen(false)} />
     </QueryClientProvider>
