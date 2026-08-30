@@ -20,7 +20,11 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           aria-label={s.nav.language}
-          className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg border border-border bg-background hover:bg-muted transition text-sm font-medium text-foreground/80"
+          className={
+            compact
+              ? "h-9 w-9 flex items-center justify-center rounded-lg border border-border bg-background hover:bg-muted transition"
+              : "h-9 inline-flex items-center gap-1.5 px-2.5 rounded-lg border border-border bg-background hover:bg-muted transition text-sm font-medium text-foreground/80"
+          }
         >
           <FlagIcon locale={current.code} />
           {!compact && <span>{current.code.toUpperCase()}</span>}

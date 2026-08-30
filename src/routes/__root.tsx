@@ -192,7 +192,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
           <LanguageSwitcher />
           <button
             onClick={() => setDark((d) => !d)}
-            className="p-2 rounded-lg border border-border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground"
+            className="h-9 w-9 flex items-center justify-center rounded-lg border border-border bg-background hover:bg-muted transition text-muted-foreground hover:text-foreground"
             aria-label={dark ? s.nav.enableLight : s.nav.enableDark}
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -201,7 +201,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             href="https://app.beeno.ai/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted transition"
+            className="h-9 inline-flex items-center rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground/80 hover:bg-muted transition"
           >
             {s.nav.platform}
           </a>
@@ -209,7 +209,7 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             href={WA_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
+            className="h-9 inline-flex items-center rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
           >
             {s.nav.support}
           </a>
@@ -220,14 +220,14 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
           <LanguageSwitcher compact />
           <button
             onClick={() => setDark((d) => !d)}
-            className="p-2 rounded-lg border border-border bg-background text-muted-foreground"
+            className="h-9 w-9 flex items-center justify-center rounded-lg border border-border bg-background text-muted-foreground"
             aria-label={s.nav.toggleTheme}
           >
             {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="p-2 rounded-lg border border-border bg-background text-muted-foreground"
+            className="h-9 w-9 flex items-center justify-center rounded-lg border border-border bg-background text-muted-foreground"
             aria-label={s.nav.menu}
           >
             {mobileOpen ? <XIcon className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
