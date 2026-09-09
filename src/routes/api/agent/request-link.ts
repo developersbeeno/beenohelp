@@ -36,7 +36,6 @@ export const Route = createFileRoute("/api/agent/request-link")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        throw new Error("MARKER_SYNC_THROW_12345");
         try {
           if (!supabaseConfigured()) return json({ error: "Banco não configurado" }, 503);
 
@@ -147,7 +146,10 @@ export const Route = createFileRoute("/api/agent/request-link")({
           const cause = err instanceof Error ? err.cause : undefined;
           const causeStr =
             cause instanceof Error ? `${cause.name}: ${cause.message}` : JSON.stringify(cause);
-          return json({ error: `DEBUG ${msg} | cause=${causeStr} | stack=${stack}` }, 500);
+          return json(
+            { error: `ZZZ_MARKER_998877 ${msg} | cause=${causeStr} | stack=${stack}` },
+            500,
+          );
         }
       },
     },
