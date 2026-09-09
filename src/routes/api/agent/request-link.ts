@@ -119,10 +119,7 @@ export const Route = createFileRoute("/api/agent/request-link")({
 
           if (!sent.ok) {
             console.error("sendLoginLink:", sent.error);
-            return json(
-              { error: "Não consegui enviar o e-mail. Avise o time técnico." },
-              502,
-            );
+            return json({ error: sent.error }, 502);
           }
 
           // Resposta byte-a-byte igual à do caminho "fora do roster": expor

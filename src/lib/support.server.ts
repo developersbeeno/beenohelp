@@ -205,13 +205,17 @@ export async function sendLoginLink(params: {
     if (!res.ok) return { ok: false, error: `webhook respondeu ${res.status}` };
     return { ok: true };
   } catch (err) {
-    console.error(
-      "DEBUG sendLoginLink fetch error:",
-      err,
-      "cause:",
-      err instanceof Error ? err.cause : undefined,
-    );
-    return { ok: false, error: err instanceof Error ? err.message : "falha de rede" };
+    const cause = err instanceof Error ? err.cause : undefined;
+    const causeStr =
+      cause instanceof Error
+        ? `${cause.name}: ${cause.message}`
+        : cause
+          ? JSON.stringify(cause)
+          : "sem cause";
+    return {
+      ok: false,
+      error: `DEBUG url=${JSON.stringify(url)} len=${url.length} err=${err instanceof Error ? err.message : String(err)} cause=${causeStr}`,
+    };
   }
 }
 
