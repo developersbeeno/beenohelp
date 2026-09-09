@@ -99,6 +99,22 @@
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
   }
+  /* Controles nativos (select, date, scrollbar, autofill) seguem o tema.
+     Sem isso, dropdowns e date pickers abrem claros no modo escuro. */
+  :root {
+    color-scheme: light;
+  }
+  :root.dark {
+    color-scheme: dark;
+  }
+}
+
+/* Aplicada pelo useDarkMode durante a troca de tema: sem transições de cor
+   no meio da troca, nenhum elemento fica num estado visual intermediário. */
+.theme-switching,
+.theme-switching * {
+  transition: none !important;
+  animation-duration: 0s !important;
 }
 
 @utility hero-pattern {

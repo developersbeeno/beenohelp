@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -15,9 +16,6 @@ import { ChatDrawer } from "@/components/ChatDrawer";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { LocaleProvider, useLocale } from "@/lib/i18n/locale-context";
 import { useStrings } from "@/lib/i18n/strings";
-
-const WA_LINK =
-  "https://wa.me/5511941301642?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20Beeno.";
 
 function NotFoundComponent() {
   const { locale } = useLocale();
@@ -116,7 +114,16 @@ function RootShell({ children }: { children: ReactNode }) {
 function BeenoLogo() {
   return (
     <Link to="/" className="flex items-center shrink-0">
-      <img src="/logo-beeno.png" alt="Beeno by Skeps" className="h-8 w-auto object-contain" />
+      <img
+        src="/logo-beeno.png"
+        alt="Beeno by Skeps"
+        className="h-8 w-auto object-contain dark:hidden"
+      />
+      <img
+        src="/logo-beeno-white.png"
+        alt="Beeno by Skeps"
+        className="h-8 w-auto object-contain hidden dark:block"
+      />
     </Link>
   );
 }
@@ -137,6 +144,11 @@ function useDarkMode() {
 
   useEffect(() => {
     const root = document.documentElement;
+
+    // Desliga transições durante a troca: evita quadros intermediários com
+    // cores misturadas em elementos que usam transition de cor.
+    root.classList.add("theme-switching");
+
     if (dark) {
       root.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -144,11 +156,36 @@ function useDarkMode() {
       root.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
+
+    // Força um repaint completo síncrono. Sem isso, camadas compostas
+    // (ex.: o drawer do chat, promovido por transform) mantêm a PINTURA do
+    // tema antigo mesmo com o CSS já correto — o Chrome não invalida o layer
+    // quando só as variáveis de tema mudam. O display:none + reflow descarta
+    // e recria as camadas no mesmo frame, então não há flash visível.
+    const body = document.body;
+    if (body) {
+      const prev = body.style.display;
+      body.style.display = "none";
+      void body.offsetHeight; // reflow síncrono
+      body.style.display = prev;
+    }
+
+    // devolve as transições logo depois da troca. setTimeout (não rAF):
+    // rAF não dispara com a aba em segundo plano e a classe ficaria presa,
+    // deixando o app sem transições até o próximo toggle.
+    const t = setTimeout(() => root.classList.remove("theme-switching"), 80);
+    return () => clearTimeout(t);
   }, [dark]);
   return [dark, setDark] as const;
 }
 
-function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
+function Navbar({
+  onOpenChat,
+  hideSupportCta = false,
+}: {
+  onOpenChat: () => void;
+  hideSupportCta?: boolean;
+}) {
   const [dark, setDark] = useDarkMode();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { locale } = useLocale();
@@ -205,14 +242,14 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
           >
             {s.nav.platform}
           </a>
-          <a
-            href={WA_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="h-9 inline-flex items-center rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-95 transition"
-          >
-            {s.nav.support}
-          </a>
+          {!hideSupportCta && (
+            <button
+              onClick={onOpenChat}
+              className="h-9 inline-flex items-center rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground hover:brightness-95 transition cursor-pointer border-none"
+            >
+              {s.nav.support}
+            </button>
+          )}
         </div>
 
         {/* Mobile: language + dark toggle + hamburger */}
@@ -272,14 +309,15 @@ function Navbar({ onOpenChat }: { onOpenChat: () => void }) {
             >
               {s.nav.platform}
             </a>
-            <a
-              href={WA_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-2 text-sm font-semibold text-primary"
+            <button
+              onClick={() => {
+                onOpenChat();
+                setMobileOpen(false);
+              }}
+              className="py-2 text-left text-sm font-semibold text-primary bg-transparent border-none cursor-pointer"
             >
               {s.nav.support}
-            </a>
+            </button>
           </div>
         </div>
       )}
@@ -300,17 +338,24 @@ function Footer() {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [chatOpen, setChatOpen] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  // O painel do atendente não é uma tela de cliente: o widget de chat só
+  // atrapalharia (e sobrepõe os gráficos do dashboard).
+  const isAgentPanel = pathname.startsWith("/atendimento");
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-background">
-        <Navbar onOpenChat={() => setChatOpen(true)} />
+        <Navbar onOpenChat={() => setChatOpen(true)} hideSupportCta={isAgentPanel} />
         <main className="flex-1">
           <Outlet />
         </main>
         <Footer />
       </div>
-      <ChatDrawer externalOpen={chatOpen} onExternalOpenHandled={() => setChatOpen(false)} />
+      {!isAgentPanel && (
+        <ChatDrawer externalOpen={chatOpen} onExternalOpenHandled={() => setChatOpen(false)} />
+      )}
     </QueryClientProvider>
   );
 }
