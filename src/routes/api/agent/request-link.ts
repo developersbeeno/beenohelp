@@ -127,7 +127,11 @@ export const Route = createFileRoute("/api/agent/request-link")({
           return json({ ok: true, expires_minutes: LINK_TTL_MIN });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Erro desconhecido";
-          return json({ error: msg }, 500);
+          const stack = err instanceof Error ? err.stack : undefined;
+          const cause = err instanceof Error ? err.cause : undefined;
+          const causeStr =
+            cause instanceof Error ? `${cause.name}: ${cause.message}` : JSON.stringify(cause);
+          return json({ error: `DEBUG ${msg} | cause=${causeStr} | stack=${stack}` }, 500);
         }
       },
     },
