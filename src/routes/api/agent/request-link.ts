@@ -19,15 +19,6 @@ const json = (body: unknown, status = 200) =>
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
 
-async function step<T>(name: string, fn: () => Promise<T>): Promise<T> {
-  try {
-    return await fn();
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    throw new Error(`STEP[${name}] failed: ${msg}`);
-  }
-}
-
 /**
  * Envia o link de verificação por e-mail.
  * Usado no primeiro acesso e também no "esqueci minha senha".
@@ -56,7 +47,7 @@ export const Route = createFileRoute("/api/agent/request-link")({
           // Quem não está no roster não recebe link. A resposta é a MESMA de
           // um envio bem-sucedido — quem sonda de fora não descobre quem faz
           // parte do time (evita enumerar os atendentes).
-          if (!(await step("isEmailOnRoster", () => isEmailOnRoster(email)))) {
+          if (!(await isEmailOnRoster(email))) {
             await new Promise((r) => setTimeout(r, 500));
             return json({ ok: true, expires_minutes: LINK_TTL_MIN });
           }
@@ -64,15 +55,13 @@ export const Route = createFileRoute("/api/agent/request-link")({
           const db = supabaseAdmin();
           const now = Date.now();
 
-          const { data: recent } = await step("select-recent", () =>
-            db
-              .from("agent_login_codes")
-              .select("created_at")
-              .eq("email", email)
-              .gte("created_at", new Date(now - 3600_000).toISOString())
-              .order("created_at", { ascending: false })
-              .limit(MAX_LINKS_PER_HOUR),
-          );
+          const { data: recent } = await db
+            .from("agent_login_codes")
+            .select("created_at")
+            .eq("email", email)
+            .gte("created_at", new Date(now - 3600_000).toISOString())
+            .order("created_at", { ascending: false })
+            .limit(MAX_LINKS_PER_HOUR);
 
           const list = recent || [];
           if (list.length >= MAX_LINKS_PER_HOUR) {
@@ -95,46 +84,42 @@ export const Route = createFileRoute("/api/agent/request-link")({
           const tokenHash = await hashLinkToken(token);
 
           // um link novo invalida os anteriores
-          await step("invalidate-old-codes", () =>
-            db
-              .from("agent_login_codes")
-              .update({ used_at: new Date().toISOString() })
-              .eq("email", email)
-              .is("used_at", null),
-          );
+          await db
+            .from("agent_login_codes")
+            .update({ used_at: new Date().toISOString() })
+            .eq("email", email)
+            .is("used_at", null);
 
-          const { data: agent } = await step("select-agent", () =>
-            db.from("agents").select("name, password_hash").eq("email", email).maybeSingle(),
-          );
+          const { data: agent } = await db
+            .from("agents")
+            .select("name, password_hash")
+            .eq("email", email)
+            .maybeSingle();
 
           // Quem já tem senha está REDEFININDO: o kind='reset' faz o painel
           // exigir uma senha nova depois do link — sem isso a pessoa entraria
           // uma vez e continuaria sem saber a própria senha.
           const isReset = Boolean(agent?.password_hash);
 
-          const { error: insErr } = await step("insert-code", () =>
-            db.from("agent_login_codes").insert({
-              email,
-              code_hash: tokenHash,
-              kind: isReset ? "reset" : "link",
-              expires_at: new Date(now + LINK_TTL_MIN * 60_000).toISOString(),
-            }),
-          );
+          const { error: insErr } = await db.from("agent_login_codes").insert({
+            email,
+            code_hash: tokenHash,
+            kind: isReset ? "reset" : "link",
+            expires_at: new Date(now + LINK_TTL_MIN * 60_000).toISOString(),
+          });
           if (insErr) return json({ error: insErr.message }, 500);
 
-          const sent = await step("sendLoginLink", () =>
-            sendLoginLink({
-              to: email,
-              name: agent?.name || deriveName(email),
-              token,
-              expiresMinutes: LINK_TTL_MIN,
-              isReset,
-            }),
-          );
+          const sent = await sendLoginLink({
+            to: email,
+            name: agent?.name || deriveName(email),
+            token,
+            expiresMinutes: LINK_TTL_MIN,
+            isReset,
+          });
 
           if (!sent.ok) {
             console.error("sendLoginLink:", sent.error);
-            return json({ error: sent.error }, 502);
+            return json({ error: "Não consegui enviar o e-mail. Avise o time técnico." }, 502);
           }
 
           // Resposta byte-a-byte igual à do caminho "fora do roster": expor
@@ -142,14 +127,7 @@ export const Route = createFileRoute("/api/agent/request-link")({
           return json({ ok: true, expires_minutes: LINK_TTL_MIN });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Erro desconhecido";
-          const stack = err instanceof Error ? err.stack : undefined;
-          const cause = err instanceof Error ? err.cause : undefined;
-          const causeStr =
-            cause instanceof Error ? `${cause.name}: ${cause.message}` : JSON.stringify(cause);
-          return json(
-            { error: `ZZZ_MARKER_998877 ${msg} | cause=${causeStr} | stack=${stack}` },
-            500,
-          );
+          return json({ error: msg }, 500);
         }
       },
     },

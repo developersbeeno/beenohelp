@@ -172,7 +172,6 @@ export async function sendLoginLink(params: {
 }): Promise<{ ok: boolean; error?: string }> {
   const url = process.env.N8N_AGENT_CODE_WEBHOOK_URL;
   if (!url) return { ok: false, error: "N8N_AGENT_CODE_WEBHOOK_URL não configurada" };
-  console.log("DEBUG sendLoginLink url:", JSON.stringify(url), "len:", url.length);
 
   const base = (
     process.env.PUBLIC_SITE_URL ||
@@ -205,17 +204,7 @@ export async function sendLoginLink(params: {
     if (!res.ok) return { ok: false, error: `webhook respondeu ${res.status}` };
     return { ok: true };
   } catch (err) {
-    const cause = err instanceof Error ? err.cause : undefined;
-    const causeStr =
-      cause instanceof Error
-        ? `${cause.name}: ${cause.message}`
-        : cause
-          ? JSON.stringify(cause)
-          : "sem cause";
-    return {
-      ok: false,
-      error: `DEBUG url=${JSON.stringify(url)} len=${url.length} err=${err instanceof Error ? err.message : String(err)} cause=${causeStr}`,
-    };
+    return { ok: false, error: err instanceof Error ? err.message : "falha de rede" };
   }
 }
 
