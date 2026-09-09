@@ -19,6 +19,15 @@ const json = (body: unknown, status = 200) =>
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
 
+async function step<T>(name: string, fn: () => Promise<T>): Promise<T> {
+  try {
+    return await fn();
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new Error(`STEP[${name}] failed: ${msg}`);
+  }
+}
+
 /**
  * Envia o link de verificação por e-mail.
  * Usado no primeiro acesso e também no "esqueci minha senha".
@@ -27,7 +36,6 @@ export const Route = createFileRoute("/api/agent/request-link")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        return json({ debug: "REACHED_HANDLER_TOP" }, 200);
         try {
           if (!supabaseConfigured()) return json({ error: "Banco não configurado" }, 503);
 
@@ -48,7 +56,7 @@ export const Route = createFileRoute("/api/agent/request-link")({
           // Quem não está no roster não recebe link. A resposta é a MESMA de
           // um envio bem-sucedido — quem sonda de fora não descobre quem faz
           // parte do time (evita enumerar os atendentes).
-          if (!(await isEmailOnRoster(email))) {
+          if (!(await step("isEmailOnRoster", () => isEmailOnRoster(email)))) {
             await new Promise((r) => setTimeout(r, 500));
             return json({ ok: true, expires_minutes: LINK_TTL_MIN });
           }
@@ -56,13 +64,15 @@ export const Route = createFileRoute("/api/agent/request-link")({
           const db = supabaseAdmin();
           const now = Date.now();
 
-          const { data: recent } = await db
-            .from("agent_login_codes")
-            .select("created_at")
-            .eq("email", email)
-            .gte("created_at", new Date(now - 3600_000).toISOString())
-            .order("created_at", { ascending: false })
-            .limit(MAX_LINKS_PER_HOUR);
+          const { data: recent } = await step("select-recent", () =>
+            db
+              .from("agent_login_codes")
+              .select("created_at")
+              .eq("email", email)
+              .gte("created_at", new Date(now - 3600_000).toISOString())
+              .order("created_at", { ascending: false })
+              .limit(MAX_LINKS_PER_HOUR),
+          );
 
           const list = recent || [];
           if (list.length >= MAX_LINKS_PER_HOUR) {
@@ -85,38 +95,42 @@ export const Route = createFileRoute("/api/agent/request-link")({
           const tokenHash = await hashLinkToken(token);
 
           // um link novo invalida os anteriores
-          await db
-            .from("agent_login_codes")
-            .update({ used_at: new Date().toISOString() })
-            .eq("email", email)
-            .is("used_at", null);
+          await step("invalidate-old-codes", () =>
+            db
+              .from("agent_login_codes")
+              .update({ used_at: new Date().toISOString() })
+              .eq("email", email)
+              .is("used_at", null),
+          );
 
-          const { data: agent } = await db
-            .from("agents")
-            .select("name, password_hash")
-            .eq("email", email)
-            .maybeSingle();
+          const { data: agent } = await step("select-agent", () =>
+            db.from("agents").select("name, password_hash").eq("email", email).maybeSingle(),
+          );
 
           // Quem já tem senha está REDEFININDO: o kind='reset' faz o painel
           // exigir uma senha nova depois do link — sem isso a pessoa entraria
           // uma vez e continuaria sem saber a própria senha.
           const isReset = Boolean(agent?.password_hash);
 
-          const { error: insErr } = await db.from("agent_login_codes").insert({
-            email,
-            code_hash: tokenHash,
-            kind: isReset ? "reset" : "link",
-            expires_at: new Date(now + LINK_TTL_MIN * 60_000).toISOString(),
-          });
+          const { error: insErr } = await step("insert-code", () =>
+            db.from("agent_login_codes").insert({
+              email,
+              code_hash: tokenHash,
+              kind: isReset ? "reset" : "link",
+              expires_at: new Date(now + LINK_TTL_MIN * 60_000).toISOString(),
+            }),
+          );
           if (insErr) return json({ error: insErr.message }, 500);
 
-          const sent = await sendLoginLink({
-            to: email,
-            name: agent?.name || deriveName(email),
-            token,
-            expiresMinutes: LINK_TTL_MIN,
-            isReset,
-          });
+          const sent = await step("sendLoginLink", () =>
+            sendLoginLink({
+              to: email,
+              name: agent?.name || deriveName(email),
+              token,
+              expiresMinutes: LINK_TTL_MIN,
+              isReset,
+            }),
+          );
 
           if (!sent.ok) {
             console.error("sendLoginLink:", sent.error);
