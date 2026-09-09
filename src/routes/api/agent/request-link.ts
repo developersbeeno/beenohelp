@@ -27,6 +27,7 @@ export const Route = createFileRoute("/api/agent/request-link")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        return json({ debug: "REACHED_HANDLER_TOP" }, 200);
         try {
           if (!supabaseConfigured()) return json({ error: "Banco não configurado" }, 503);
 
