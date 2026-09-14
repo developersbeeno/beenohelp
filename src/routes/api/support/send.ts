@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+
+import { corsHeaders, preflight } from "@/lib/cors.server";
 import {
   insertMessage,
   sanitizeAttachments,
@@ -7,19 +9,23 @@ import {
 } from "@/lib/supabase.server";
 import { notifyTeam, panelUrl } from "@/lib/support.server";
 
-const json = (body: unknown, status = 200) =>
+// O widget comercial roda no beeno.ai (outra origem), então as respostas
+// precisam ecoar os headers de CORS quando a origem está na allowlist.
+const json = (request: Request, body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...corsHeaders(request) },
   });
 
 /** Mensagem do visitante enquanto a conversa está com um humano (fila ou ao vivo). */
 export const Route = createFileRoute("/api/support/send")({
   server: {
     handlers: {
+      OPTIONS: async ({ request }) => preflight(request),
+
       POST: async ({ request }) => {
         try {
-          if (!supabaseConfigured()) return json({ error: "Suporte indisponível." }, 503);
+          if (!supabaseConfigured()) return json(request, { error: "Suporte indisponível." }, 503);
 
           const { conversation_id, content, attachments } = (await request.json()) as {
             conversation_id?: string;
@@ -31,7 +37,7 @@ export const Route = createFileRoute("/api/support/send")({
           const text = (content || "").trim().slice(0, 4000);
           const files = sanitizeAttachments(attachments, id);
           // mensagem só com anexo é válida
-          if (!id || (!text && !files.length)) return json({ error: "Dados incompletos" }, 400);
+          if (!id || (!text && !files.length)) return json(request, { error: "Dados incompletos" }, 400);
 
           const db = supabaseAdmin();
           const { data: conv } = await db
@@ -40,8 +46,8 @@ export const Route = createFileRoute("/api/support/send")({
             .eq("id", id)
             .maybeSingle();
 
-          if (!conv) return json({ error: "Conversa não encontrada" }, 404);
-          if (conv.status === "closed") return json({ error: "Atendimento encerrado" }, 409);
+          if (!conv) return json(request, { error: "Conversa não encontrada" }, 404);
+          if (conv.status === "closed") return json(request, { error: "Atendimento encerrado" }, 409);
 
           const msg = await insertMessage(
             id,
@@ -74,10 +80,10 @@ export const Route = createFileRoute("/api/support/send")({
             });
           }
 
-          return json({ ok: true, id: msg?.id });
+          return json(request, { ok: true, id: msg?.id });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Erro desconhecido";
-          return json({ error: msg }, 500);
+          return json(request, { error: msg }, 500);
         }
       },
     },

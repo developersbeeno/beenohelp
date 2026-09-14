@@ -77,6 +77,7 @@ export function ChatDrawer({
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [agentName, setAgentName] = useState<string | null>(null);
+  const [agentAvatar, setAgentAvatar] = useState<string | null>(null);
 
   // anexos escolhidos mas ainda não enviados
   const [pending, setPending] = useState<Attachment[]>([]);
@@ -212,11 +213,13 @@ export function ChatDrawer({
         const data = (await res.json()) as {
           status: Mode | "bot";
           agent_name: string | null;
+          agent_avatar: string | null;
           messages: { id: string; role: Role; content: string; author_name: string | null; created_at: string }[];
         };
         if (cancelled) return;
 
         if (data.agent_name) setAgentName(data.agent_name);
+        setAgentAvatar(data.agent_avatar || null);
 
         for (const m of data.messages) {
           push({ role: m.role, content: m.content, author: m.author_name, id: m.id });
@@ -485,13 +488,21 @@ export function ChatDrawer({
 
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border shrink-0">
-              <div className="h-9 w-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                {mode === "live" ? (
-                  <Headset className="h-4 w-4 text-primary" />
-                ) : (
-                  <span className="text-primary font-extrabold text-sm tracking-tight">b</span>
-                )}
-              </div>
+              {mode === "live" && agentAvatar ? (
+                <img
+                  src={agentAvatar}
+                  alt={agentName || s.handoff.defaultAgentName}
+                  className="h-9 w-9 rounded-full object-cover shrink-0 ring-2 ring-primary/20"
+                />
+              ) : (
+                <div className="h-9 w-9 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                  {mode === "live" ? (
+                    <Headset className="h-4 w-4 text-primary" />
+                  ) : (
+                    <span className="text-primary font-extrabold text-sm tracking-tight">b</span>
+                  )}
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-sm">
                   {mode === "live" ? agentName || s.handoff.defaultAgentNameFull : s.chat.brand}
@@ -537,7 +548,14 @@ export function ChatDrawer({
                     <div className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[88%]">
                         {m.role === "agent" && (
-                          <div className="text-[11px] font-medium text-primary mb-1 px-1">
+                          <div className="text-[11px] font-medium text-primary mb-1 px-1 flex items-center gap-1.5">
+                            {agentAvatar && (
+                              <img
+                                src={agentAvatar}
+                                alt=""
+                                className="h-5 w-5 rounded-full object-cover"
+                              />
+                            )}
                             {m.author || s.handoff.defaultAgentNameFull}
                           </div>
                         )}

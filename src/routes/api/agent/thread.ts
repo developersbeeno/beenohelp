@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { requireAgent } from "@/lib/agent-auth.server";
+import { podeAtenderComercial, requireAgent } from "@/lib/agent-auth.server";
 import {
   insertMessage,
+  marcarAtendente,
   sanitizeAttachments,
   signAttachments,
   supabaseAdmin,
@@ -13,6 +14,31 @@ const json = (body: unknown, status = 200) =>
     status,
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
+
+
+/**
+ * Barreira de verdade da fila comercial. Esconder da listagem não basta: com o
+ * id em mãos qualquer atendente logado leria a conversa. Aqui a leitura, a
+ * resposta e o assumir/encerrar ficam bloqueados para quem não é do time
+ * comercial.
+ *
+ * Devolve null quando pode seguir, ou a Response de erro quando não pode.
+ */
+async function bloqueiaSeComercial(
+  convId: string,
+  email: string,
+): Promise<Response | null> {
+  if (podeAtenderComercial(email)) return null;
+  const { data } = await supabaseAdmin()
+    .from("conversations")
+    .select("queue")
+    .eq("id", convId)
+    .maybeSingle();
+  if (data?.queue === "comercial") {
+    return json({ error: "Esta conversa é da fila comercial." }, 403);
+  }
+  return null;
+}
 
 export const Route = createFileRoute("/api/agent/thread")({
   server: {
@@ -28,6 +54,9 @@ export const Route = createFileRoute("/api/agent/thread")({
           const id = url.searchParams.get("id");
           const after = url.searchParams.get("after");
           if (!id) return json({ error: "id obrigatório" }, 400);
+
+          const barrado = await bloqueiaSeComercial(id, session.email);
+          if (barrado) return barrado;
 
           const db = supabaseAdmin();
 
@@ -71,6 +100,9 @@ export const Route = createFileRoute("/api/agent/thread")({
           const files = sanitizeAttachments(attachments, convId);
           if (!convId || (!text && !files.length)) return json({ error: "Dados incompletos" }, 400);
 
+          const barradoPost = await bloqueiaSeComercial(convId, session.email);
+          if (barradoPost) return barradoPost;
+
           const db = supabaseAdmin();
           const { data: conv } = await db
             .from("conversations")
@@ -89,6 +121,7 @@ export const Route = createFileRoute("/api/agent/thread")({
                 updated_at: new Date().toISOString(),
               })
               .eq("id", convId);
+            await marcarAtendente(convId, session.email);
           }
 
           const msg = await insertMessage(
@@ -120,6 +153,9 @@ export const Route = createFileRoute("/api/agent/thread")({
           const convId = (id || "").trim();
           if (!convId || !action) return json({ error: "Dados incompletos" }, 400);
 
+          const barradoPatch = await bloqueiaSeComercial(convId, session.email);
+          if (barradoPatch) return barradoPatch;
+
           const db = supabaseAdmin();
           const now = new Date().toISOString();
 
@@ -128,6 +164,7 @@ export const Route = createFileRoute("/api/agent/thread")({
               .from("conversations")
               .update({ status: "live", agent_name: session.name, updated_at: now })
               .eq("id", convId);
+            await marcarAtendente(convId, session.email);
             await insertMessage(
               convId,
               "system",
@@ -148,6 +185,7 @@ export const Route = createFileRoute("/api/agent/thread")({
               .from("conversations")
               .update({ status: "live", agent_name: session.name, closed_at: null, updated_at: now })
               .eq("id", convId);
+            await marcarAtendente(convId, session.email);
           }
 
           return json({ ok: true });

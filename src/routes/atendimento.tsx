@@ -14,7 +14,12 @@ import {
   History as HistoryIcon,
   KeyRound,
   ShieldCheck,
+  Camera,
+  Loader2,
+  Mic,
   Paperclip,
+  Trash2,
+  Square,
   X as XIcon,
   Search,
   ChevronLeft,
@@ -465,6 +470,11 @@ function Inbox({
   const [uploading, setUploading] = useState(0);
   const [uploadError, setUploadError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
+  const mediaRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+  const recTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [recording, setRecording] = useState(false);
+  const [recSecs, setRecSecs] = useState(0);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<string | null>(null);
@@ -571,6 +581,56 @@ function Inbox({
     }
   };
 
+  /**
+   * Gravação de áudio do atendente. O MediaRecorder entrega webm no
+   * Chrome/Firefox e mp4 no Safari — por isso o tipo vem do próprio gravador
+   * em vez de ser fixado, senão o Safari subiria um arquivo com rótulo errado.
+   */
+  const startRecording = async () => {
+    if (!selected) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mr = new MediaRecorder(stream);
+      chunksRef.current = [];
+      mr.ondataavailable = (e) => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
+      mr.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const tipo = mr.mimeType || "audio/webm";
+        const ext = tipo.includes("mp4") ? "m4a" : tipo.includes("ogg") ? "ogg" : "webm";
+        const blob = new Blob(chunksRef.current, { type: tipo.split(";")[0] });
+        uploadFiles([
+          new File([blob], `audio-${Date.now()}.${ext}`, { type: tipo.split(";")[0] }),
+        ]);
+        setRecSecs(0);
+      };
+      mr.start();
+      mediaRef.current = mr;
+      setRecording(true);
+      setRecSecs(0);
+      recTimerRef.current = setInterval(() => setRecSecs((n) => n + 1), 1000);
+    } catch {
+      setUploadError("Não consegui acessar o microfone. Verifique a permissão do navegador.");
+    }
+  };
+
+  const stopRecording = () => {
+    mediaRef.current?.stop();
+    mediaRef.current = null;
+    if (recTimerRef.current) clearInterval(recTimerRef.current);
+    recTimerRef.current = null;
+    setRecording(false);
+  };
+
+  // libera microfone e timer se o painel desmontar no meio da gravação
+  useEffect(() => {
+    return () => {
+      mediaRef.current?.stop();
+      if (recTimerRef.current) clearInterval(recTimerRef.current);
+    };
+  }, []);
+
   const send = async () => {
     const text = reply.trim();
     const files = pending;
@@ -624,14 +684,17 @@ function Inbox({
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
       <div className="flex items-center justify-between mb-5 gap-3 flex-wrap">
-        <div>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Headset className="h-5 w-5 text-primary" />
-            Atendimento
-          </h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Conectado como <span className="font-medium text-foreground">{agent}</span>
-          </p>
+        <div className="flex items-center gap-3">
+          <FotoAtendente nome={agent} />
+          <div>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              <Headset className="h-5 w-5 text-primary" />
+              Atendimento
+            </h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Conectado como <span className="font-medium text-foreground">{agent}</span>
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -928,7 +991,7 @@ function Inbox({
                       ref={fileRef}
                       type="file"
                       multiple
-                      accept="image/png,image/jpeg,image/gif,image/webp,application/pdf,text/plain,text/csv,.xlsx,.xls"
+                      accept="image/png,image/jpeg,image/gif,image/webp,audio/webm,audio/ogg,audio/mp4,audio/mpeg,audio/wav,application/pdf,text/plain,text/csv,.xlsx,.xls"
                       className="hidden"
                       onChange={(e) => {
                         uploadFiles([...(e.target.files || [])]);
@@ -968,8 +1031,29 @@ function Inbox({
                       <Paperclip className="h-4 w-4" />
                     </button>
                     <button
+                      onClick={recording ? stopRecording : startRecording}
+                      disabled={pending.length >= 5}
+                      className={`h-10 rounded-xl border flex items-center justify-center gap-1.5 transition disabled:opacity-50 shrink-0 ${
+                        recording
+                          ? "w-auto px-3 border-red-500/40 bg-red-500/10 text-red-600"
+                          : "w-10 border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`}
+                      aria-label={recording ? "Parar gravação" : "Gravar áudio"}
+                    >
+                      {recording ? (
+                        <>
+                          <Square className="h-3.5 w-3.5 fill-current" />
+                          <span className="text-xs font-medium tabular-nums">
+                            {Math.floor(recSecs / 60)}:{String(recSecs % 60).padStart(2, "0")}
+                          </span>
+                        </>
+                      ) : (
+                        <Mic className="h-4 w-4" />
+                      )}
+                    </button>
+                    <button
                       onClick={send}
-                      disabled={sending || uploading > 0 || (!reply.trim() && !pending.length)}
+                      disabled={sending || uploading > 0 || recording || (!reply.trim() && !pending.length)}
                       className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:brightness-95 transition disabled:opacity-50 shrink-0"
                       aria-label="Enviar"
                     >
@@ -983,6 +1067,131 @@ function Inbox({
         </div>
       </div>
         </>
+      )}
+    </div>
+  );
+}
+
+// ------------------------------------------------------- foto do atendente
+/**
+ * Foto de perfil de quem atende. Aparece para o cliente no chat — no
+ * cabeçalho e ao lado de cada resposta — então vale a pena ter uma.
+ *
+ * Busca o estado atual por conta própria em vez de receber por prop: é um
+ * canto isolado do painel e assim não precisa atravessar o Inbox inteiro.
+ */
+function FotoAtendente({ nome }: { nome: string }) {
+  const [foto, setFoto] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let vivo = true;
+    fetch("/api/agent/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (vivo) setFoto(d.avatar_url || null);
+      })
+      .catch(() => {});
+    return () => {
+      vivo = false;
+    };
+  }, []);
+
+  const enviar = async (file: File) => {
+    setErro("");
+    setSalvando(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/agent/avatar", { method: "POST", body: fd });
+      const d = await res.json();
+      if (!res.ok) {
+        setErro(d.error || "Não foi possível salvar a foto.");
+        return;
+      }
+      setFoto(d.avatar_url);
+    } catch {
+      setErro("Erro de rede ao enviar a foto.");
+    } finally {
+      setSalvando(false);
+    }
+  };
+
+  const remover = async () => {
+    setSalvando(true);
+    try {
+      await fetch("/api/agent/avatar", { method: "DELETE" });
+      setFoto(null);
+    } catch {
+      setErro("Erro de rede ao remover a foto.");
+    } finally {
+      setSalvando(false);
+    }
+  };
+
+  const iniciais = nome
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+
+  return (
+    <div className="relative">
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) enviar(f);
+          e.target.value = "";
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={salvando}
+        title={foto ? "Trocar a sua foto" : "Adicionar a sua foto"}
+        aria-label={foto ? "Trocar a sua foto" : "Adicionar a sua foto"}
+        className="group relative h-12 w-12 rounded-full overflow-hidden border border-border bg-muted flex items-center justify-center transition hover:border-primary/50"
+      >
+        {foto ? (
+          <img src={foto} alt="" className="h-full w-full object-cover" />
+        ) : (
+          <span className="text-sm font-bold text-muted-foreground">{iniciais || "?"}</span>
+        )}
+        <span className="absolute inset-0 hidden items-center justify-center bg-black/45 group-hover:flex">
+          {salvando ? (
+            <Loader2 className="h-4 w-4 animate-spin text-white" />
+          ) : (
+            <Camera className="h-4 w-4 text-white" />
+          )}
+        </span>
+        {salvando && !foto && (
+          <span className="absolute inset-0 flex items-center justify-center bg-black/45">
+            <Loader2 className="h-4 w-4 animate-spin text-white" />
+          </span>
+        )}
+      </button>
+
+      {foto && !salvando && (
+        <button
+          type="button"
+          onClick={remover}
+          title="Remover a foto"
+          aria-label="Remover a foto"
+          className="absolute -right-1 -top-1 h-5 w-5 rounded-full border border-border bg-background text-muted-foreground transition hover:text-destructive flex items-center justify-center"
+        >
+          <Trash2 className="h-2.5 w-2.5" />
+        </button>
+      )}
+
+      {erro && (
+        <p className="absolute left-0 top-full mt-1 w-52 text-[11px] text-destructive">{erro}</p>
       )}
     </div>
   );

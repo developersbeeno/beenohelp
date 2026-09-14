@@ -24,6 +24,30 @@ function secret(): string {
   return "beeno-dev-secret-apenas-local";
 }
 
+/**
+ * Quem atende a fila COMERCIAL (COMMERCIAL_AGENT_EMAILS, separados por vírgula).
+ *
+ * É uma restrição por fila, não global: o time de suporte continua entrando
+ * normalmente e vendo a fila dele. Só a fila comercial fica limitada a esta
+ * lista — leads de venda não devem ficar visíveis para a empresa inteira.
+ *
+ * Lista vazia = ninguém restrito (a fila comercial aparece para todo o time),
+ * que é o comportamento anterior a esta configuração.
+ */
+export function comercialAgents(): string[] {
+  return (process.env.COMMERCIAL_AGENT_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+/** true se este e-mail pode ver e assumir conversas da fila comercial. */
+export function podeAtenderComercial(email: string): boolean {
+  const lista = comercialAgents();
+  if (!lista.length) return true; // sem lista configurada, não restringe
+  return lista.includes(email.trim().toLowerCase());
+}
+
 /** Domínios liberados. Configurável sem deploy via AGENT_ALLOWED_DOMAINS. */
 export function allowedDomains(): string[] {
   return (process.env.AGENT_ALLOWED_DOMAINS || "beeno.ai,skeps.com.br")

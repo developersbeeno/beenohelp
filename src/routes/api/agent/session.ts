@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { allowedDomains, clearCookie, requireAgent } from "@/lib/agent-auth.server";
 import {
+  agentAvatarUrl,
   agentLoginTablesReady,
   isEmailAdmin,
   supabaseAdmin,
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/api/agent/session")({
         // Lido do banco, não do cookie: se a senha for definida em outra
         // aba, esta sessão enxerga na hora.
         let mustSetPassword = false;
+        let avatarUrl: string | null = null;
         if (session?.email && supabaseConfigured()) {
           const { data } = await supabaseAdmin()
             .from("agents")
@@ -32,6 +34,7 @@ export const Route = createFileRoute("/api/agent/session")({
             .eq("email", session.email)
             .maybeSingle();
           mustSetPassword = !data?.password_hash;
+          avatarUrl = await agentAvatarUrl(session.email);
         }
 
         return json({
@@ -39,6 +42,7 @@ export const Route = createFileRoute("/api/agent/session")({
           name: session?.name ?? null,
           email: session?.email ?? null,
           is_admin: session?.email ? await isEmailAdmin(session.email) : false,
+          avatar_url: avatarUrl,
           must_set_password: mustSetPassword,
           allowed_domains: allowedDomains(),
           email_login_ready: emailReady,

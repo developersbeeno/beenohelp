@@ -19,6 +19,7 @@ import { Route as ApiSupportUploadRouteImport } from './routes/api/support/uploa
 import { Route as ApiSupportStatusRouteImport } from './routes/api/support/status'
 import { Route as ApiSupportSendRouteImport } from './routes/api/support/send'
 import { Route as ApiSupportPollRouteImport } from './routes/api/support/poll'
+import { Route as ApiComercialStartRouteImport } from './routes/api/comercial/start'
 import { Route as ApiAgentVerifyLinkRouteImport } from './routes/api/agent/verify-link'
 import { Route as ApiAgentThreadRouteImport } from './routes/api/agent/thread'
 import { Route as ApiAgentSetPasswordRouteImport } from './routes/api/agent/set-password'
@@ -28,6 +29,7 @@ import { Route as ApiAgentMetricsRouteImport } from './routes/api/agent/metrics'
 import { Route as ApiAgentLoginRouteImport } from './routes/api/agent/login'
 import { Route as ApiAgentHistoryRouteImport } from './routes/api/agent/history'
 import { Route as ApiAgentConversationsRouteImport } from './routes/api/agent/conversations'
+import { Route as ApiAgentAvatarRouteImport } from './routes/api/agent/avatar'
 import { Route as ApiAgentAllowlistRouteImport } from './routes/api/agent/allowlist'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -80,6 +82,11 @@ const ApiSupportPollRoute = ApiSupportPollRouteImport.update({
   path: '/api/support/poll',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiComercialStartRoute = ApiComercialStartRouteImport.update({
+  id: '/api/comercial/start',
+  path: '/api/comercial/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAgentVerifyLinkRoute = ApiAgentVerifyLinkRouteImport.update({
   id: '/api/agent/verify-link',
   path: '/api/agent/verify-link',
@@ -125,6 +132,11 @@ const ApiAgentConversationsRoute = ApiAgentConversationsRouteImport.update({
   path: '/api/agent/conversations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAgentAvatarRoute = ApiAgentAvatarRouteImport.update({
+  id: '/api/agent/avatar',
+  path: '/api/agent/avatar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAgentAllowlistRoute = ApiAgentAllowlistRouteImport.update({
   id: '/api/agent/allowlist',
   path: '/api/agent/allowlist',
@@ -139,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/handoff': typeof ApiHandoffRoute
   '/api/agent/allowlist': typeof ApiAgentAllowlistRoute
+  '/api/agent/avatar': typeof ApiAgentAvatarRoute
   '/api/agent/conversations': typeof ApiAgentConversationsRoute
   '/api/agent/history': typeof ApiAgentHistoryRoute
   '/api/agent/login': typeof ApiAgentLoginRoute
@@ -148,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/api/agent/set-password': typeof ApiAgentSetPasswordRoute
   '/api/agent/thread': typeof ApiAgentThreadRoute
   '/api/agent/verify-link': typeof ApiAgentVerifyLinkRoute
+  '/api/comercial/start': typeof ApiComercialStartRoute
   '/api/support/poll': typeof ApiSupportPollRoute
   '/api/support/send': typeof ApiSupportSendRoute
   '/api/support/status': typeof ApiSupportStatusRoute
@@ -161,6 +175,7 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/api/handoff': typeof ApiHandoffRoute
   '/api/agent/allowlist': typeof ApiAgentAllowlistRoute
+  '/api/agent/avatar': typeof ApiAgentAvatarRoute
   '/api/agent/conversations': typeof ApiAgentConversationsRoute
   '/api/agent/history': typeof ApiAgentHistoryRoute
   '/api/agent/login': typeof ApiAgentLoginRoute
@@ -170,6 +185,7 @@ export interface FileRoutesByTo {
   '/api/agent/set-password': typeof ApiAgentSetPasswordRoute
   '/api/agent/thread': typeof ApiAgentThreadRoute
   '/api/agent/verify-link': typeof ApiAgentVerifyLinkRoute
+  '/api/comercial/start': typeof ApiComercialStartRoute
   '/api/support/poll': typeof ApiSupportPollRoute
   '/api/support/send': typeof ApiSupportSendRoute
   '/api/support/status': typeof ApiSupportStatusRoute
@@ -184,6 +200,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/api/handoff': typeof ApiHandoffRoute
   '/api/agent/allowlist': typeof ApiAgentAllowlistRoute
+  '/api/agent/avatar': typeof ApiAgentAvatarRoute
   '/api/agent/conversations': typeof ApiAgentConversationsRoute
   '/api/agent/history': typeof ApiAgentHistoryRoute
   '/api/agent/login': typeof ApiAgentLoginRoute
@@ -193,6 +210,7 @@ export interface FileRoutesById {
   '/api/agent/set-password': typeof ApiAgentSetPasswordRoute
   '/api/agent/thread': typeof ApiAgentThreadRoute
   '/api/agent/verify-link': typeof ApiAgentVerifyLinkRoute
+  '/api/comercial/start': typeof ApiComercialStartRoute
   '/api/support/poll': typeof ApiSupportPollRoute
   '/api/support/send': typeof ApiSupportSendRoute
   '/api/support/status': typeof ApiSupportStatusRoute
@@ -208,6 +226,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/handoff'
     | '/api/agent/allowlist'
+    | '/api/agent/avatar'
     | '/api/agent/conversations'
     | '/api/agent/history'
     | '/api/agent/login'
@@ -217,6 +236,7 @@ export interface FileRouteTypes {
     | '/api/agent/set-password'
     | '/api/agent/thread'
     | '/api/agent/verify-link'
+    | '/api/comercial/start'
     | '/api/support/poll'
     | '/api/support/send'
     | '/api/support/status'
@@ -230,6 +250,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/handoff'
     | '/api/agent/allowlist'
+    | '/api/agent/avatar'
     | '/api/agent/conversations'
     | '/api/agent/history'
     | '/api/agent/login'
@@ -239,6 +260,7 @@ export interface FileRouteTypes {
     | '/api/agent/set-password'
     | '/api/agent/thread'
     | '/api/agent/verify-link'
+    | '/api/comercial/start'
     | '/api/support/poll'
     | '/api/support/send'
     | '/api/support/status'
@@ -252,6 +274,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/handoff'
     | '/api/agent/allowlist'
+    | '/api/agent/avatar'
     | '/api/agent/conversations'
     | '/api/agent/history'
     | '/api/agent/login'
@@ -261,6 +284,7 @@ export interface FileRouteTypes {
     | '/api/agent/set-password'
     | '/api/agent/thread'
     | '/api/agent/verify-link'
+    | '/api/comercial/start'
     | '/api/support/poll'
     | '/api/support/send'
     | '/api/support/status'
@@ -275,6 +299,7 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   ApiHandoffRoute: typeof ApiHandoffRoute
   ApiAgentAllowlistRoute: typeof ApiAgentAllowlistRoute
+  ApiAgentAvatarRoute: typeof ApiAgentAvatarRoute
   ApiAgentConversationsRoute: typeof ApiAgentConversationsRoute
   ApiAgentHistoryRoute: typeof ApiAgentHistoryRoute
   ApiAgentLoginRoute: typeof ApiAgentLoginRoute
@@ -284,6 +309,7 @@ export interface RootRouteChildren {
   ApiAgentSetPasswordRoute: typeof ApiAgentSetPasswordRoute
   ApiAgentThreadRoute: typeof ApiAgentThreadRoute
   ApiAgentVerifyLinkRoute: typeof ApiAgentVerifyLinkRoute
+  ApiComercialStartRoute: typeof ApiComercialStartRoute
   ApiSupportPollRoute: typeof ApiSupportPollRoute
   ApiSupportSendRoute: typeof ApiSupportSendRoute
   ApiSupportStatusRoute: typeof ApiSupportStatusRoute
@@ -362,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSupportPollRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/comercial/start': {
+      id: '/api/comercial/start'
+      path: '/api/comercial/start'
+      fullPath: '/api/comercial/start'
+      preLoaderRoute: typeof ApiComercialStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/agent/verify-link': {
       id: '/api/agent/verify-link'
       path: '/api/agent/verify-link'
@@ -425,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAgentConversationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/agent/avatar': {
+      id: '/api/agent/avatar'
+      path: '/api/agent/avatar'
+      fullPath: '/api/agent/avatar'
+      preLoaderRoute: typeof ApiAgentAvatarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/agent/allowlist': {
       id: '/api/agent/allowlist'
       path: '/api/agent/allowlist'
@@ -443,6 +483,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   ApiHandoffRoute: ApiHandoffRoute,
   ApiAgentAllowlistRoute: ApiAgentAllowlistRoute,
+  ApiAgentAvatarRoute: ApiAgentAvatarRoute,
   ApiAgentConversationsRoute: ApiAgentConversationsRoute,
   ApiAgentHistoryRoute: ApiAgentHistoryRoute,
   ApiAgentLoginRoute: ApiAgentLoginRoute,
@@ -452,6 +493,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAgentSetPasswordRoute: ApiAgentSetPasswordRoute,
   ApiAgentThreadRoute: ApiAgentThreadRoute,
   ApiAgentVerifyLinkRoute: ApiAgentVerifyLinkRoute,
+  ApiComercialStartRoute: ApiComercialStartRoute,
   ApiSupportPollRoute: ApiSupportPollRoute,
   ApiSupportSendRoute: ApiSupportSendRoute,
   ApiSupportStatusRoute: ApiSupportStatusRoute,

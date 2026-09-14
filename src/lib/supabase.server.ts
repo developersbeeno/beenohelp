@@ -118,6 +118,43 @@ export async function isEmailAdmin(email: string): Promise<boolean> {
   }
 }
 
+/** Foto de perfil do atendente, ou null. Nunca lança. */
+export async function agentAvatarUrl(email: string): Promise<string | null> {
+  if (!email || !supabaseConfigured()) return null;
+  try {
+    const { data, error } = await supabaseAdmin()
+      .from("agents")
+      .select("avatar_url")
+      .eq("email", email)
+      .maybeSingle();
+    if (error) return null; // migration 007 ainda não rodou
+    return (data?.avatar_url as string | null) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Registra quem assumiu a conversa (e-mail + foto no momento).
+ *
+ * Best-effort de propósito: se a migration 007 ainda não tiver rodado, as
+ * colunas não existem e este update falha — mas assumir o atendimento não
+ * pode quebrar por causa de uma foto.
+ */
+export async function marcarAtendente(conversationId: string, email: string): Promise<void> {
+  if (!supabaseConfigured()) return;
+  try {
+    const avatar = await agentAvatarUrl(email);
+    const { error } = await supabaseAdmin()
+      .from("conversations")
+      .update({ agent_email: email, agent_avatar: avatar })
+      .eq("id", conversationId);
+    if (error) console.warn("[atendente] não foi possível gravar autor/foto:", error.message);
+  } catch {
+    /* idem */
+  }
+}
+
 export type Role = "user" | "assistant" | "agent" | "system";
 export type Status = "bot" | "waiting" | "live" | "offline" | "closed";
 
@@ -182,6 +219,14 @@ export const ALLOWED_MIME = [
   "text/csv",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "application/vnd.ms-excel",
+  // Áudio: o MediaRecorder do Chrome/Firefox grava em webm/ogg e o do Safari
+  // em mp4. Sem estes tipos o upload devolvia 415 e a gravação do chat
+  // simplesmente não chegava — gravava e se perdia.
+  "audio/webm",
+  "audio/ogg",
+  "audio/mp4",
+  "audio/mpeg",
+  "audio/wav",
 ];
 /**
  * 4 MB, não 10: o corpo de uma request para função serverless na Vercel é
@@ -189,6 +234,14 @@ export const ALLOWED_MIME = [
  * e o usuário veria um erro cru em inglês em vez da mensagem amigável.
  */
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+
+/**
+ * Foto do atendente. Bucket separado e PÚBLICO (ver 007_foto_atendente.sql):
+ * a imagem precisa carregar no widget do beeno.ai sem link assinado.
+ */
+export const AVATAR_BUCKET = "agent-avatars";
+export const AVATAR_MIME = ["image/png", "image/jpeg", "image/webp"];
+export const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 
 /**
  * O bucket é privado: nada é servido por URL pública. A cada leitura
@@ -221,9 +274,17 @@ export async function signAttachments<T extends { attachments?: Attachment[] | n
   );
 }
 
+export type Queue = "suporte" | "comercial";
+
 export type DbConversation = {
   id: string;
   status: Status;
+  /** de qual origem veio a conversa (ver 006_fila_comercial.sql) */
+  queue?: Queue;
+  visitor_company?: string | null;
+  visitor_phone?: string | null;
+  crm_deal_id?: string | null;
+  source_url?: string | null;
   visitor_name: string | null;
   visitor_email: string | null;
   subject: string | null;

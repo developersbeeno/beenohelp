@@ -2,6 +2,7 @@
  * Regras de atendimento humano: horário comercial e avisos ao time via n8n.
  */
 import { rosterEmails } from "@/lib/supabase.server";
+import { comercialAgents } from "./agent-auth.server";
 
 const TZ = process.env.SUPPORT_TZ || "America/Sao_Paulo";
 const START_HOUR = Number(process.env.SUPPORT_START_HOUR ?? 9); // 9h
@@ -75,6 +76,8 @@ export type NotifyPayload = {
   created_at: string;
   /** preenchido pelo notifyTeam a partir do roster */
   recipients?: string[];
+  /** de qual fila veio; "comercial" avisa só quem atende vendas */
+  queue?: "suporte" | "comercial";
 };
 
 /**
@@ -94,7 +97,13 @@ export async function notifyTeam(payload: NotifyPayload): Promise<boolean> {
   try {
     // Quem recebe o aviso é o time cadastrado no painel. Resolvemos aqui para
     // o n8n não precisar de credencial do banco.
-    const recipients = await rosterEmails();
+    //
+    // Lead comercial não vai para o time inteiro: só para quem atende vendas.
+    // Se a lista não estiver configurada, cai no roster — melhor avisar demais
+    // do que perder um lead.
+    const comercial = comercialAgents();
+    const recipients =
+      payload.queue === "comercial" && comercial.length ? comercial : await rosterEmails();
 
     const headers: Record<string, string> = { "content-type": "application/json" };
     if (process.env.N8N_SUPPORT_WEBHOOK_TOKEN) {

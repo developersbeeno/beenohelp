@@ -3,6 +3,7 @@ dist/
 .output/
 .vinxi/
 .vercel/
+.wrangler/
 *.log
 .env
 .env.local
