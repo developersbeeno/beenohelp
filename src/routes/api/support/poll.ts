@@ -27,6 +27,11 @@ export const Route = createFileRoute("/api/support/poll")({
           const url = new URL(request.url);
           const id = url.searchParams.get("conversation_id");
           const after = url.searchParams.get("after");
+          // `full=1`: carga inicial ao reabrir o widget (F5, nova aba). Sem
+          // isso o histórico só trazia mensagens de agente/sistema — as do
+          // próprio visitante (e da IA) ficavam de fora, e ele "perdia" o
+          // atendimento ao atualizar a página.
+          const full = url.searchParams.get("full") === "1";
           if (!id) return json(request, { error: "conversation_id obrigatório" }, 400);
 
           const db = supabaseAdmin();
@@ -55,10 +60,10 @@ export const Route = createFileRoute("/api/support/poll")({
             .from("messages")
             .select("id, role, content, author_name, attachments, created_at")
             .eq("conversation_id", id)
-            .in("role", ["agent", "system"])
             .order("created_at", { ascending: true })
-            .limit(50);
+            .limit(full ? 200 : 50);
 
+          if (!full) q = q.in("role", ["agent", "system"]);
           if (after) q = q.gt("created_at", after);
 
           const { data: messages } = await q;

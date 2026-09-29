@@ -478,6 +478,7 @@ function Inbox({
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<string | null>(null);
+  const threadTickRef = useRef<() => Promise<void>>(async () => {});
   const prevWaitingRef = useRef(0);
 
   // conversa vinda do link do WhatsApp: /atendimento?c=<id>
@@ -545,6 +546,7 @@ function Inbox({
       }
     };
 
+    threadTickRef.current = tick;
     tick();
     const iv = setInterval(tick, 3000);
     return () => {
@@ -572,9 +574,16 @@ function Inbox({
         fd.append("conversation_id", selected);
         const res = await fetch("/api/support/upload", { method: "POST", body: fd });
         const data = await res.json();
-        if (res.ok) setPending((p) => [...p, data as Attachment]);
+        if (res.ok) {
+          setPending((p) => [...p, data as Attachment]);
+        } else {
+          // antes falhava calado — um print colado (Ctrl+V) que a API rejeitasse
+          // (tipo, tamanho etc.) simplesmente não aparecia, parecendo que colar
+          // não fazia nada.
+          setUploadError(data?.error || `Falha ao enviar "${file.name}".`);
+        }
       } catch {
-        /* silencioso */
+        setUploadError(`Falha ao enviar "${file.name}".`);
       } finally {
         setUploading((n) => n - 1);
       }
@@ -667,8 +676,10 @@ function Inbox({
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ id: selected, action }),
     });
-    cursorRef.current = null;
-    setMessages([]);
+    // não zera `messages` aqui: a tela ficava em branco até o próximo poll de
+    // 3s. Re-busca na hora (o tick mescla por id, então o histórico já visível
+    // não pisca) e só então atualiza a lista da barra lateral.
+    await threadTickRef.current();
     loadList();
   };
 

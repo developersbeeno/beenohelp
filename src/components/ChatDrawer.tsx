@@ -105,6 +105,54 @@ export function ChatDrawer({
         setHours({ open: d.open, label: d.label });
       })
       .catch(() => setSupportEnabled(false));
+
+    // Retoma o atendimento: o id da conversa já persiste em localStorage,
+    // mas antes disso o widget sempre reabria do zero no bot (F5, aba nova)
+    // mesmo com um atendimento em andamento. Busca o histórico completo uma
+    // vez ao montar e, se existir conversa (status != bot sem histórico),
+    // restaura mensagens + estado em vez do welcome padrão.
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/support/poll?${new URLSearchParams({ conversation_id: convIdRef.current, full: "1" })}`,
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as {
+          status: "bot" | "waiting" | "live" | "offline" | "closed";
+          agent_name: string | null;
+          agent_avatar: string | null;
+          messages: {
+            id: string;
+            role: Role;
+            content: string;
+            author_name: string | null;
+            attachments: Attachment[] | null;
+            created_at: string;
+          }[];
+        };
+        if (!data.messages.length) return; // conversa nova, mantém o welcome
+
+        setMessages(
+          data.messages.map((m) => ({
+            role: m.role,
+            content: m.content,
+            author: m.author_name,
+            id: m.id,
+            attachments: m.attachments || undefined,
+          })),
+        );
+        cursorRef.current = data.messages[data.messages.length - 1].created_at;
+        if (data.agent_name) setAgentName(data.agent_name);
+        setAgentAvatar(data.agent_avatar || null);
+
+        if (data.status === "waiting") setMode("waiting");
+        else if (data.status === "live") setMode("live");
+        else if (data.status === "closed") setMode("closed");
+        else if (data.status === "offline") setMode("offline_done");
+      } catch {
+        /* sem histórico pra restaurar, segue com o bot padrão */
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -214,7 +262,14 @@ export function ChatDrawer({
           status: Mode | "bot";
           agent_name: string | null;
           agent_avatar: string | null;
-          messages: { id: string; role: Role; content: string; author_name: string | null; created_at: string }[];
+          messages: {
+            id: string;
+            role: Role;
+            content: string;
+            author_name: string | null;
+            attachments: Attachment[] | null;
+            created_at: string;
+          }[];
         };
         if (cancelled) return;
 
@@ -222,7 +277,16 @@ export function ChatDrawer({
         setAgentAvatar(data.agent_avatar || null);
 
         for (const m of data.messages) {
-          push({ role: m.role, content: m.content, author: m.author_name, id: m.id });
+          // o servidor já manda os anexos (com link assinado) — antes esse
+          // campo era descartado aqui e o print do atendente nunca aparecia
+          // pro visitante.
+          push({
+            role: m.role,
+            content: m.content,
+            author: m.author_name,
+            id: m.id,
+            attachments: m.attachments || undefined,
+          });
           cursorRef.current = m.created_at;
         }
 
