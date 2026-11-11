@@ -9,37 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AtendimentoRouteImport } from './routes/atendimento'
-import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiHandoffRouteImport } from './routes/api/handoff'
+import { Route as AssistantRouteImport } from './routes/assistant'
+import { Route as AtendimentoRouteImport } from './routes/atendimento'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as ApiSupportUploadRouteImport } from './routes/api/support/upload'
-import { Route as ApiSupportStatusRouteImport } from './routes/api/support/status'
-import { Route as ApiSupportSendRouteImport } from './routes/api/support/send'
-import { Route as ApiSupportPollRouteImport } from './routes/api/support/poll'
-import { Route as ApiComercialStartRouteImport } from './routes/api/comercial/start'
-import { Route as ApiAgentVerifyLinkRouteImport } from './routes/api/agent/verify-link'
-import { Route as ApiAgentThreadRouteImport } from './routes/api/agent/thread'
-import { Route as ApiAgentSetPasswordRouteImport } from './routes/api/agent/set-password'
-import { Route as ApiAgentSessionRouteImport } from './routes/api/agent/session'
-import { Route as ApiAgentRequestLinkRouteImport } from './routes/api/agent/request-link'
-import { Route as ApiAgentMetricsRouteImport } from './routes/api/agent/metrics'
-import { Route as ApiAgentLoginRouteImport } from './routes/api/agent/login'
-import { Route as ApiAgentHistoryRouteImport } from './routes/api/agent/history'
-import { Route as ApiAgentConversationsRouteImport } from './routes/api/agent/conversations'
-import { Route as ApiAgentAvatarRouteImport } from './routes/api/agent/avatar'
+import { Route as ApiHandoffRouteImport } from './routes/api/handoff'
 import { Route as ApiAgentAllowlistRouteImport } from './routes/api/agent/allowlist'
+import { Route as ApiAgentAvatarRouteImport } from './routes/api/agent/avatar'
+import { Route as ApiAgentConversationsRouteImport } from './routes/api/agent/conversations'
+import { Route as ApiAgentHistoryRouteImport } from './routes/api/agent/history'
+import { Route as ApiAgentLoginRouteImport } from './routes/api/agent/login'
+import { Route as ApiAgentMetricsRouteImport } from './routes/api/agent/metrics'
+import { Route as ApiAgentRequestLinkRouteImport } from './routes/api/agent/request-link'
+import { Route as ApiAgentSessionRouteImport } from './routes/api/agent/session'
+import { Route as ApiAgentSetPasswordRouteImport } from './routes/api/agent/set-password'
+import { Route as ApiAgentThreadRouteImport } from './routes/api/agent/thread'
+import { Route as ApiAgentVerifyLinkRouteImport } from './routes/api/agent/verify-link'
+import { Route as ApiComercialStartRouteImport } from './routes/api/comercial/start'
+import { Route as ApiSupportPollRouteImport } from './routes/api/support/poll'
+import { Route as ApiSupportSendRouteImport } from './routes/api/support/send'
+import { Route as ApiSupportStatusRouteImport } from './routes/api/support/status'
+import { Route as ApiSupportUploadRouteImport } from './routes/api/support/upload'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AtendimentoRoute = AtendimentoRouteImport.update({
-  id: '/atendimento',
-  path: '/atendimento',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssistantRoute = AssistantRouteImport.update({
@@ -47,14 +42,14 @@ const AssistantRoute = AssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AtendimentoRoute = AtendimentoRouteImport.update({
+  id: '/atendimento',
+  path: '/atendimento',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHandoffRoute = ApiHandoffRouteImport.update({
-  id: '/api/handoff',
-  path: '/api/handoff',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
@@ -62,74 +57,14 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSupportUploadRoute = ApiSupportUploadRouteImport.update({
-  id: '/api/support/upload',
-  path: '/api/support/upload',
+const ApiHandoffRoute = ApiHandoffRouteImport.update({
+  id: '/api/handoff',
+  path: '/api/handoff',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSupportStatusRoute = ApiSupportStatusRouteImport.update({
-  id: '/api/support/status',
-  path: '/api/support/status',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSupportSendRoute = ApiSupportSendRouteImport.update({
-  id: '/api/support/send',
-  path: '/api/support/send',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSupportPollRoute = ApiSupportPollRouteImport.update({
-  id: '/api/support/poll',
-  path: '/api/support/poll',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiComercialStartRoute = ApiComercialStartRouteImport.update({
-  id: '/api/comercial/start',
-  path: '/api/comercial/start',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentVerifyLinkRoute = ApiAgentVerifyLinkRouteImport.update({
-  id: '/api/agent/verify-link',
-  path: '/api/agent/verify-link',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentThreadRoute = ApiAgentThreadRouteImport.update({
-  id: '/api/agent/thread',
-  path: '/api/agent/thread',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentSetPasswordRoute = ApiAgentSetPasswordRouteImport.update({
-  id: '/api/agent/set-password',
-  path: '/api/agent/set-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentSessionRoute = ApiAgentSessionRouteImport.update({
-  id: '/api/agent/session',
-  path: '/api/agent/session',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentRequestLinkRoute = ApiAgentRequestLinkRouteImport.update({
-  id: '/api/agent/request-link',
-  path: '/api/agent/request-link',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentMetricsRoute = ApiAgentMetricsRouteImport.update({
-  id: '/api/agent/metrics',
-  path: '/api/agent/metrics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentLoginRoute = ApiAgentLoginRouteImport.update({
-  id: '/api/agent/login',
-  path: '/api/agent/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentHistoryRoute = ApiAgentHistoryRouteImport.update({
-  id: '/api/agent/history',
-  path: '/api/agent/history',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAgentConversationsRoute = ApiAgentConversationsRouteImport.update({
-  id: '/api/agent/conversations',
-  path: '/api/agent/conversations',
+const ApiAgentAllowlistRoute = ApiAgentAllowlistRouteImport.update({
+  id: '/api/agent/allowlist',
+  path: '/api/agent/allowlist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAgentAvatarRoute = ApiAgentAvatarRouteImport.update({
@@ -137,9 +72,74 @@ const ApiAgentAvatarRoute = ApiAgentAvatarRouteImport.update({
   path: '/api/agent/avatar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAgentAllowlistRoute = ApiAgentAllowlistRouteImport.update({
-  id: '/api/agent/allowlist',
-  path: '/api/agent/allowlist',
+const ApiAgentConversationsRoute = ApiAgentConversationsRouteImport.update({
+  id: '/api/agent/conversations',
+  path: '/api/agent/conversations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentHistoryRoute = ApiAgentHistoryRouteImport.update({
+  id: '/api/agent/history',
+  path: '/api/agent/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentLoginRoute = ApiAgentLoginRouteImport.update({
+  id: '/api/agent/login',
+  path: '/api/agent/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentMetricsRoute = ApiAgentMetricsRouteImport.update({
+  id: '/api/agent/metrics',
+  path: '/api/agent/metrics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentRequestLinkRoute = ApiAgentRequestLinkRouteImport.update({
+  id: '/api/agent/request-link',
+  path: '/api/agent/request-link',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentSessionRoute = ApiAgentSessionRouteImport.update({
+  id: '/api/agent/session',
+  path: '/api/agent/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentSetPasswordRoute = ApiAgentSetPasswordRouteImport.update({
+  id: '/api/agent/set-password',
+  path: '/api/agent/set-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentThreadRoute = ApiAgentThreadRouteImport.update({
+  id: '/api/agent/thread',
+  path: '/api/agent/thread',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAgentVerifyLinkRoute = ApiAgentVerifyLinkRouteImport.update({
+  id: '/api/agent/verify-link',
+  path: '/api/agent/verify-link',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiComercialStartRoute = ApiComercialStartRouteImport.update({
+  id: '/api/comercial/start',
+  path: '/api/comercial/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSupportPollRoute = ApiSupportPollRouteImport.update({
+  id: '/api/support/poll',
+  path: '/api/support/poll',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSupportSendRoute = ApiSupportSendRouteImport.update({
+  id: '/api/support/send',
+  path: '/api/support/send',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSupportStatusRoute = ApiSupportStatusRouteImport.update({
+  id: '/api/support/status',
+  path: '/api/support/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSupportUploadRoute = ApiSupportUploadRouteImport.update({
+  id: '/api/support/upload',
+  path: '/api/support/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -318,18 +318,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/atendimento': {
-      id: '/atendimento'
-      path: '/atendimento'
-      fullPath: '/atendimento'
-      preLoaderRoute: typeof AtendimentoRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/assistant': {
@@ -339,18 +332,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/atendimento': {
+      id: '/atendimento'
+      path: '/atendimento'
+      fullPath: '/atendimento'
+      preLoaderRoute: typeof AtendimentoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/handoff': {
-      id: '/api/handoff'
-      path: '/api/handoff'
-      fullPath: '/api/handoff'
-      preLoaderRoute: typeof ApiHandoffRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chat': {
@@ -360,102 +353,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/support/upload': {
-      id: '/api/support/upload'
-      path: '/api/support/upload'
-      fullPath: '/api/support/upload'
-      preLoaderRoute: typeof ApiSupportUploadRouteImport
+    '/api/handoff': {
+      id: '/api/handoff'
+      path: '/api/handoff'
+      fullPath: '/api/handoff'
+      preLoaderRoute: typeof ApiHandoffRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/support/status': {
-      id: '/api/support/status'
-      path: '/api/support/status'
-      fullPath: '/api/support/status'
-      preLoaderRoute: typeof ApiSupportStatusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/support/send': {
-      id: '/api/support/send'
-      path: '/api/support/send'
-      fullPath: '/api/support/send'
-      preLoaderRoute: typeof ApiSupportSendRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/support/poll': {
-      id: '/api/support/poll'
-      path: '/api/support/poll'
-      fullPath: '/api/support/poll'
-      preLoaderRoute: typeof ApiSupportPollRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/comercial/start': {
-      id: '/api/comercial/start'
-      path: '/api/comercial/start'
-      fullPath: '/api/comercial/start'
-      preLoaderRoute: typeof ApiComercialStartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/verify-link': {
-      id: '/api/agent/verify-link'
-      path: '/api/agent/verify-link'
-      fullPath: '/api/agent/verify-link'
-      preLoaderRoute: typeof ApiAgentVerifyLinkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/thread': {
-      id: '/api/agent/thread'
-      path: '/api/agent/thread'
-      fullPath: '/api/agent/thread'
-      preLoaderRoute: typeof ApiAgentThreadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/set-password': {
-      id: '/api/agent/set-password'
-      path: '/api/agent/set-password'
-      fullPath: '/api/agent/set-password'
-      preLoaderRoute: typeof ApiAgentSetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/session': {
-      id: '/api/agent/session'
-      path: '/api/agent/session'
-      fullPath: '/api/agent/session'
-      preLoaderRoute: typeof ApiAgentSessionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/request-link': {
-      id: '/api/agent/request-link'
-      path: '/api/agent/request-link'
-      fullPath: '/api/agent/request-link'
-      preLoaderRoute: typeof ApiAgentRequestLinkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/metrics': {
-      id: '/api/agent/metrics'
-      path: '/api/agent/metrics'
-      fullPath: '/api/agent/metrics'
-      preLoaderRoute: typeof ApiAgentMetricsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/login': {
-      id: '/api/agent/login'
-      path: '/api/agent/login'
-      fullPath: '/api/agent/login'
-      preLoaderRoute: typeof ApiAgentLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/history': {
-      id: '/api/agent/history'
-      path: '/api/agent/history'
-      fullPath: '/api/agent/history'
-      preLoaderRoute: typeof ApiAgentHistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/agent/conversations': {
-      id: '/api/agent/conversations'
-      path: '/api/agent/conversations'
-      fullPath: '/api/agent/conversations'
-      preLoaderRoute: typeof ApiAgentConversationsRouteImport
+    '/api/agent/allowlist': {
+      id: '/api/agent/allowlist'
+      path: '/api/agent/allowlist'
+      fullPath: '/api/agent/allowlist'
+      preLoaderRoute: typeof ApiAgentAllowlistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/agent/avatar': {
@@ -465,11 +374,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAgentAvatarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/agent/allowlist': {
-      id: '/api/agent/allowlist'
-      path: '/api/agent/allowlist'
-      fullPath: '/api/agent/allowlist'
-      preLoaderRoute: typeof ApiAgentAllowlistRouteImport
+    '/api/agent/conversations': {
+      id: '/api/agent/conversations'
+      path: '/api/agent/conversations'
+      fullPath: '/api/agent/conversations'
+      preLoaderRoute: typeof ApiAgentConversationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/history': {
+      id: '/api/agent/history'
+      path: '/api/agent/history'
+      fullPath: '/api/agent/history'
+      preLoaderRoute: typeof ApiAgentHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/login': {
+      id: '/api/agent/login'
+      path: '/api/agent/login'
+      fullPath: '/api/agent/login'
+      preLoaderRoute: typeof ApiAgentLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/metrics': {
+      id: '/api/agent/metrics'
+      path: '/api/agent/metrics'
+      fullPath: '/api/agent/metrics'
+      preLoaderRoute: typeof ApiAgentMetricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/request-link': {
+      id: '/api/agent/request-link'
+      path: '/api/agent/request-link'
+      fullPath: '/api/agent/request-link'
+      preLoaderRoute: typeof ApiAgentRequestLinkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/session': {
+      id: '/api/agent/session'
+      path: '/api/agent/session'
+      fullPath: '/api/agent/session'
+      preLoaderRoute: typeof ApiAgentSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/set-password': {
+      id: '/api/agent/set-password'
+      path: '/api/agent/set-password'
+      fullPath: '/api/agent/set-password'
+      preLoaderRoute: typeof ApiAgentSetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/thread': {
+      id: '/api/agent/thread'
+      path: '/api/agent/thread'
+      fullPath: '/api/agent/thread'
+      preLoaderRoute: typeof ApiAgentThreadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/agent/verify-link': {
+      id: '/api/agent/verify-link'
+      path: '/api/agent/verify-link'
+      fullPath: '/api/agent/verify-link'
+      preLoaderRoute: typeof ApiAgentVerifyLinkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/comercial/start': {
+      id: '/api/comercial/start'
+      path: '/api/comercial/start'
+      fullPath: '/api/comercial/start'
+      preLoaderRoute: typeof ApiComercialStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/support/poll': {
+      id: '/api/support/poll'
+      path: '/api/support/poll'
+      fullPath: '/api/support/poll'
+      preLoaderRoute: typeof ApiSupportPollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/support/send': {
+      id: '/api/support/send'
+      path: '/api/support/send'
+      fullPath: '/api/support/send'
+      preLoaderRoute: typeof ApiSupportSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/support/status': {
+      id: '/api/support/status'
+      path: '/api/support/status'
+      fullPath: '/api/support/status'
+      preLoaderRoute: typeof ApiSupportStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/support/upload': {
+      id: '/api/support/upload'
+      path: '/api/support/upload'
+      fullPath: '/api/support/upload'
+      preLoaderRoute: typeof ApiSupportUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
