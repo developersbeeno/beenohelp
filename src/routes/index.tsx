@@ -111,9 +111,11 @@ function HomePage() {
 
       {/* Main two-column */}
       {filtered === null && (
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-10 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6 lg:gap-8">
-          {/* Sidebar */}
-          <aside className="hidden lg:block lg:sticky lg:top-20 lg:self-start">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-10 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6 lg:gap-8 lg:py-0 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:items-start">
+          {/* Sidebar: rolagem própria, independente do conteúdo — antes os dois
+              colunas dividiam a rolagem da página inteira, então passar o
+              mouse em qualquer lugar e rolar movia as duas juntas. */}
+          <aside className="hidden lg:block lg:h-full lg:overflow-y-auto lg:py-10">
             <nav className="space-y-6">
               {categories.map((cat) => (
                 <div key={cat.key}>
@@ -154,8 +156,8 @@ function HomePage() {
             </nav>
           </aside>
 
-          {/* Content */}
-          <div>
+          {/* Content: mesma lógica da sidebar — rolagem própria em telas grandes */}
+          <div className="lg:h-full lg:overflow-y-auto lg:py-10">
             {openArticle ? (
               <article className="max-w-3xl">
                 <button
